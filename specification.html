@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css"  href="styles.css">
+    <title>PaNick Apps API Generator in PHP</title>
+</head>
+
+    <h1>PaNick Apps API Generator Specification</h1>
+
+    <h2>Database schema</h2>
+
+    <p>After generation of the database or prior to generation of the login script the database should consist of at
+        least the two following tables:</p>
+
+    <ul>
+        <li><b>Users Table:</b>
+            <ul>
+                <li>UserID - Integer, Auto-Increment, Primary Key</li>
+                <li>Username - Varchar(255), Not null</li>
+                <li>Password - Varchar(255), Not null</li>
+                <li>UserLevelID - Varchar(255), Not null</li>
+            </ul>
+        </li><br>
+        <li><b>UserLevels Table:</b>
+            <ul>
+                <li>UserLevelID - Integer, Auto-Increment, Primary Key</li>
+                <li>UserLevelName - Varchar(255), Not null</li>
+            </ul>
+        </li>
+    </ul>
+
+    <p>These tables should be automatically generated into the named database if you opt to create a new database.</p>
+
+    <h2>Supported Data Types</h2>
+
+    <p style="color:red"><b>Important Note:</b> Do not use data type names as column names!</p>
+
+    <p>The API Generator safely supports the following data types:</p>
+
+    <ul>
+        <li>Integer</li>
+        <li>Float</li>
+        <li>Double</li>
+        <li>Char</li>
+        <li>Varchar</li>
+        <li>Text</li>
+        <li>Longtext</li>
+        <li>Date</li>
+        <li>Time</li>
+        <li>Timestamp</li>
+        <li>Boolean</li>
+    </ul>
+
+    <p>You may use other data types, but be aware that they may not work. It is also strongly suggested to use Timestamp types for date-time values.</p>
+
+
+</body>
+</html>

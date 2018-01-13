@@ -1,0 +1,40 @@
+* {
+    font-family: Verdana, sans-serif;
+}
+
+body {
+    padding: 10px;
+}
+
+input {
+    font-size: medium;
+}
+
+.errorCard {
+    background-color:red;
+    color: white;
+    padding:20px;
+    text-align:center;
+}
+
+.successCard {
+    background-color:green;
+    color: white;
+    padding:20px;
+    text-align:center;
+}
+
+.button {
+    background-color: grey;
+    color: white;
+    border: 1px solid black;
+    border-radius: 3px;
+    padding: 10px 5px;
+    margin: 10px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.button:hover {
+    background-color: black;
+}
