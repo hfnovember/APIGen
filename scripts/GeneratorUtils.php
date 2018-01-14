@@ -65,11 +65,14 @@
         fclose($file);
     }//end writeToFile()
 
-    /**
-     * Creates a new database.
-     * @param $dbName (String)
-     * @return Integer ID
-     */
+
+/**
+ * @param $dbHostIP
+ * @param $dbUsername
+ * @param $dbPassword
+ * @param $dbName
+ * @return int
+ */
     function createNewDatabase($dbHostIP, $dbUsername, $dbPassword, $dbName) {
         if (is_file("../Generated/Scripts/DBLogin.php")) {
 
@@ -95,10 +98,17 @@
                 )";
 
                 $sqlInsertDefaultUserLevels = "INSERT INTO UserLevels (UserLevelName) VALUES (\"Administrator\"), (\"Manager\"), (\"User\");";
+                $sqlCreateTableSession = "CREATE TABLE Sessions (
+                  SessionID VARCHAR(255) NOT NULL PRIMARY KEY,
+                  UserID INT UNSIGNED NOT NULL,
+                  InitiatedOn INT UNSIGNED NOT NULL,
+                  FinalizedOn INT UNSIGNED
+                )";
 
                 if ($conn2->query($sqlCreateTableUsers) === TRUE &&
                     $conn2->query($sqlCreateTableUserLevels) === TRUE &&
-                    $conn2->query($sqlInsertDefaultUserLevels) === TRUE) {
+                    $conn2->query($sqlInsertDefaultUserLevels) === TRUE &&
+                    $conn2->query($sqlCreateTableSession) === TRUE) {
 
                     $conn2->close();
                     return 1;

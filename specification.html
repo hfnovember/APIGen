@@ -10,7 +10,7 @@
     <h2>Database schema</h2>
 
     <p>After generation of the database or prior to generation of the login script the database should consist of at
-        least the two following tables:</p>
+        least the three following tables:</p>
 
     <ul>
         <li><b>Users Table:</b>
@@ -25,6 +25,14 @@
             <ul>
                 <li>UserLevelID - Integer, Auto-Increment, Primary Key</li>
                 <li>UserLevelName - Varchar(255), Not null</li>
+            </ul>
+        </li><br>
+        <li><b>SessionData Table:</b>
+            <ul>
+                <li>SessionID - Varchar(255), Primary Key</li>
+                <li>UserID - Integer, Not null</li>
+                <li>InitiatedOn - Timestamp, Not null</li>
+                <li>FinalizedOn - Timestamp</li>
             </ul>
         </li>
     </ul>
@@ -56,7 +64,7 @@
     <h2>Important Rules</h2>
 
     <ul>
-        <li>ALL tables should have only 1 Primary Key, which should always be an integer, auto-incremented value.</li>
+        <li>ALL tables should have only 1 Primary Key.</li>
         <li>Properties which are unique and constitute other kinds of identification should be set as unique and indexed.</li>
 
     </ul>

@@ -63,17 +63,92 @@
             $str .= "\r\n}";
             return $str;
         }//end wrapClass()
-        
+
+
+        public static function getObjectConstructorBindings($allFields) {
+            $objectBindings = "";
+            foreach ($allFields as $field) {
+                if ($field["Key"] != "PRI") {
+                    $objectBindings .= "\$this->" . $field["Field"] . " = \$" . $field["Field"] . ";\n\t\t";
+                }//end if not primary key
+            }//end foreach field
+            $objectBindings = substr($objectBindings, 0, strlen($objectBindings) - 3);
+            return $objectBindings;
+        }//end getObjectConstructorBindings()
+
+
+        public static function getConstructorParameters($allFields) {
+            $constructorParams = "";
+            foreach ($allFields as $field) {
+                if ($field["Key"] != "PRI") {
+                    $constructorParams .= "\r\n\t\t\$" . $field["Field"] . ", ";
+                }//end if not primary key
+            }//end foreach field
+            $constructorParams = substr($constructorParams, 0, strlen($constructorParams) - 2);
+            return $constructorParams . "\r\n\t\t";
+        }//end getConstructorParameters()
+
+
+        public static function getObjectConstructorParameterizer($allFields, $inputVariableName) {
+            $objectConstructionParameterizer = "";
+            foreach ($allFields as $field) {
+                $objectConstructionParameterizer .= "\r\n\t\t\t\t\$" . $inputVariableName . "[\"" . $field["Field"] . "\"], ";
+            }//end foreach field
+            $objectConstructionParameterizer = substr($objectConstructionParameterizer, 0, strlen($objectConstructionParameterizer) - 2);
+            return $objectConstructionParameterizer;
+        }//end getObjectConstructorParameterizer()
+
 
         public static function generate($tableName, $allFields, $primaryKeyField, $indexFields) {
             $combinedGenerationString =
+                self::generatePrivateFields($allFields) .
+                self::generateConstructors($allFields) .
+                self::generateGetters($allFields) .
+                self::generateSetters($allFields) .
                 self::generateCreateFunction($tableName, $allFields) .
-                self::generateGetByID($tableName, $primaryKeyField["Field"]) .
-                self::generateGetByIndex($tableName, $indexFields);
+                self::generateGetByID($tableName, $primaryKeyField, $allFields) .
+                self::generateGetByIndex($tableName, $indexFields) .
+                self::generateGetMultiple($tableName)
             ;
 
             return self::wrapClass($tableName, $combinedGenerationString);
         }//end generate()
+
+        public static function generatePrivateFields($allFields) {
+            $str = "\r\n\t//--- Attributes\r\n";
+            foreach ($allFields as $field) {
+                $str .= "
+    private \$" . $field["Field"] . ";";
+            }//end foreach field
+            return $str;
+        }//end generatePrivateFields()
+
+
+        public static function generateConstructors($allFields) {
+            $strConstructor = "\r\n\r\n\t//--- Constructor\r\n
+    public function __construct(" . self::getConstructorParameters($allFields) . ") {
+        " . self::getObjectConstructorBindings($allFields) . "
+    }\r\n";
+            return $strConstructor;
+        }//end generateConstructors()
+
+
+        public static function generateGetters($allFields) {
+            $str = "\r\n\t//--- Getter Methods\r\n\r\n";
+            foreach ($allFields as $field) {
+                $str .= "\tpublic function get" . ucfirst($field["Field"]) . "() { return \$this->" . $field["Field"] . "; }\r\n";
+            }//end foreach field
+            return $str;
+        }//end generateGetters()
+
+
+        public static function generateSetters($allFields) {
+            $str = "\r\n\t//--- Setter Methods\r\n\r\n";
+            foreach ($allFields as $field) {
+                $str .= "\tpublic function set" . ucfirst($field["Field"]) . "(\$value) { \$this->" . $field["Field"] . " = \$value; }\r\n";
+            }//end foreach field
+            return $str;
+        }//end generateGetters()
 
 
         public static function generateCreateFunction($tableName, $allFields) {
@@ -92,7 +167,7 @@
             $fieldParametersWithVarSign = substr($fieldParametersWithVarSign, 0, strlen($fieldParametersWithVarSign) - 2);
             $fieldValues = substr($fieldValues, 0, strlen($fieldValues) - 2);
 
-            $str = "\r\n
+            $str = "\r\n\t//--- Static (Database) Methods\r\n
     public static function create(" . $fieldParametersWithVarSign . ") {
         \$conn = dbLogin();
         \$sql = \"INSERT INTO " . $tableName . " (" . $fieldParameters . ") VALUES (" . $fieldValues . ")\";
@@ -103,13 +178,27 @@
         }//end generateCreateFunction()
 
 
-        public static function generateGetByID($tableName, $primaryKeyFieldName) {
+        //TODO: generateCreateMultipleFunction...
+
+
+        public static function generateGetByID($tableName, $primaryKeyField, $allFields) {
+
+            if (isQuotableType($primaryKeyField["Type"]))
+                $query = "\$sql = \"SELECT * FROM " . $tableName . " WHERE " . $primaryKeyField["Field"] . " = '\" . \$id . \"'\";";
+            else
+                $query = "\$sql = \"SELECT * FROM " . $tableName . " WHERE " . $primaryKeyField["Field"] . " = \" . \$id;";
+
             $str = "\r\n
     public static function getByID(\$id) {
         \$conn = dbLogin();
-        \$sql = \"SELECT * FROM " . $tableName . " WHERE " . $primaryKeyFieldName . " = \" . \$id;
+        " . $query . "
         \$result = \$conn->query(\$sql);
-        if (\$result->num_rows > 0) return \$result->fetch_object();
+        \$sqlRowItemAsAssocArray = null;
+        if (\$result->num_rows > 0) {
+            \$sqlRowItemAsAssocArray = \$result->fetch_assoc();
+            \$object = new " . ucfirst($tableName) . "(" . self::getObjectConstructorParameterizer($allFields, "sqlRowItemAsAssocArray") . ");
+            return \$object;
+        }
         else return false;
     }\r\n";
             return $str;
@@ -132,9 +221,22 @@
         }//end generateGetByIndex()
 
 
-        public static function generateGetAsList($tableName) {
-            //TODO
+        public static function generateGetMultiple($tableName) {
+            $str = "\r\n
+    public static function getMultiple(\$limit) {
+        \$conn = dbLogin();
+        \$sql = \"SELECT * FROM " . $tableName . "\";
+        if (\$limit > 0) \$sql .= \" LIMIT \" . \$limit;
+        \$result = \$conn->query(\$sql);
+        \$itemsArray = array();
+        if (\$result->num_rows > 0) {
+            if (\$result->num_rows > 0) while(\$row = \$result->fetch_object()) array_push(\$itemsArray, \$row);
+            return \$itemsArray;
         }
+        return false;
+    }\r\n";
+            return $str;
+        }//end generatorGetMultiple()
 
 
         public static function generateUpdateByID($tableName, $allFields) {
@@ -168,6 +270,10 @@
 
 
         public static function generateGetSize($tableName) {
+            //TODO
+        }
+
+        public static function generateIsEmpty($tableName) {
             //TODO
         }
 

@@ -11,7 +11,7 @@
 
 /* TABLE:	t1 */
 
-/* DATETIME:	2018-01-14 02:20:11am */
+/* DATETIME:	2018-01-14 10:46:26pm */
 
 /* DESCRIPTION:	N/A*/
 
@@ -23,6 +23,85 @@ include_once("DBLogin.php");
 
 class T1 {
 
+	//--- Attributes
+
+    private $id;
+    private $bb;
+    private $ccc;
+    private $text;
+    private $boolean;
+    private $date;
+    private $time;
+    private $timestamp;
+    private $textHuge;
+    private $mydouble;
+    private $myfloat;
+    private $mychar;
+    private $mylongtext;
+
+	//--- Constructor
+
+    public function __construct(
+		$bb, 
+		$ccc, 
+		$text, 
+		$boolean, 
+		$date, 
+		$time, 
+		$timestamp, 
+		$textHuge, 
+		$mydouble, 
+		$myfloat, 
+		$mychar, 
+		$mylongtext
+		) {
+        $this->bb = $bb;
+		$this->ccc = $ccc;
+		$this->text = $text;
+		$this->boolean = $boolean;
+		$this->date = $date;
+		$this->time = $time;
+		$this->timestamp = $timestamp;
+		$this->textHuge = $textHuge;
+		$this->mydouble = $mydouble;
+		$this->myfloat = $myfloat;
+		$this->mychar = $mychar;
+		$this->mylongtext = $mylongtext;
+    }
+
+	//--- Getter Methods
+
+	public function getId() { return $this->id; }
+	public function getBb() { return $this->bb; }
+	public function getCcc() { return $this->ccc; }
+	public function getText() { return $this->text; }
+	public function getBoolean() { return $this->boolean; }
+	public function getDate() { return $this->date; }
+	public function getTime() { return $this->time; }
+	public function getTimestamp() { return $this->timestamp; }
+	public function getTextHuge() { return $this->textHuge; }
+	public function getMydouble() { return $this->mydouble; }
+	public function getMyfloat() { return $this->myfloat; }
+	public function getMychar() { return $this->mychar; }
+	public function getMylongtext() { return $this->mylongtext; }
+
+	//--- Setter Methods
+
+	public function setId($value) { $this->id = $value; }
+	public function setBb($value) { $this->bb = $value; }
+	public function setCcc($value) { $this->ccc = $value; }
+	public function setText($value) { $this->text = $value; }
+	public function setBoolean($value) { $this->boolean = $value; }
+	public function setDate($value) { $this->date = $value; }
+	public function setTime($value) { $this->time = $value; }
+	public function setTimestamp($value) { $this->timestamp = $value; }
+	public function setTextHuge($value) { $this->textHuge = $value; }
+	public function setMydouble($value) { $this->mydouble = $value; }
+	public function setMyfloat($value) { $this->myfloat = $value; }
+	public function setMychar($value) { $this->mychar = $value; }
+	public function setMylongtext($value) { $this->mylongtext = $value; }
+
+	//--- Static (Database) Methods
 
     public static function create($bb, $ccc, $text, $boolean, $date, $time, $timestamp, $textHuge, $mydouble, $myfloat, $mychar, $mylongtext) {
         $conn = dbLogin();
@@ -36,7 +115,25 @@ class T1 {
         $conn = dbLogin();
         $sql = "SELECT * FROM t1 WHERE id = " . $id;
         $result = $conn->query($sql);
-        if ($result->num_rows > 0) return $result->fetch_object();
+        $sqlRowItemAsAssocArray = null;
+        if ($result->num_rows > 0) {
+            $sqlRowItemAsAssocArray = $result->fetch_assoc();
+            $object = new T1(
+				$sqlRowItemAsAssocArray["id"], 
+				$sqlRowItemAsAssocArray["bb"], 
+				$sqlRowItemAsAssocArray["ccc"], 
+				$sqlRowItemAsAssocArray["text"], 
+				$sqlRowItemAsAssocArray["boolean"], 
+				$sqlRowItemAsAssocArray["date"], 
+				$sqlRowItemAsAssocArray["time"], 
+				$sqlRowItemAsAssocArray["timestamp"], 
+				$sqlRowItemAsAssocArray["textHuge"], 
+				$sqlRowItemAsAssocArray["mydouble"], 
+				$sqlRowItemAsAssocArray["myfloat"], 
+				$sqlRowItemAsAssocArray["mychar"], 
+				$sqlRowItemAsAssocArray["mylongtext"]);
+            return $object;
+        }
         else return false;
     }
 
@@ -56,6 +153,20 @@ class T1 {
         $result = $conn->query($sql);
         if ($result->num_rows > 0) return $result->fetch_object();
         else return false;
+    }
+
+
+    public static function getMultiple($limit) {
+        $conn = dbLogin();
+        $sql = "SELECT * FROM t1";
+        if ($limit > 0) $sql .= " LIMIT " . $limit;
+        $result = $conn->query($sql);
+        $itemsArray = array();
+        if ($result->num_rows > 0) {
+            if ($result->num_rows > 0) while($row = $result->fetch_object()) array_push($itemsArray, $row);
+            return $itemsArray;
+        }
+        return false;
     }
 
 }
