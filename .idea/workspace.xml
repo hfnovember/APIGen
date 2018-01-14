@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="ee09baf4-5eb2-452a-b73e-bbcf2215a9d4" name="Default" comment="" />
+    <list default="true" id="ee09baf4-5eb2-452a-b73e-bbcf2215a9d4" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Generated/Scripts/t1.php" afterPath="$PROJECT_DIR$/Generated/Scripts/t1.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/scripts/GenerateClasses.php" afterPath="$PROJECT_DIR$/scripts/GenerateClasses.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/specification.html" afterPath="$PROJECT_DIR$/specification.html" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -35,8 +41,8 @@
       <file leaf-file-name="specification.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/specification.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="901">
-              <caret line="53" column="148" lean-forward="false" selection-start-line="53" selection-start-column="148" selection-end-line="53" selection-end-column="148" />
+            <state relative-caret-position="662">
+              <caret line="59" column="113" lean-forward="false" selection-start-line="59" selection-start-column="113" selection-end-line="59" selection-end-column="113" />
               <folding>
                 <element signature="n#style#0;n#p#2;n#!!top" expanded="true" />
               </folding>
@@ -89,23 +95,26 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GenerateClasses.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="GenerateClasses.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/scripts/GenerateClasses.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="611">
-              <caret line="96" column="39" lean-forward="false" selection-start-line="96" selection-start-column="39" selection-end-line="96" selection-end-column="39" />
+            <state relative-caret-position="-426">
+              <caret line="65" column="8" lean-forward="false" selection-start-line="65" selection-start-column="8" selection-end-line="65" selection-end-column="8" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="t1.php" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Generated/Scripts/t1.php">
+      <file leaf-file-name="T1.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Generated/Scripts/T1.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="595">
-              <caret line="35" column="103" lean-forward="false" selection-start-line="35" selection-start-column="103" selection-end-line="35" selection-end-column="103" />
+            <state relative-caret-position="742">
+              <caret line="60" column="1" lean-forward="false" selection-start-line="60" selection-start-column="1" selection-end-line="60" selection-end-column="1" />
               <folding>
-                <marker date="1515886747601" expanded="true" signature="622:933" ph="INSERT INTO t1... " />
+                <marker date="1515889211809" expanded="true" signature="622:933" ph="INSERT INTO t1... " />
+                <marker date="1515889211809" expanded="true" signature="1110:1138" ph="SELECT * FRO... t1" />
+                <marker date="1515889211809" expanded="true" signature="1380:1408" ph="SELECT * FRO... t1" />
+                <marker date="1515889211809" expanded="true" signature="1659:1688" ph="SELECT * FRO... t1" />
               </folding>
             </state>
           </provider>
@@ -133,10 +142,14 @@
       <find>writeto</find>
       <find>toe</find>
       <find>fileName</find>
+      <find>echo</find>
     </findStrings>
     <replaceStrings>
       <replace>&quot;</replace>
     </replaceStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -159,8 +172,8 @@
         <option value="$PROJECT_DIR$/scripts/GeneratorUtils.php" />
         <option value="$PROJECT_DIR$/Generated/Scripts/DBLogin.php" />
         <option value="$PROJECT_DIR$/scripts/CreateLoginScript.php" />
-        <option value="$PROJECT_DIR$/Generated/Scripts/t1.php" />
         <option value="$PROJECT_DIR$/specification.html" />
+        <option value="$PROJECT_DIR$/Generated/Scripts/t1.php" />
         <option value="$PROJECT_DIR$/scripts/GenerateClasses.php" />
       </list>
     </option>
@@ -197,6 +210,7 @@
       </profile-state>
     </entry>
   </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
       <flattenPackages />
@@ -371,12 +385,12 @@
       <updated>1515842802703</updated>
       <workItem from="1515842803878" duration="16775000" />
       <workItem from="1515865154298" duration="50000" />
-      <workItem from="1515869999640" duration="10179000" />
+      <workItem from="1515869999640" duration="12599000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="27004000" />
+    <option name="totallyTimeSpent" value="29424000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -386,7 +400,7 @@
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -597,14 +611,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/scripts/DatabaseObject.php" />
-    <entry file="file://$PROJECT_DIR$/createLoginScript.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="356">
-          <caret line="28" column="0" lean-forward="false" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Generated/Scripts/testclass.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
@@ -617,32 +623,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="357">
           <caret line="21" column="24" lean-forward="true" selection-start-line="21" selection-start-column="24" selection-end-line="21" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/CreateDB.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="35" column="34" lean-forward="false" selection-start-line="35" selection-start-column="34" selection-end-line="35" selection-end-column="34" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/specification.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="901">
-          <caret line="53" column="148" lean-forward="false" selection-start-line="53" selection-start-column="148" selection-end-line="53" selection-end-column="148" />
-          <folding>
-            <element signature="n#style#0;n#p#2;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/GenerateClasses.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="611">
-          <caret line="96" column="39" lean-forward="false" selection-start-line="96" selection-start-column="39" selection-end-line="96" selection-end-column="39" />
           <folding />
         </state>
       </provider>
@@ -663,6 +643,40 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/CreateDB.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="408">
+          <caret line="35" column="34" lean-forward="false" selection-start-line="35" selection-start-column="34" selection-end-line="35" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/specification.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="662">
+          <caret line="59" column="113" lean-forward="false" selection-start-line="59" selection-start-column="113" selection-end-line="59" selection-end-column="113" />
+          <folding>
+            <element signature="n#style#0;n#p#2;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/createLoginScript.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="356">
+          <caret line="28" column="0" lean-forward="false" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/CreateLoginScript.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="16" column="74" lean-forward="false" selection-start-line="16" selection-start-column="74" selection-end-line="16" selection-end-column="74" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/scripts/GeneratorUtils.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-188">
@@ -676,21 +690,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/CreateLoginScript.php">
+    <entry file="file://$PROJECT_DIR$/Generated/Scripts/T1.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="16" column="74" lean-forward="false" selection-start-line="16" selection-start-column="74" selection-end-line="16" selection-end-column="74" />
-          <folding />
+        <state relative-caret-position="742">
+          <caret line="60" column="1" lean-forward="false" selection-start-line="60" selection-start-column="1" selection-end-line="60" selection-end-column="1" />
+          <folding>
+            <marker date="1515889211809" expanded="true" signature="622:933" ph="INSERT INTO t1... " />
+            <marker date="1515889211809" expanded="true" signature="1110:1138" ph="SELECT * FRO... t1" />
+            <marker date="1515889211809" expanded="true" signature="1380:1408" ph="SELECT * FRO... t1" />
+            <marker date="1515889211809" expanded="true" signature="1659:1688" ph="SELECT * FRO... t1" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Generated/Scripts/t1.php">
+    <entry file="file://$PROJECT_DIR$/scripts/GenerateClasses.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="595">
-          <caret line="35" column="103" lean-forward="false" selection-start-line="35" selection-start-column="103" selection-end-line="35" selection-end-column="103" />
-          <folding>
-            <marker date="1515886747601" expanded="true" signature="622:933" ph="INSERT INTO t1... " />
-          </folding>
+        <state relative-caret-position="-426">
+          <caret line="65" column="8" lean-forward="false" selection-start-line="65" selection-start-column="8" selection-end-line="65" selection-end-column="8" />
+          <folding />
         </state>
       </provider>
     </entry>

@@ -11,7 +11,7 @@
 
 /* TABLE:	t1 */
 
-/* DATETIME:	2018-01-14 01:38:57am */
+/* DATETIME:	2018-01-14 02:20:11am */
 
 /* DESCRIPTION:	N/A*/
 
@@ -31,9 +31,33 @@ class T1 {
         else return false;
     }
 
-}
 
-$result = T1::create(1, 2, "asdf", "1", "1", "asdf", 0, "asdasd", 15.47, 3.53, "aaa", "adfasdfasdfasdf");
-if ($result) echo "success"; else echo "fail";
+    public static function getByID($id) {
+        $conn = dbLogin();
+        $sql = "SELECT * FROM t1 WHERE id = " . $id;
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0) return $result->fetch_object();
+        else return false;
+    }
+
+
+    public static function getByBb($indexValue) {
+        $conn = dbLogin();
+        $sql = "SELECT * FROM t1 WHERE bb = " . $indexValue;
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0) return $result->fetch_object();
+        else return false;
+    }
+
+
+    public static function getByCcc($indexValue) {
+        $conn = dbLogin();
+        $sql = "SELECT * FROM t1 WHERE ccc = " . $indexValue;
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0) return $result->fetch_object();
+        else return false;
+    }
+
+}
 
 ?>
