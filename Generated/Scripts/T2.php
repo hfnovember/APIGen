@@ -11,7 +11,7 @@
 
 /* TABLE:	t2 */
 
-/* DATETIME:	2018-01-14 10:46:26pm */
+/* DATETIME:	2018-01-15 12:35:15am */
 
 /* DESCRIPTION:	N/A*/
 
@@ -31,9 +31,11 @@ class T2 {
 	//--- Constructor
 
     public function __construct(
+		$ss, 
 		$dd
 		) {
-        $this->dd = $dd;
+        $this->ss = $ss;
+		$this->dd = $dd;
     }
 
 	//--- Getter Methods
@@ -43,14 +45,13 @@ class T2 {
 
 	//--- Setter Methods
 
-	public function setSs($value) { $this->ss = $value; }
 	public function setDd($value) { $this->dd = $value; }
 
 	//--- Static (Database) Methods
 
-    public static function create($dd) {
+    public static function create($t2_object) {
         $conn = dbLogin();
-        $sql = "INSERT INTO t2 (dd) VALUES ($dd)";
+        $sql = "INSERT INTO t2 (dd) VALUES ($t2_object->dd)";
         if ($conn->query($sql) === TRUE) return true;
         else return false;
     }
@@ -79,10 +80,25 @@ class T2 {
         $result = $conn->query($sql);
         $itemsArray = array();
         if ($result->num_rows > 0) {
-            if ($result->num_rows > 0) while($row = $result->fetch_object()) array_push($itemsArray, $row);
+            if ($result->num_rows > 0) {
+                while($row = $result->fetch_assoc()) {
+                    $object = new T2(
+				$row["ss"], 
+				$row["dd"]);
+                    array_push($itemsArray, $object);
+                }
+            }
             return $itemsArray;
         }
         return false;
+    }
+
+
+    public static function updateByID($t2_object) {
+        $conn = dbLogin();
+        $sql = "UPDATE t2 SET dd = " . $t2_object->getDd() . " WHERE ss = \"" . $t2_object->getSs() . "\"";
+        if ($conn->query($sql) === TRUE) return true;
+        else return false;
     }
 
 }

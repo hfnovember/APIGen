@@ -11,7 +11,7 @@
 
 /* TABLE:	t1 */
 
-/* DATETIME:	2018-01-14 10:46:26pm */
+/* DATETIME:	2018-01-15 12:35:15am */
 
 /* DESCRIPTION:	N/A*/
 
@@ -42,6 +42,7 @@ class T1 {
 	//--- Constructor
 
     public function __construct(
+		$id, 
 		$bb, 
 		$ccc, 
 		$text, 
@@ -55,7 +56,8 @@ class T1 {
 		$mychar, 
 		$mylongtext
 		) {
-        $this->bb = $bb;
+        $this->id = $id;
+		$this->bb = $bb;
 		$this->ccc = $ccc;
 		$this->text = $text;
 		$this->boolean = $boolean;
@@ -87,7 +89,6 @@ class T1 {
 
 	//--- Setter Methods
 
-	public function setId($value) { $this->id = $value; }
 	public function setBb($value) { $this->bb = $value; }
 	public function setCcc($value) { $this->ccc = $value; }
 	public function setText($value) { $this->text = $value; }
@@ -103,9 +104,9 @@ class T1 {
 
 	//--- Static (Database) Methods
 
-    public static function create($bb, $ccc, $text, $boolean, $date, $time, $timestamp, $textHuge, $mydouble, $myfloat, $mychar, $mylongtext) {
+    public static function create($t1_object) {
         $conn = dbLogin();
-        $sql = "INSERT INTO t1 (bb, ccc, text, boolean, date, time, timestamp, textHuge, mydouble, myfloat, mychar, mylongtext) VALUES ($bb, $ccc, \"" . $text . "\", $boolean, \"" . $date . "\", \"" . $time . "\", \"" . $timestamp . "\", \"" . $textHuge . "\", $mydouble, $myfloat, \"" . $mychar . "\", \"" . $mylongtext . "\")";
+        $sql = "INSERT INTO t1 (bb, ccc, text, boolean, date, time, timestamp, textHuge, mydouble, myfloat, mychar, mylongtext) VALUES ($t1_object->bb, $t1_object->ccc, \"" . $t1_object->text . "\", $t1_object->boolean, \"" . $t1_object->date . "\", \"" . $t1_object->time . "\", \"" . $t1_object->timestamp . "\", \"" . $t1_object->textHuge . "\", $t1_object->mydouble, $t1_object->myfloat, \"" . $t1_object->mychar . "\", \"" . $t1_object->mylongtext . "\")";
         if ($conn->query($sql) === TRUE) return true;
         else return false;
     }
@@ -142,7 +143,25 @@ class T1 {
         $conn = dbLogin();
         $sql = "SELECT * FROM t1 WHERE bb = " . $indexValue;
         $result = $conn->query($sql);
-        if ($result->num_rows > 0) return $result->fetch_object();
+        $sqlRowItemAsAssocArray = null;
+        if ($result->num_rows > 0) {
+            $sqlRowItemAsAssocArray = $result->fetch_assoc();
+            $object = new T1(
+				$sqlRowItemAsAssocArray["id"], 
+				$sqlRowItemAsAssocArray["bb"], 
+				$sqlRowItemAsAssocArray["ccc"], 
+				$sqlRowItemAsAssocArray["text"], 
+				$sqlRowItemAsAssocArray["boolean"], 
+				$sqlRowItemAsAssocArray["date"], 
+				$sqlRowItemAsAssocArray["time"], 
+				$sqlRowItemAsAssocArray["timestamp"], 
+				$sqlRowItemAsAssocArray["textHuge"], 
+				$sqlRowItemAsAssocArray["mydouble"], 
+				$sqlRowItemAsAssocArray["myfloat"], 
+				$sqlRowItemAsAssocArray["mychar"], 
+				$sqlRowItemAsAssocArray["mylongtext"]);
+            return $object;
+        }
         else return false;
     }
 
@@ -151,7 +170,25 @@ class T1 {
         $conn = dbLogin();
         $sql = "SELECT * FROM t1 WHERE ccc = " . $indexValue;
         $result = $conn->query($sql);
-        if ($result->num_rows > 0) return $result->fetch_object();
+        $sqlRowItemAsAssocArray = null;
+        if ($result->num_rows > 0) {
+            $sqlRowItemAsAssocArray = $result->fetch_assoc();
+            $object = new T1(
+				$sqlRowItemAsAssocArray["id"], 
+				$sqlRowItemAsAssocArray["bb"], 
+				$sqlRowItemAsAssocArray["ccc"], 
+				$sqlRowItemAsAssocArray["text"], 
+				$sqlRowItemAsAssocArray["boolean"], 
+				$sqlRowItemAsAssocArray["date"], 
+				$sqlRowItemAsAssocArray["time"], 
+				$sqlRowItemAsAssocArray["timestamp"], 
+				$sqlRowItemAsAssocArray["textHuge"], 
+				$sqlRowItemAsAssocArray["mydouble"], 
+				$sqlRowItemAsAssocArray["myfloat"], 
+				$sqlRowItemAsAssocArray["mychar"], 
+				$sqlRowItemAsAssocArray["mylongtext"]);
+            return $object;
+        }
         else return false;
     }
 
@@ -163,10 +200,36 @@ class T1 {
         $result = $conn->query($sql);
         $itemsArray = array();
         if ($result->num_rows > 0) {
-            if ($result->num_rows > 0) while($row = $result->fetch_object()) array_push($itemsArray, $row);
+            if ($result->num_rows > 0) {
+                while($row = $result->fetch_assoc()) {
+                    $object = new T1(
+				$row["id"], 
+				$row["bb"], 
+				$row["ccc"], 
+				$row["text"], 
+				$row["boolean"], 
+				$row["date"], 
+				$row["time"], 
+				$row["timestamp"], 
+				$row["textHuge"], 
+				$row["mydouble"], 
+				$row["myfloat"], 
+				$row["mychar"], 
+				$row["mylongtext"]);
+                    array_push($itemsArray, $object);
+                }
+            }
             return $itemsArray;
         }
         return false;
+    }
+
+
+    public static function updateByID($t1_object) {
+        $conn = dbLogin();
+        $sql = "UPDATE t1 SET bb = " . $t1_object->getBb() . ", ccc = " . $t1_object->getCcc() . ", text = \"" . $t1_object->getText() . "\", boolean = " . $t1_object->getBoolean() . ", date = \"" . $t1_object->getDate() . "\", time = \"" . $t1_object->getTime() . "\", timestamp = \"" . $t1_object->getTimestamp() . "\", textHuge = \"" . $t1_object->getTextHuge() . "\", mydouble = " . $t1_object->getMydouble() . ", myfloat = " . $t1_object->getMyfloat() . ", mychar = \"" . $t1_object->getMychar() . "\", mylongtext = \"" . $t1_object->getMylongtext() . "\" WHERE id = " . $t1_object->getId();
+        if ($conn->query($sql) === TRUE) return true;
+        else return false;
     }
 
 }

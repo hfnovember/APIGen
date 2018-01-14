@@ -68,9 +68,7 @@
         public static function getObjectConstructorBindings($allFields) {
             $objectBindings = "";
             foreach ($allFields as $field) {
-                if ($field["Key"] != "PRI") {
-                    $objectBindings .= "\$this->" . $field["Field"] . " = \$" . $field["Field"] . ";\n\t\t";
-                }//end if not primary key
+                $objectBindings .= "\$this->" . $field["Field"] . " = \$" . $field["Field"] . ";\n\t\t";
             }//end foreach field
             $objectBindings = substr($objectBindings, 0, strlen($objectBindings) - 3);
             return $objectBindings;
@@ -80,9 +78,7 @@
         public static function getConstructorParameters($allFields) {
             $constructorParams = "";
             foreach ($allFields as $field) {
-                if ($field["Key"] != "PRI") {
-                    $constructorParams .= "\r\n\t\t\$" . $field["Field"] . ", ";
-                }//end if not primary key
+                $constructorParams .= "\r\n\t\t\$" . $field["Field"] . ", ";
             }//end foreach field
             $constructorParams = substr($constructorParams, 0, strlen($constructorParams) - 2);
             return $constructorParams . "\r\n\t\t";
@@ -107,8 +103,9 @@
                 self::generateSetters($allFields) .
                 self::generateCreateFunction($tableName, $allFields) .
                 self::generateGetByID($tableName, $primaryKeyField, $allFields) .
-                self::generateGetByIndex($tableName, $indexFields) .
-                self::generateGetMultiple($tableName)
+                self::generateGetByIndex($tableName, $indexFields, $allFields) .
+                self::generateGetMultiple($tableName, $allFields) .
+                self::generateUpdateByID($tableName, $allFields, $primaryKeyField)
             ;
 
             return self::wrapClass($tableName, $combinedGenerationString);
@@ -145,7 +142,8 @@
         public static function generateSetters($allFields) {
             $str = "\r\n\t//--- Setter Methods\r\n\r\n";
             foreach ($allFields as $field) {
-                $str .= "\tpublic function set" . ucfirst($field["Field"]) . "(\$value) { \$this->" . $field["Field"] . " = \$value; }\r\n";
+                if ($field["Key"] != "PRI")
+                    $str .= "\tpublic function set" . ucfirst($field["Field"]) . "(\$value) { \$this->" . $field["Field"] . " = \$value; }\r\n";
             }//end foreach field
             return $str;
         }//end generateGetters()
@@ -153,22 +151,20 @@
 
         public static function generateCreateFunction($tableName, $allFields) {
             $fieldParameters = null;
-            $fieldParametersWithVarSign = null;
+            $parameters = "\$" . $tableName . "_object";
             $fieldValues = null;
             foreach ($allFields as $field) {
                 if ($field["Key"] != "PRI") {
                     $fieldParameters .= $field["Field"] . ", ";
-                    $fieldParametersWithVarSign .= "$" . $field["Field"] . ", ";
-                    if (!isQuotableType($field["Type"])) $fieldValues .= "$" . $field["Field"] . ", ";
-                    else $fieldValues .= quote("$" . $field["Field"]) . ", ";
+                    if (!isQuotableType($field["Type"])) $fieldValues .= "$" . $tableName . "_object->" . $field["Field"] . ", ";
+                    else $fieldValues .= quote("$" . $tableName . "_object->" . $field["Field"]) . ", ";
                 }//end if not primary key
             }//end foreach field
             $fieldParameters = substr($fieldParameters, 0, strlen($fieldParameters) - 2);
-            $fieldParametersWithVarSign = substr($fieldParametersWithVarSign, 0, strlen($fieldParametersWithVarSign) - 2);
             $fieldValues = substr($fieldValues, 0, strlen($fieldValues) - 2);
 
             $str = "\r\n\t//--- Static (Database) Methods\r\n
-    public static function create(" . $fieldParametersWithVarSign . ") {
+    public static function create(" . $parameters . ") {
         \$conn = dbLogin();
         \$sql = \"INSERT INTO " . $tableName . " (" . $fieldParameters . ") VALUES (" . $fieldValues . ")\";
         if (\$conn->query(\$sql) === TRUE) return true;
@@ -182,7 +178,6 @@
 
 
         public static function generateGetByID($tableName, $primaryKeyField, $allFields) {
-
             if (isQuotableType($primaryKeyField["Type"]))
                 $query = "\$sql = \"SELECT * FROM " . $tableName . " WHERE " . $primaryKeyField["Field"] . " = '\" . \$id . \"'\";";
             else
@@ -205,15 +200,26 @@
         }//end generateGetByID()
 
 
-        public static function generateGetByIndex($tableName, $indexFields) {
+        public static function generateGetByIndex($tableName, $indexFields, $allFields) {
             $str = "";
             foreach ($indexFields as $indexField) {
+
+                if (isQuotableType($indexField["Type"]))
+                    $query = "\$sql = \"SELECT * FROM " . $tableName . " WHERE " . $indexField["Field"] . " = '\" . \$indexValue . \"'\";";
+                else
+                    $query = "\$sql = \"SELECT * FROM " . $tableName . " WHERE " . $indexField["Field"] . " = \" . \$indexValue;";
+
                 $str .= "\r\n
     public static function getBy" . ucfirst($indexField["Field"]) . "(\$indexValue) {
         \$conn = dbLogin();
-        \$sql = \"SELECT * FROM " . $tableName . " WHERE " . $indexField["Field"] . " = \" . \$indexValue;
+        " . $query . "
         \$result = \$conn->query(\$sql);
-        if (\$result->num_rows > 0) return \$result->fetch_object();
+        \$sqlRowItemAsAssocArray = null;
+        if (\$result->num_rows > 0) {
+            \$sqlRowItemAsAssocArray = \$result->fetch_assoc();
+            \$object = new " . ucfirst($tableName) . "(" . self::getObjectConstructorParameterizer($allFields, "sqlRowItemAsAssocArray") . ");
+            return \$object;
+        }
         else return false;
     }\r\n";
             }//end foreach indexField
@@ -221,7 +227,7 @@
         }//end generateGetByIndex()
 
 
-        public static function generateGetMultiple($tableName) {
+        public static function generateGetMultiple($tableName, $allFields) {
             $str = "\r\n
     public static function getMultiple(\$limit) {
         \$conn = dbLogin();
@@ -230,7 +236,12 @@
         \$result = \$conn->query(\$sql);
         \$itemsArray = array();
         if (\$result->num_rows > 0) {
-            if (\$result->num_rows > 0) while(\$row = \$result->fetch_object()) array_push(\$itemsArray, \$row);
+            if (\$result->num_rows > 0) {
+                while(\$row = \$result->fetch_assoc()) {
+                    \$object = new " . ucfirst($tableName) . "(" . self::getObjectConstructorParameterizer($allFields, "row") . ");
+                    array_push(\$itemsArray, \$object);
+                }
+            }
             return \$itemsArray;
         }
         return false;
@@ -239,9 +250,31 @@
         }//end generatorGetMultiple()
 
 
-        public static function generateUpdateByID($tableName, $allFields) {
-            //TODO
-        }
+        public static function generateUpdateByID($tableName, $allFields, $primaryKeyField) {
+            $parameters = "\$" . $tableName . "_object";
+            $fieldValues = null;
+            foreach ($allFields as $field) {
+                if ($field["Key"] != "PRI") {
+                    if (!isQuotableType($field["Type"])) $fieldValues .= $field["Field"] . " = \" . $" . $tableName . "_object->get" . ucfirst($field["Field"]) . "() . \", ";
+                    else $fieldValues .= $field["Field"] . " = " . quote("$" . $tableName . "_object->get" . ucfirst($field["Field"]) . "()") . ", ";
+                }//end if not primary key
+            }//end foreach field
+            $fieldValues = substr($fieldValues, 0, strlen($fieldValues) - 2);
+
+            if (!isQuotableType($primaryKeyField["Type"]))
+                $sql = "\$sql = \"UPDATE " . $tableName . " SET " . $fieldValues . " WHERE " . $primaryKeyField["Field"] . " = \" . \$" . $tableName . "_object->get" . ucfirst($primaryKeyField["Field"]) . "();";
+            else
+                $sql = "\$sql = \"UPDATE " . $tableName . " SET " . $fieldValues . " WHERE " . $primaryKeyField["Field"] . " = \\\"\" . " . "\$" . $tableName . "_object->get" . ucfirst($primaryKeyField["Field"]) . "()" . " . \"\\\"\";";
+
+            $str = "\r\n
+    public static function updateByID(" . $parameters . ") {
+        \$conn = dbLogin();
+        " . $sql . "
+        if (\$conn->query(\$sql) === TRUE) return true;
+        else return false;
+    }\r\n";
+            return $str;
+        }//end generateUpdateByID()
 
 
         public static function generateUpdateByIndex($tableName, $allFields, $indexFields) {
