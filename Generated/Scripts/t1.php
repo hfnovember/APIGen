@@ -11,7 +11,7 @@
 
 /* TABLE:	t1 */
 
-/* DATETIME:	2018-01-15 06:52:22pm */
+/* DATETIME:	2018-01-15 10:42:36pm */
 
 /* DESCRIPTION:	N/A*/
 
@@ -25,88 +25,46 @@ class T1 {
 
 	//--- Attributes
 
-    private $id;
-    private $bb;
-    private $ccc;
-    private $text;
-    private $boolean;
-    private $date;
-    private $time;
-    private $timestamp;
-    private $textHuge;
-    private $mydouble;
-    private $myfloat;
-    private $mychar;
-    private $mylongtext;
+    private $PersonID;
+    private $Name;
+    private $Balance;
+    private $DateCreated;
+    private $IsSmoker;
 
 	//--- Constructor
 
     public function __construct(
-		$id, 
-		$bb, 
-		$ccc, 
-		$text, 
-		$boolean, 
-		$date, 
-		$time, 
-		$timestamp, 
-		$textHuge, 
-		$mydouble, 
-		$myfloat, 
-		$mychar, 
-		$mylongtext
+		$Name, 
+		$Balance, 
+		$DateCreated, 
+		$IsSmoker
 		) {
-        $this->id = $id;
-		$this->bb = $bb;
-		$this->ccc = $ccc;
-		$this->text = $text;
-		$this->boolean = $boolean;
-		$this->date = $date;
-		$this->time = $time;
-		$this->timestamp = $timestamp;
-		$this->textHuge = $textHuge;
-		$this->mydouble = $mydouble;
-		$this->myfloat = $myfloat;
-		$this->mychar = $mychar;
-		$this->mylongtext = $mylongtext;
+        $this->Name = $Name;
+		$this->Balance = $Balance;
+		$this->DateCreated = $DateCreated;
+		$this->IsSmoker = $IsSmoker;
     }
 
 	//--- Getter Methods
 
-	public function getId() { return $this->id; }
-	public function getBb() { return $this->bb; }
-	public function getCcc() { return $this->ccc; }
-	public function getText() { return $this->text; }
-	public function getBoolean() { return $this->boolean; }
-	public function getDate() { return $this->date; }
-	public function getTime() { return $this->time; }
-	public function getTimestamp() { return $this->timestamp; }
-	public function getTextHuge() { return $this->textHuge; }
-	public function getMydouble() { return $this->mydouble; }
-	public function getMyfloat() { return $this->myfloat; }
-	public function getMychar() { return $this->mychar; }
-	public function getMylongtext() { return $this->mylongtext; }
+	public function getPersonID() { return $this->PersonID; }
+	public function getName() { return $this->Name; }
+	public function getBalance() { return $this->Balance; }
+	public function getDateCreated() { return $this->DateCreated; }
+	public function getIsSmoker() { return $this->IsSmoker; }
 
 	//--- Setter Methods
 
-	public function setBb($value) { $this->bb = $value; }
-	public function setCcc($value) { $this->ccc = $value; }
-	public function setText($value) { $this->text = $value; }
-	public function setBoolean($value) { $this->boolean = $value; }
-	public function setDate($value) { $this->date = $value; }
-	public function setTime($value) { $this->time = $value; }
-	public function setTimestamp($value) { $this->timestamp = $value; }
-	public function setTextHuge($value) { $this->textHuge = $value; }
-	public function setMydouble($value) { $this->mydouble = $value; }
-	public function setMyfloat($value) { $this->myfloat = $value; }
-	public function setMychar($value) { $this->mychar = $value; }
-	public function setMylongtext($value) { $this->mylongtext = $value; }
+	public function setName($value) { $this->Name = $value; }
+	public function setBalance($value) { $this->Balance = $value; }
+	public function setDateCreated($value) { $this->DateCreated = $value; }
+	public function setIsSmoker($value) { $this->IsSmoker = $value; }
 
 	//--- Static (Database) Methods
 
     public static function create($t1_object) {
         $conn = dbLogin();
-        $sql = "INSERT INTO t1 (bb, ccc, text, boolean, date, time, timestamp, textHuge, mydouble, myfloat, mychar, mylongtext) VALUES ($t1_object->bb, $t1_object->ccc, \"" . $t1_object->text . "\", $t1_object->boolean, \"" . $t1_object->date . "\", \"" . $t1_object->time . "\", \"" . $t1_object->timestamp . "\", \"" . $t1_object->textHuge . "\", $t1_object->mydouble, $t1_object->myfloat, \"" . $t1_object->mychar . "\", \"" . $t1_object->mylongtext . "\")";
+        $sql = "INSERT INTO t1 (Name, Balance, DateCreated, IsSmoker) VALUES (\"" . $t1_object->Name . "\", $t1_object->Balance, $t1_object->DateCreated, $t1_object->IsSmoker)";
         if ($conn->query($sql) === TRUE) return true;
         else return false;
     }
@@ -114,79 +72,16 @@ class T1 {
 
     public static function getByID($id) {
         $conn = dbLogin();
-        $sql = "SELECT * FROM t1 WHERE id = " . $id;
+        $sql = "SELECT * FROM t1 WHERE PersonID = " . $id;
         $result = $conn->query($sql);
         $sqlRowItemAsAssocArray = null;
         if ($result->num_rows > 0) {
             $sqlRowItemAsAssocArray = $result->fetch_assoc();
             $object = new T1(
-				$sqlRowItemAsAssocArray["id"], 
-				$sqlRowItemAsAssocArray["bb"], 
-				$sqlRowItemAsAssocArray["ccc"], 
-				$sqlRowItemAsAssocArray["text"], 
-				$sqlRowItemAsAssocArray["boolean"], 
-				$sqlRowItemAsAssocArray["date"], 
-				$sqlRowItemAsAssocArray["time"], 
-				$sqlRowItemAsAssocArray["timestamp"], 
-				$sqlRowItemAsAssocArray["textHuge"], 
-				$sqlRowItemAsAssocArray["mydouble"], 
-				$sqlRowItemAsAssocArray["myfloat"], 
-				$sqlRowItemAsAssocArray["mychar"], 
-				$sqlRowItemAsAssocArray["mylongtext"]);
-            return $object;
-        }
-        else return false;
-    }
-
-
-    public static function getByBb($indexValue) {
-        $conn = dbLogin();
-        $sql = "SELECT * FROM t1 WHERE bb = " . $indexValue;
-        $result = $conn->query($sql);
-        $sqlRowItemAsAssocArray = null;
-        if ($result->num_rows > 0) {
-            $sqlRowItemAsAssocArray = $result->fetch_assoc();
-            $object = new T1(
-				$sqlRowItemAsAssocArray["id"], 
-				$sqlRowItemAsAssocArray["bb"], 
-				$sqlRowItemAsAssocArray["ccc"], 
-				$sqlRowItemAsAssocArray["text"], 
-				$sqlRowItemAsAssocArray["boolean"], 
-				$sqlRowItemAsAssocArray["date"], 
-				$sqlRowItemAsAssocArray["time"], 
-				$sqlRowItemAsAssocArray["timestamp"], 
-				$sqlRowItemAsAssocArray["textHuge"], 
-				$sqlRowItemAsAssocArray["mydouble"], 
-				$sqlRowItemAsAssocArray["myfloat"], 
-				$sqlRowItemAsAssocArray["mychar"], 
-				$sqlRowItemAsAssocArray["mylongtext"]);
-            return $object;
-        }
-        else return false;
-    }
-
-
-    public static function getByCcc($indexValue) {
-        $conn = dbLogin();
-        $sql = "SELECT * FROM t1 WHERE ccc = " . $indexValue;
-        $result = $conn->query($sql);
-        $sqlRowItemAsAssocArray = null;
-        if ($result->num_rows > 0) {
-            $sqlRowItemAsAssocArray = $result->fetch_assoc();
-            $object = new T1(
-				$sqlRowItemAsAssocArray["id"], 
-				$sqlRowItemAsAssocArray["bb"], 
-				$sqlRowItemAsAssocArray["ccc"], 
-				$sqlRowItemAsAssocArray["text"], 
-				$sqlRowItemAsAssocArray["boolean"], 
-				$sqlRowItemAsAssocArray["date"], 
-				$sqlRowItemAsAssocArray["time"], 
-				$sqlRowItemAsAssocArray["timestamp"], 
-				$sqlRowItemAsAssocArray["textHuge"], 
-				$sqlRowItemAsAssocArray["mydouble"], 
-				$sqlRowItemAsAssocArray["myfloat"], 
-				$sqlRowItemAsAssocArray["mychar"], 
-				$sqlRowItemAsAssocArray["mylongtext"]);
+				$sqlRowItemAsAssocArray["Name"], 
+				$sqlRowItemAsAssocArray["Balance"], 
+				$sqlRowItemAsAssocArray["DateCreated"], 
+				$sqlRowItemAsAssocArray["IsSmoker"]);
             return $object;
         }
         else return false;
@@ -203,19 +98,10 @@ class T1 {
             if ($result->num_rows > 0) {
                 while($row = $result->fetch_assoc()) {
                     $object = new T1(
-				$row["id"], 
-				$row["bb"], 
-				$row["ccc"], 
-				$row["text"], 
-				$row["boolean"], 
-				$row["date"], 
-				$row["time"], 
-				$row["timestamp"], 
-				$row["textHuge"], 
-				$row["mydouble"], 
-				$row["myfloat"], 
-				$row["mychar"], 
-				$row["mylongtext"]);
+				$row["Name"], 
+				$row["Balance"], 
+				$row["DateCreated"], 
+				$row["IsSmoker"]);
                     array_push($itemsArray, $object);
                 }
             }
@@ -227,23 +113,7 @@ class T1 {
 
     public static function updateByID($t1_object) {
         $conn = dbLogin();
-        $sql = "UPDATE t1 SET bb = " . $t1_object->getBb() . ", ccc = " . $t1_object->getCcc() . ", text = \"" . $t1_object->getText() . "\", boolean = " . $t1_object->getBoolean() . ", date = \"" . $t1_object->getDate() . "\", time = \"" . $t1_object->getTime() . "\", timestamp = \"" . $t1_object->getTimestamp() . "\", textHuge = \"" . $t1_object->getTextHuge() . "\", mydouble = " . $t1_object->getMydouble() . ", myfloat = " . $t1_object->getMyfloat() . ", mychar = \"" . $t1_object->getMychar() . "\", mylongtext = \"" . $t1_object->getMylongtext() . "\" WHERE id = " . $t1_object->getId();
-        if ($conn->query($sql) === TRUE) return true;
-        else return false;
-    }
-
-
-    public static function updateByBb($currentBb, $t1_object) {
-        $conn = dbLogin();
-        $sql = "UPDATE t1 SET bb = " . $t1_object->getBb() . ", ccc = " . $t1_object->getCcc() . ", text = \"" . $t1_object->getText() . "\", boolean = " . $t1_object->getBoolean() . ", date = \"" . $t1_object->getDate() . "\", time = \"" . $t1_object->getTime() . "\", timestamp = \"" . $t1_object->getTimestamp() . "\", textHuge = \"" . $t1_object->getTextHuge() . "\", mydouble = " . $t1_object->getMydouble() . ", myfloat = " . $t1_object->getMyfloat() . ", mychar = \"" . $t1_object->getMychar() . "\", mylongtext = \"" . $t1_object->getMylongtext() . "\" WHERE bb = " . $currentBb;
-        if ($conn->query($sql) === TRUE) return true;
-        else return false;
-    }
-
-
-    public static function updateByCcc($currentCcc, $t1_object) {
-        $conn = dbLogin();
-        $sql = "UPDATE t1 SET bb = " . $t1_object->getBb() . ", ccc = " . $t1_object->getCcc() . ", text = \"" . $t1_object->getText() . "\", boolean = " . $t1_object->getBoolean() . ", date = \"" . $t1_object->getDate() . "\", time = \"" . $t1_object->getTime() . "\", timestamp = \"" . $t1_object->getTimestamp() . "\", textHuge = \"" . $t1_object->getTextHuge() . "\", mydouble = " . $t1_object->getMydouble() . ", myfloat = " . $t1_object->getMyfloat() . ", mychar = \"" . $t1_object->getMychar() . "\", mylongtext = \"" . $t1_object->getMylongtext() . "\" WHERE ccc = " . $currentCcc;
+        $sql = "UPDATE t1 SET Name = \"" . $t1_object->getName() . "\", Balance = " . $t1_object->getBalance() . ", DateCreated = " . $t1_object->getDateCreated() . ", IsSmoker = " . $t1_object->getIsSmoker() . " WHERE PersonID = " . $t1_object->getPersonID();
         if ($conn->query($sql) === TRUE) return true;
         else return false;
     }
@@ -251,23 +121,7 @@ class T1 {
 
     public static function deleteByID($t1_object) {
         $conn = dbLogin();
-        $sql = "DELETE FROM t1 WHERE id = " . $t1_object->getId();
-        if ($conn->query($sql) === TRUE) return true;
-        else return false;
-    }
-
-
-    public static function deleteByBb($currentBb) {
-        $conn = dbLogin();
-        $sql = "DELETE FROM t1 WHERE bb = " . $currentBb;
-        if ($conn->query($sql) === TRUE) return true;
-        else return false;
-    }
-
-
-    public static function deleteByCcc($currentCcc) {
-        $conn = dbLogin();
-        $sql = "DELETE FROM t1 WHERE ccc = " . $currentCcc;
+        $sql = "DELETE FROM t1 WHERE PersonID = " . $t1_object->getPersonID();
         if ($conn->query($sql) === TRUE) return true;
         else return false;
     }
@@ -275,7 +129,7 @@ class T1 {
 
     public static function getSize() {
         $conn = dbLogin();
-        $sql = "SELECT COUNT(id) FROM t1";
+        $sql = "SELECT COUNT(PersonID) FROM t1";
         $result = $conn->query($sql);
         return $result->fetch_array()[0];
     }
@@ -283,14 +137,11 @@ class T1 {
 
     public static function isEmpty() {
         $conn = dbLogin();
-        $sql = "SELECT COUNT(id) FROM t1";
+        $sql = "SELECT COUNT(PersonID) FROM t1";
         $result = $conn->query($sql);
         return ($result->fetch_array()[0] == 0);
     }
 
 }
-
-echo T1::getSize();
-if (T1::isEmpty()) echo "0"; else echo "1";
 
 ?>

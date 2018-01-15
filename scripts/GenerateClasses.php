@@ -68,7 +68,9 @@
         public static function getObjectConstructorBindings($allFields) {
             $objectBindings = "";
             foreach ($allFields as $field) {
-                $objectBindings .= "\$this->" . $field["Field"] . " = \$" . $field["Field"] . ";\n\t\t";
+                if (($field["Key"] != "PRI") || ($field["Key"] == "PRI" && isQuotableType($field["Type"]))) {
+                    $objectBindings .= "\$this->" . $field["Field"] . " = \$" . $field["Field"] . ";\n\t\t";
+                }//end if
             }//end foreach field
             $objectBindings = substr($objectBindings, 0, strlen($objectBindings) - 3);
             return $objectBindings;
@@ -78,7 +80,9 @@
         public static function getConstructorParameters($allFields) {
             $constructorParams = "";
             foreach ($allFields as $field) {
-                $constructorParams .= "\r\n\t\t\$" . $field["Field"] . ", ";
+                if (($field["Key"] != "PRI") || ($field["Key"] == "PRI" && isQuotableType($field["Type"]))) {
+                    $constructorParams .= "\r\n\t\t\$" . $field["Field"] . ", ";
+                }//end if
             }//end foreach field
             $constructorParams = substr($constructorParams, 0, strlen($constructorParams) - 2);
             return $constructorParams . "\r\n\t\t";
@@ -88,7 +92,9 @@
         public static function getObjectConstructorParameterizer($allFields, $inputVariableName) {
             $objectConstructionParameterizer = "";
             foreach ($allFields as $field) {
-                $objectConstructionParameterizer .= "\r\n\t\t\t\t\$" . $inputVariableName . "[\"" . $field["Field"] . "\"], ";
+                if (($field["Key"] != "PRI") || ($field["Key"] == "PRI" && isQuotableType($field["Type"]))) {
+                    $objectConstructionParameterizer .= "\r\n\t\t\t\t\$" . $inputVariableName . "[\"" . $field["Field"] . "\"], ";
+                }//end if
             }//end foreach field
             $objectConstructionParameterizer = substr($objectConstructionParameterizer, 0, strlen($objectConstructionParameterizer) - 2);
             return $objectConstructionParameterizer;
@@ -335,7 +341,6 @@
         public static function generateDeleteByIndex($tableName, $indexFields) {
             $combinedStr = "";
             foreach ($indexFields as $indexField) {
-                $parameters = "\$" . $tableName . "_object";
 
                 if (!isQuotableType($indexField["Type"]))
                     $sql = "\$sql = \"DELETE FROM " . $tableName . " WHERE " . $indexField["Field"] . " = \" . \$current" . ucfirst($indexField["Field"]) . ";";
