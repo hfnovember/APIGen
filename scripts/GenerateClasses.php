@@ -105,7 +105,12 @@
                 self::generateGetByID($tableName, $primaryKeyField, $allFields) .
                 self::generateGetByIndex($tableName, $indexFields, $allFields) .
                 self::generateGetMultiple($tableName, $allFields) .
-                self::generateUpdateByID($tableName, $allFields, $primaryKeyField)
+                self::generateUpdateByID($tableName, $allFields, $primaryKeyField) .
+                self::generateUpdateByIndex($tableName, $allFields, $indexFields) .
+                self::generateDeleteByID($tableName, $primaryKeyField) .
+                self::generateDeleteByIndex($tableName, $indexFields) .
+                self::generateGetSize($tableName, $primaryKeyField) .
+                self::generateIsEmpty($tableName, $primaryKeyField)
             ;
 
             return self::wrapClass($tableName, $combinedGenerationString);
@@ -154,7 +159,7 @@
             $parameters = "\$" . $tableName . "_object";
             $fieldValues = null;
             foreach ($allFields as $field) {
-                if ($field["Key"] != "PRI") {
+                if (($field["Key"] != "PRI") || ($field["Key"] == "PRI" && isQuotableType($field["Type"]))) {
                     $fieldParameters .= $field["Field"] . ", ";
                     if (!isQuotableType($field["Type"])) $fieldValues .= "$" . $tableName . "_object->" . $field["Field"] . ", ";
                     else $fieldValues .= quote("$" . $tableName . "_object->" . $field["Field"]) . ", ";
@@ -278,37 +283,102 @@
 
 
         public static function generateUpdateByIndex($tableName, $allFields, $indexFields) {
-            //TODO
+            $combinedStr = "";
+            foreach ($indexFields as $indexField) {
+                $parameters = "\$" . $tableName . "_object";
+                $fieldValues = null;
+                foreach ($allFields as $field) {
+                    if ($field["Key"] != "PRI") {
+                        if (!isQuotableType($field["Type"])) $fieldValues .= $field["Field"] . " = \" . $" . $tableName . "_object->get" . ucfirst($field["Field"]) . "() . \", ";
+                        else $fieldValues .= $field["Field"] . " = " . quote("$" . $tableName . "_object->get" . ucfirst($field["Field"]) . "()") . ", ";
+                    }//end if not primary key
+                }//end foreach field
+                $fieldValues = substr($fieldValues, 0, strlen($fieldValues) - 2);
+
+                if (!isQuotableType($indexField["Type"]))
+                    $sql = "\$sql = \"UPDATE " . $tableName . " SET " . $fieldValues . " WHERE " . $indexField["Field"] . " = \" . \$current" . ucfirst($indexField["Field"]) . ";";
+                else
+                    $sql = "\$sql = \"UPDATE " . $tableName . " SET " . $fieldValues . " WHERE " . $indexField["Field"] . " = \\\"\" . " . "\$current" . ucfirst($indexField["Field"]) . " . \"\\\"\";";
+
+                $str = "\r\n
+    public static function updateBy" . ucfirst($indexField["Field"]) . "(\$current" . ucfirst($indexField["Field"]) . ", " . $parameters . ") {
+        \$conn = dbLogin();
+        " . $sql . "
+        if (\$conn->query(\$sql) === TRUE) return true;
+        else return false;
+    }\r\n";
+                $combinedStr .= $str;
+            }//end foreach indexField
+            return $combinedStr;
+        }//end generateUpdateByIndex()
+
+
+        public static function generateDeleteByID($tableName, $primaryKeyField) {
+            $parameters = "\$" . $tableName . "_object";
+
+            if (!isQuotableType($primaryKeyField["Type"]))
+                $sql = "\$sql = \"DELETE FROM " . $tableName . " WHERE " . $primaryKeyField["Field"] . " = \" . \$" . $tableName . "_object->get" . ucfirst($primaryKeyField["Field"]) . "();";
+            else
+                $sql = "\$sql = \"DELETE FROM " . $tableName . " WHERE " . $primaryKeyField["Field"] . " = \\\"\" . " . "\$" . $tableName . "_object->get" . ucfirst($primaryKeyField["Field"]) . "()" . " . \"\\\"\";";
+
+            $str = "\r\n
+    public static function deleteByID(" . $parameters . ") {
+        \$conn = dbLogin();
+        " . $sql . "
+        if (\$conn->query(\$sql) === TRUE) return true;
+        else return false;
+    }\r\n";
+            return $str;
+        }//end generateDeleteByID()
+
+
+        public static function generateDeleteByIndex($tableName, $indexFields) {
+            $combinedStr = "";
+            foreach ($indexFields as $indexField) {
+                $parameters = "\$" . $tableName . "_object";
+
+                if (!isQuotableType($indexField["Type"]))
+                    $sql = "\$sql = \"DELETE FROM " . $tableName . " WHERE " . $indexField["Field"] . " = \" . \$current" . ucfirst($indexField["Field"]) . ";";
+                else
+                    $sql = "\$sql = \"DELETE FROM " . $tableName . " WHERE " . $indexField["Field"] . " = \\\"\" . " . "\$current" . ucfirst($indexField["Field"]) . " . \"\\\"\";";
+
+                $str = "\r\n
+    public static function deleteBy" . ucfirst($indexField["Field"]) . "(\$current" . ucfirst($indexField["Field"]) . ") {
+        \$conn = dbLogin();
+        " . $sql . "
+        if (\$conn->query(\$sql) === TRUE) return true;
+        else return false;
+    }\r\n";
+                $combinedStr .= $str;
+            }//end foreach indexField
+            return $combinedStr;
         }
 
 
-        public static function generateDeleteByID($tableName) {
-            //TODO
-        }
+        public static function generateGetSize($tableName, $primaryKeyField) {
+            $sql = "\$sql = \"SELECT COUNT(" . $primaryKeyField["Field"] . ") FROM " . $tableName . "\";";
+            $str = "\r\n
+    public static function getSize() {
+        \$conn = dbLogin();
+        " . $sql . "
+        \$result = \$conn->query(\$sql);
+        return \$result->fetch_array()[0];
+    }\r\n";
+            return $str;
+        }//end generateGetSize()
 
 
-        public static function generateDeleteByIndex($tableName) {
-            //TODO
-        }
-
-
-        public static function generateGetLastRow($tableName) {
-            //TODO
-        }
-
-
-        public static function generateGetLastRowID($tableName) {
-            //TODO
-        }
-
-
-        public static function generateGetSize($tableName) {
-            //TODO
-        }
-
-        public static function generateIsEmpty($tableName) {
-            //TODO
-        }
+        public static function generateIsEmpty($tableName, $primaryKeyField) {
+            $sql = "\$sql = \"SELECT COUNT(" . $primaryKeyField["Field"] . ") FROM " . $tableName . "\";";
+            $str = "\r\n
+    public static function isEmpty() {
+        \$conn = dbLogin();
+        " . $sql . "
+        \$result = \$conn->query(\$sql);
+        return (\$result->fetch_array()[0] == 0);
+    }\r\n";
+            return $str;
+        }//end generateIsEmpty()
 
 
     }//end class FunctionGenerator

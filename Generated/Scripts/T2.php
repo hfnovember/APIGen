@@ -11,7 +11,7 @@
 
 /* TABLE:	t2 */
 
-/* DATETIME:	2018-01-15 12:35:15am */
+/* DATETIME:	2018-01-15 06:52:22pm */
 
 /* DESCRIPTION:	N/A*/
 
@@ -27,31 +27,36 @@ class T2 {
 
     private $ss;
     private $dd;
+    private $aa;
 
 	//--- Constructor
 
     public function __construct(
 		$ss, 
-		$dd
+		$dd, 
+		$aa
 		) {
         $this->ss = $ss;
 		$this->dd = $dd;
+		$this->aa = $aa;
     }
 
 	//--- Getter Methods
 
 	public function getSs() { return $this->ss; }
 	public function getDd() { return $this->dd; }
+	public function getAa() { return $this->aa; }
 
 	//--- Setter Methods
 
 	public function setDd($value) { $this->dd = $value; }
+	public function setAa($value) { $this->aa = $value; }
 
 	//--- Static (Database) Methods
 
     public static function create($t2_object) {
         $conn = dbLogin();
-        $sql = "INSERT INTO t2 (dd) VALUES ($t2_object->dd)";
+        $sql = "INSERT INTO t2 (ss, dd, aa) VALUES (\"" . $t2_object->ss . "\", $t2_object->dd, \"" . $t2_object->aa . "\")";
         if ($conn->query($sql) === TRUE) return true;
         else return false;
     }
@@ -66,7 +71,42 @@ class T2 {
             $sqlRowItemAsAssocArray = $result->fetch_assoc();
             $object = new T2(
 				$sqlRowItemAsAssocArray["ss"], 
-				$sqlRowItemAsAssocArray["dd"]);
+				$sqlRowItemAsAssocArray["dd"], 
+				$sqlRowItemAsAssocArray["aa"]);
+            return $object;
+        }
+        else return false;
+    }
+
+
+    public static function getByDd($indexValue) {
+        $conn = dbLogin();
+        $sql = "SELECT * FROM t2 WHERE dd = " . $indexValue;
+        $result = $conn->query($sql);
+        $sqlRowItemAsAssocArray = null;
+        if ($result->num_rows > 0) {
+            $sqlRowItemAsAssocArray = $result->fetch_assoc();
+            $object = new T2(
+				$sqlRowItemAsAssocArray["ss"], 
+				$sqlRowItemAsAssocArray["dd"], 
+				$sqlRowItemAsAssocArray["aa"]);
+            return $object;
+        }
+        else return false;
+    }
+
+
+    public static function getByAa($indexValue) {
+        $conn = dbLogin();
+        $sql = "SELECT * FROM t2 WHERE aa = '" . $indexValue . "'";
+        $result = $conn->query($sql);
+        $sqlRowItemAsAssocArray = null;
+        if ($result->num_rows > 0) {
+            $sqlRowItemAsAssocArray = $result->fetch_assoc();
+            $object = new T2(
+				$sqlRowItemAsAssocArray["ss"], 
+				$sqlRowItemAsAssocArray["dd"], 
+				$sqlRowItemAsAssocArray["aa"]);
             return $object;
         }
         else return false;
@@ -84,7 +124,8 @@ class T2 {
                 while($row = $result->fetch_assoc()) {
                     $object = new T2(
 				$row["ss"], 
-				$row["dd"]);
+				$row["dd"], 
+				$row["aa"]);
                     array_push($itemsArray, $object);
                 }
             }
@@ -96,9 +137,65 @@ class T2 {
 
     public static function updateByID($t2_object) {
         $conn = dbLogin();
-        $sql = "UPDATE t2 SET dd = " . $t2_object->getDd() . " WHERE ss = \"" . $t2_object->getSs() . "\"";
+        $sql = "UPDATE t2 SET dd = " . $t2_object->getDd() . ", aa = \"" . $t2_object->getAa() . "\" WHERE ss = \"" . $t2_object->getSs() . "\"";
         if ($conn->query($sql) === TRUE) return true;
         else return false;
+    }
+
+
+    public static function updateByDd($currentDd, $t2_object) {
+        $conn = dbLogin();
+        $sql = "UPDATE t2 SET dd = " . $t2_object->getDd() . ", aa = \"" . $t2_object->getAa() . "\" WHERE dd = " . $currentDd;
+        if ($conn->query($sql) === TRUE) return true;
+        else return false;
+    }
+
+
+    public static function updateByAa($currentAa, $t2_object) {
+        $conn = dbLogin();
+        $sql = "UPDATE t2 SET dd = " . $t2_object->getDd() . ", aa = \"" . $t2_object->getAa() . "\" WHERE aa = \"" . $currentAa . "\"";
+        if ($conn->query($sql) === TRUE) return true;
+        else return false;
+    }
+
+
+    public static function deleteByID($t2_object) {
+        $conn = dbLogin();
+        $sql = "DELETE FROM t2 WHERE ss = \"" . $t2_object->getSs() . "\"";
+        if ($conn->query($sql) === TRUE) return true;
+        else return false;
+    }
+
+
+    public static function deleteByDd($currentDd) {
+        $conn = dbLogin();
+        $sql = "DELETE FROM t2 WHERE dd = " . $currentDd;
+        if ($conn->query($sql) === TRUE) return true;
+        else return false;
+    }
+
+
+    public static function deleteByAa($currentAa) {
+        $conn = dbLogin();
+        $sql = "DELETE FROM t2 WHERE aa = \"" . $currentAa . "\"";
+        if ($conn->query($sql) === TRUE) return true;
+        else return false;
+    }
+
+
+    public static function getSize() {
+        $conn = dbLogin();
+        $sql = "SELECT COUNT(ss) FROM t2";
+        $result = $conn->query($sql);
+        return $result->fetch_array()[0];
+    }
+
+
+    public static function isEmpty() {
+        $conn = dbLogin();
+        $sql = "SELECT COUNT(ss) FROM t2";
+        $result = $conn->query($sql);
+        return ($result->fetch_array()[0] == 0);
     }
 
 }

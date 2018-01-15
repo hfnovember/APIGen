@@ -11,7 +11,7 @@
 
 /* TABLE:	t1 */
 
-/* DATETIME:	2018-01-15 12:35:15am */
+/* DATETIME:	2018-01-15 06:52:22pm */
 
 /* DESCRIPTION:	N/A*/
 
@@ -232,6 +232,65 @@ class T1 {
         else return false;
     }
 
+
+    public static function updateByBb($currentBb, $t1_object) {
+        $conn = dbLogin();
+        $sql = "UPDATE t1 SET bb = " . $t1_object->getBb() . ", ccc = " . $t1_object->getCcc() . ", text = \"" . $t1_object->getText() . "\", boolean = " . $t1_object->getBoolean() . ", date = \"" . $t1_object->getDate() . "\", time = \"" . $t1_object->getTime() . "\", timestamp = \"" . $t1_object->getTimestamp() . "\", textHuge = \"" . $t1_object->getTextHuge() . "\", mydouble = " . $t1_object->getMydouble() . ", myfloat = " . $t1_object->getMyfloat() . ", mychar = \"" . $t1_object->getMychar() . "\", mylongtext = \"" . $t1_object->getMylongtext() . "\" WHERE bb = " . $currentBb;
+        if ($conn->query($sql) === TRUE) return true;
+        else return false;
+    }
+
+
+    public static function updateByCcc($currentCcc, $t1_object) {
+        $conn = dbLogin();
+        $sql = "UPDATE t1 SET bb = " . $t1_object->getBb() . ", ccc = " . $t1_object->getCcc() . ", text = \"" . $t1_object->getText() . "\", boolean = " . $t1_object->getBoolean() . ", date = \"" . $t1_object->getDate() . "\", time = \"" . $t1_object->getTime() . "\", timestamp = \"" . $t1_object->getTimestamp() . "\", textHuge = \"" . $t1_object->getTextHuge() . "\", mydouble = " . $t1_object->getMydouble() . ", myfloat = " . $t1_object->getMyfloat() . ", mychar = \"" . $t1_object->getMychar() . "\", mylongtext = \"" . $t1_object->getMylongtext() . "\" WHERE ccc = " . $currentCcc;
+        if ($conn->query($sql) === TRUE) return true;
+        else return false;
+    }
+
+
+    public static function deleteByID($t1_object) {
+        $conn = dbLogin();
+        $sql = "DELETE FROM t1 WHERE id = " . $t1_object->getId();
+        if ($conn->query($sql) === TRUE) return true;
+        else return false;
+    }
+
+
+    public static function deleteByBb($currentBb) {
+        $conn = dbLogin();
+        $sql = "DELETE FROM t1 WHERE bb = " . $currentBb;
+        if ($conn->query($sql) === TRUE) return true;
+        else return false;
+    }
+
+
+    public static function deleteByCcc($currentCcc) {
+        $conn = dbLogin();
+        $sql = "DELETE FROM t1 WHERE ccc = " . $currentCcc;
+        if ($conn->query($sql) === TRUE) return true;
+        else return false;
+    }
+
+
+    public static function getSize() {
+        $conn = dbLogin();
+        $sql = "SELECT COUNT(id) FROM t1";
+        $result = $conn->query($sql);
+        return $result->fetch_array()[0];
+    }
+
+
+    public static function isEmpty() {
+        $conn = dbLogin();
+        $sql = "SELECT COUNT(id) FROM t1";
+        $result = $conn->query($sql);
+        return ($result->fetch_array()[0] == 0);
+    }
+
 }
+
+echo T1::getSize();
+if (T1::isEmpty()) echo "0"; else echo "1";
 
 ?>
