@@ -22,6 +22,13 @@
         \$conn = new mysqli(\"".$_GET["dbHostIP"]."\", \"".$_GET["dbUser"]."\", \"".$_GET["dbPassword"]."\", \"".$_GET["dbName"]."\");
         if (\$conn->connect_error) die(\"Connection failed: \" . \$conn->connect_error);
         return \$conn;
+    }
+    
+    //Provides a fix where PHP false values are converted to NULL objects that are invalid for MySQL queries.
+    function booleanFix(\$value) {
+        if (\$value === TRUE) return 1;
+        else if (\$value === FALSE) return 0;
+        else return \$value;
     }\r\n
         ";
     writeToFile("../Generated/Scripts/", "DBLogin.php", $fileStream);

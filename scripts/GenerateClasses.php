@@ -42,7 +42,7 @@
         //Get Indexables:
         $indexableFields = array();
         foreach ($fieldsArray as $field) {
-            if ($field["Key"] == "MUL") array_push($indexableFields, $field);
+            if ($field["Key"] == "UNI") array_push($indexableFields, $field);
         }//end foreach
 
         $classOutput = FunctionGenerator::generate($table, $fieldsArray, $primaryKeyField, $indexableFields);
@@ -58,7 +58,7 @@
             $str = "";
             $str .= getGeneratorHeader($_GET["dbName"], $tableName . ".php", $tableName, "");
             $str .= "include_once(\"DBLogin.php\");\r\n\r\n";
-            $str .= "class " . ucfirst($tableName) . " {\r\n";
+            $str .= "class " . ucfirst($tableName) . " implements JsonSerializable {\r\n";
             $str .= $classContent;
             $str .= "\r\n}";
             return $str;
@@ -68,9 +68,7 @@
         public static function getObjectConstructorBindings($allFields) {
             $objectBindings = "";
             foreach ($allFields as $field) {
-                if (($field["Key"] != "PRI") || ($field["Key"] == "PRI" && isQuotableType($field["Type"]))) {
-                    $objectBindings .= "\$this->" . $field["Field"] . " = \$" . $field["Field"] . ";\n\t\t";
-                }//end if
+                $objectBindings .= "\$this->" . $field["Field"] . " = \$" . $field["Field"] . ";\n\t\t";
             }//end foreach field
             $objectBindings = substr($objectBindings, 0, strlen($objectBindings) - 3);
             return $objectBindings;
@@ -80,9 +78,7 @@
         public static function getConstructorParameters($allFields) {
             $constructorParams = "";
             foreach ($allFields as $field) {
-                if (($field["Key"] != "PRI") || ($field["Key"] == "PRI" && isQuotableType($field["Type"]))) {
-                    $constructorParams .= "\r\n\t\t\$" . $field["Field"] . ", ";
-                }//end if
+                $constructorParams .= "\r\n\t\t\$" . $field["Field"] . ", ";
             }//end foreach field
             $constructorParams = substr($constructorParams, 0, strlen($constructorParams) - 2);
             return $constructorParams . "\r\n\t\t";
@@ -92,9 +88,7 @@
         public static function getObjectConstructorParameterizer($allFields, $inputVariableName) {
             $objectConstructionParameterizer = "";
             foreach ($allFields as $field) {
-                if (($field["Key"] != "PRI") || ($field["Key"] == "PRI" && isQuotableType($field["Type"]))) {
-                    $objectConstructionParameterizer .= "\r\n\t\t\t\t\$" . $inputVariableName . "[\"" . $field["Field"] . "\"], ";
-                }//end if
+                $objectConstructionParameterizer .= "\r\n\t\t\t\t\$" . $inputVariableName . "[\"" . $field["Field"] . "\"], ";
             }//end foreach field
             $objectConstructionParameterizer = substr($objectConstructionParameterizer, 0, strlen($objectConstructionParameterizer) - 2);
             return $objectConstructionParameterizer;
@@ -111,19 +105,18 @@
                 self::generateGetByID($tableName, $primaryKeyField, $allFields) .
                 self::generateGetByIndex($tableName, $indexFields, $allFields) .
                 self::generateGetMultiple($tableName, $allFields) .
-                self::generateUpdateByID($tableName, $allFields, $primaryKeyField) .
-                self::generateUpdateByIndex($tableName, $allFields, $indexFields) .
-                self::generateDeleteByID($tableName, $primaryKeyField) .
-                self::generateDeleteByIndex($tableName, $indexFields) .
+                self::generateUpdate($tableName, $allFields, $primaryKeyField) .
+                self::generateDelete($tableName, $primaryKeyField) .
                 self::generateGetSize($tableName, $primaryKeyField) .
-                self::generateIsEmpty($tableName, $primaryKeyField)
+                self::generateIsEmpty($tableName, $primaryKeyField) .
+                self::generateJsonSerialize($tableName, $allFields)
             ;
 
             return self::wrapClass($tableName, $combinedGenerationString);
         }//end generate()
 
         public static function generatePrivateFields($allFields) {
-            $str = "\r\n\t//--- Attributes\r\n";
+            $str = "\r\n\t//-------------------- Attributes --------------------\r\n";
             foreach ($allFields as $field) {
                 $str .= "
     private \$" . $field["Field"] . ";";
@@ -133,7 +126,7 @@
 
 
         public static function generateConstructors($allFields) {
-            $strConstructor = "\r\n\r\n\t//--- Constructor\r\n
+            $strConstructor = "\r\n\r\n\t//-------------------- Constructor --------------------\r\n
     public function __construct(" . self::getConstructorParameters($allFields) . ") {
         " . self::getObjectConstructorBindings($allFields) . "
     }\r\n";
@@ -142,19 +135,25 @@
 
 
         public static function generateGetters($allFields) {
-            $str = "\r\n\t//--- Getter Methods\r\n\r\n";
+            $str = "\r\n\t//-------------------- Getter Methods --------------------\r\n\r\n";
             foreach ($allFields as $field) {
-                $str .= "\tpublic function get" . ucfirst($field["Field"]) . "() { return \$this->" . $field["Field"] . "; }\r\n";
+                $str .= "\t/**
+     * @return " . $field["Type"] . "
+     */
+     public function get" . ucfirst($field["Field"]) . "() { return \$this->" . $field["Field"] . "; }\r\n\r\n";
             }//end foreach field
             return $str;
         }//end generateGetters()
 
 
         public static function generateSetters($allFields) {
-            $str = "\r\n\t//--- Setter Methods\r\n\r\n";
+            $str = "\r\n\t//-------------------- Setter Methods --------------------\r\n\r\n";
             foreach ($allFields as $field) {
                 if ($field["Key"] != "PRI")
-                    $str .= "\tpublic function set" . ucfirst($field["Field"]) . "(\$value) { \$this->" . $field["Field"] . " = \$value; }\r\n";
+                    $str .= "\t/**
+     * @param \$value " . $field["Type"] . "
+     */
+     public function set" . ucfirst($field["Field"]) . "(\$value) { \$this->" . $field["Field"] . " = \$value; }\r\n\r\n";
             }//end foreach field
             return $str;
         }//end generateGetters()
@@ -167,14 +166,25 @@
             foreach ($allFields as $field) {
                 if (($field["Key"] != "PRI") || ($field["Key"] == "PRI" && isQuotableType($field["Type"]))) {
                     $fieldParameters .= $field["Field"] . ", ";
-                    if (!isQuotableType($field["Type"])) $fieldValues .= "$" . $tableName . "_object->" . $field["Field"] . ", ";
+                    if (!isQuotableType($field["Type"])) {
+                        if ($field["Type"] == "tinyint(1)")
+                            $fieldValues .= "\" . booleanFix($" . $tableName . "_object->" . $field["Field"] . ") . \", ";
+                        else $fieldValues .= "$" . $tableName . "_object->" . $field["Field"] . ", ";
+                    }//end if quotable
                     else $fieldValues .= quote("$" . $tableName . "_object->" . $field["Field"]) . ", ";
                 }//end if not primary key
             }//end foreach field
             $fieldParameters = substr($fieldParameters, 0, strlen($fieldParameters) - 2);
             $fieldValues = substr($fieldValues, 0, strlen($fieldValues) - 2);
 
-            $str = "\r\n\t//--- Static (Database) Methods\r\n
+            $str = "\r\n\t//-------------------- Static (Database) Methods --------------------\r\n
+            
+            
+    /**
+     * Creates a database entry with the given object's data.
+     * @param \$t1_object " . ucfirst($tableName) . "
+     * @return bool
+     */
     public static function create(" . $parameters . ") {
         \$conn = dbLogin();
         \$sql = \"INSERT INTO " . $tableName . " (" . $fieldParameters . ") VALUES (" . $fieldValues . ")\";
@@ -195,6 +205,11 @@
                 $query = "\$sql = \"SELECT * FROM " . $tableName . " WHERE " . $primaryKeyField["Field"] . " = \" . \$id;";
 
             $str = "\r\n
+     /**
+     * Retrieves a database entry matching the ID value provided.
+     * @param \$id " . $primaryKeyField["Type"] . "
+     * @return bool|" . ucfirst($tableName) . "
+     */
     public static function getByID(\$id) {
         \$conn = dbLogin();
         " . $query . "
@@ -221,6 +236,11 @@
                     $query = "\$sql = \"SELECT * FROM " . $tableName . " WHERE " . $indexField["Field"] . " = \" . \$indexValue;";
 
                 $str .= "\r\n
+    /**
+     * Returns a database entry matching the unique field value provided.
+     * @param \$indexValue " . $indexField["Type"] . "
+     * @return bool|" . ucfirst($tableName) . "
+     */
     public static function getBy" . ucfirst($indexField["Field"]) . "(\$indexValue) {
         \$conn = dbLogin();
         " . $query . "
@@ -240,6 +260,11 @@
 
         public static function generateGetMultiple($tableName, $allFields) {
             $str = "\r\n
+    /**
+     * Retrieves all entries or up to a specified limit from the database. Use 0 or negative values as limit to retrieve all entries.
+     * @param \$limit int
+     * @return array|bool
+     */
     public static function getMultiple(\$limit) {
         \$conn = dbLogin();
         \$sql = \"SELECT * FROM " . $tableName . "\";
@@ -261,12 +286,17 @@
         }//end generatorGetMultiple()
 
 
-        public static function generateUpdateByID($tableName, $allFields, $primaryKeyField) {
+        public static function generateUpdate($tableName, $allFields, $primaryKeyField) {
             $parameters = "\$" . $tableName . "_object";
             $fieldValues = null;
             foreach ($allFields as $field) {
                 if ($field["Key"] != "PRI") {
-                    if (!isQuotableType($field["Type"])) $fieldValues .= $field["Field"] . " = \" . $" . $tableName . "_object->get" . ucfirst($field["Field"]) . "() . \", ";
+                    if (!isQuotableType($field["Type"])) {
+                        if ($field["Type"] == "tinyint(1)")
+                            $fieldValues .= $field["Field"] . " = \" . booleanFix($" . $tableName . "_object->get" . ucfirst($field["Field"]) . "()) . \", ";
+                        else
+                            $fieldValues .= $field["Field"] . " = \" . $" . $tableName . "_object->get" . ucfirst($field["Field"]) . "() . \", ";
+                    }//end if type is quotable
                     else $fieldValues .= $field["Field"] . " = " . quote("$" . $tableName . "_object->get" . ucfirst($field["Field"]) . "()") . ", ";
                 }//end if not primary key
             }//end foreach field
@@ -278,7 +308,12 @@
                 $sql = "\$sql = \"UPDATE " . $tableName . " SET " . $fieldValues . " WHERE " . $primaryKeyField["Field"] . " = \\\"\" . " . "\$" . $tableName . "_object->get" . ucfirst($primaryKeyField["Field"]) . "()" . " . \"\\\"\";";
 
             $str = "\r\n
-    public static function updateByID(" . $parameters . ") {
+    /**
+     * Updates a database entry with the given object's data.
+     * @param \$t1_object " . ucfirst($tableName) . "
+     * @return bool
+     */
+    public static function update(" . $parameters . ") {
         \$conn = dbLogin();
         " . $sql . "
         if (\$conn->query(\$sql) === TRUE) return true;
@@ -288,38 +323,7 @@
         }//end generateUpdateByID()
 
 
-        public static function generateUpdateByIndex($tableName, $allFields, $indexFields) {
-            $combinedStr = "";
-            foreach ($indexFields as $indexField) {
-                $parameters = "\$" . $tableName . "_object";
-                $fieldValues = null;
-                foreach ($allFields as $field) {
-                    if ($field["Key"] != "PRI") {
-                        if (!isQuotableType($field["Type"])) $fieldValues .= $field["Field"] . " = \" . $" . $tableName . "_object->get" . ucfirst($field["Field"]) . "() . \", ";
-                        else $fieldValues .= $field["Field"] . " = " . quote("$" . $tableName . "_object->get" . ucfirst($field["Field"]) . "()") . ", ";
-                    }//end if not primary key
-                }//end foreach field
-                $fieldValues = substr($fieldValues, 0, strlen($fieldValues) - 2);
-
-                if (!isQuotableType($indexField["Type"]))
-                    $sql = "\$sql = \"UPDATE " . $tableName . " SET " . $fieldValues . " WHERE " . $indexField["Field"] . " = \" . \$current" . ucfirst($indexField["Field"]) . ";";
-                else
-                    $sql = "\$sql = \"UPDATE " . $tableName . " SET " . $fieldValues . " WHERE " . $indexField["Field"] . " = \\\"\" . " . "\$current" . ucfirst($indexField["Field"]) . " . \"\\\"\";";
-
-                $str = "\r\n
-    public static function updateBy" . ucfirst($indexField["Field"]) . "(\$current" . ucfirst($indexField["Field"]) . ", " . $parameters . ") {
-        \$conn = dbLogin();
-        " . $sql . "
-        if (\$conn->query(\$sql) === TRUE) return true;
-        else return false;
-    }\r\n";
-                $combinedStr .= $str;
-            }//end foreach indexField
-            return $combinedStr;
-        }//end generateUpdateByIndex()
-
-
-        public static function generateDeleteByID($tableName, $primaryKeyField) {
+        public static function generateDelete($tableName, $primaryKeyField) {
             $parameters = "\$" . $tableName . "_object";
 
             if (!isQuotableType($primaryKeyField["Type"]))
@@ -328,7 +332,12 @@
                 $sql = "\$sql = \"DELETE FROM " . $tableName . " WHERE " . $primaryKeyField["Field"] . " = \\\"\" . " . "\$" . $tableName . "_object->get" . ucfirst($primaryKeyField["Field"]) . "()" . " . \"\\\"\";";
 
             $str = "\r\n
-    public static function deleteByID(" . $parameters . ") {
+    /**
+     * Deletes an entry from the database given the object's data.
+     * @param \$t1_object " . ucfirst($tableName) . "
+     * @return bool
+     */
+    public static function delete(" . $parameters . ") {
         \$conn = dbLogin();
         " . $sql . "
         if (\$conn->query(\$sql) === TRUE) return true;
@@ -338,31 +347,13 @@
         }//end generateDeleteByID()
 
 
-        public static function generateDeleteByIndex($tableName, $indexFields) {
-            $combinedStr = "";
-            foreach ($indexFields as $indexField) {
-
-                if (!isQuotableType($indexField["Type"]))
-                    $sql = "\$sql = \"DELETE FROM " . $tableName . " WHERE " . $indexField["Field"] . " = \" . \$current" . ucfirst($indexField["Field"]) . ";";
-                else
-                    $sql = "\$sql = \"DELETE FROM " . $tableName . " WHERE " . $indexField["Field"] . " = \\\"\" . " . "\$current" . ucfirst($indexField["Field"]) . " . \"\\\"\";";
-
-                $str = "\r\n
-    public static function deleteBy" . ucfirst($indexField["Field"]) . "(\$current" . ucfirst($indexField["Field"]) . ") {
-        \$conn = dbLogin();
-        " . $sql . "
-        if (\$conn->query(\$sql) === TRUE) return true;
-        else return false;
-    }\r\n";
-                $combinedStr .= $str;
-            }//end foreach indexField
-            return $combinedStr;
-        }
-
-
         public static function generateGetSize($tableName, $primaryKeyField) {
             $sql = "\$sql = \"SELECT COUNT(" . $primaryKeyField["Field"] . ") FROM " . $tableName . "\";";
             $str = "\r\n
+    /**
+     * Returns the number of entries in the database.
+     * @return int
+     */
     public static function getSize() {
         \$conn = dbLogin();
         " . $sql . "
@@ -376,6 +367,10 @@
         public static function generateIsEmpty($tableName, $primaryKeyField) {
             $sql = "\$sql = \"SELECT COUNT(" . $primaryKeyField["Field"] . ") FROM " . $tableName . "\";";
             $str = "\r\n
+    /**
+     * Returns true if the database is empty or false otherwise.
+     * @return bool
+     */
     public static function isEmpty() {
         \$conn = dbLogin();
         " . $sql . "
@@ -385,6 +380,21 @@
             return $str;
         }//end generateIsEmpty()
 
+
+        public static function generateJsonSerialize($tableName, $allFields) {
+            $str = "
+    /**
+     * Specifies how data should be serialized to JSON
+     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
+     * @return mixed data which can be serialized by <b>json_encode</b>,
+     * which is a value of any type other than a resource.
+     * @since 5.4.0
+     */
+    function jsonSerialize() {
+        // TODO: Implement jsonSerialize() method.
+    }";
+            return $str;
+        }
 
     }//end class FunctionGenerator
 
