@@ -382,19 +382,47 @@
 
 
         public static function generateJsonSerialize($tableName, $allFields) {
-            $str = "
+
+            $jsonString = "\"{\r\n";
+
+            foreach ($allFields as $field) {
+                $thisFieldString = "\t\t\\\"" . $field["Field"] . "\\\": ";
+                if (isQuotableType($field["Type"]))
+                    $thisFieldString .= "\\\"\" . " . "\$this->" . $field["Field"] . ". \"\\\"";
+                else
+                    $thisFieldString .= "\$this->" . $field["Field"];
+                $jsonString .= $thisFieldString . ",\r\n";
+            }//end foreach field
+
+            $jsonString = substr($jsonString, 0, strlen($jsonString) - 3);
+            $jsonString .= " }\"";
+
+            $str = "\r\n\t//-------------------- JSON Generation Methods --------------------\r\n
     /**
-     * Specifies how data should be serialized to JSON
-     * @link http://php.net/manual/en/jsonserializable.jsonserialize.php
-     * @return mixed data which can be serialized by <b>json_encode</b>,
-     * which is a value of any type other than a resource.
-     * @since 5.4.0
+     * Specifies how objects of this class should be converted to JSON format.
+     * @return string
      */
-    function jsonSerialize() {
-        // TODO: Implement jsonSerialize() method.
-    }";
-            return $str;
+    public function jsonSerialize() {
+        \$jsonStr = " . $jsonString . ";
+        return \$jsonStr;
+    }
+    
+    /**
+     * Converts an array of " . ucfirst($tableName) . " objects to a JSON Array.
+     * @param \$" . ucfirst($tableName) . "_array " . ucfirst($tableName) . " Array
+     * @return bool|string
+     */
+    public static function toJSONArray(\$" . ucfirst($tableName) . "_array) {
+        \$strArray = \"[ \";
+        foreach (\$" . ucfirst($tableName) . "_array as \$i) {
+            \$strArray .= \$i->jsonSerialize() . \", \";
         }
+        \$strArray = substr(\$strArray, 0, strlen(\$strArray) - 3);
+        \$strArray .= \"} ] \";
+        return \$strArray;
+    }\r\n";
+            return $str;
+        }//end generateJsonSerialize()
 
     }//end class FunctionGenerator
 
