@@ -8,7 +8,7 @@
 
 /* DATABASE:		test */
 /* FILE:		DBLogin.php */
-/* DATETIME:		2018-01-17 12:10:10am */
+/* DATETIME:		2018-01-17 11:47:30pm */
 /* DESCRIPTION:		This file is used to log in to the database.*/
 
 /**********************************************************************************/

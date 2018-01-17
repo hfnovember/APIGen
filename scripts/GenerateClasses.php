@@ -49,6 +49,8 @@
 
         writeToFile("../Generated/Scripts/", ucfirst($table). ".php", $classOutput);
 
+        header("Location: ../index.php?status=ClassesGenerated&dbName=" . $_GET["dbName"]);
+
     }//end foreach table
 
     class FunctionGenerator {

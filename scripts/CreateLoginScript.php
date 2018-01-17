@@ -33,4 +33,6 @@
         ";
     writeToFile("../Generated/Scripts/", "DBLogin.php", $fileStream);
 
+    header("Location: ../index.php?status=DBLoginCreated");
+
 ?>

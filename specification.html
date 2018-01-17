@@ -7,6 +7,13 @@
 
     <h1>PaNick Apps API Generator Specification</h1>
 
+    <h2>Important Rules to follow</h2>
+
+    <ul>
+        <li>ALL tables should have only 1 Primary Key.</li>
+        <li>Properties which are unique and constitute other kinds of identification should be set as unique. It is also recommended to set them as indexables.</li>
+    </ul>
+
     <h2>Database schema</h2>
 
     <p>After generation of the database or prior to generation of the login script the database should consist of at
@@ -27,7 +34,7 @@
                 <li>UserLevelName - Varchar(255), Not null</li>
             </ul>
         </li><br>
-        <li><b>SessionData Table:</b>
+        <li><b>Sessions Table:</b>
             <ul>
                 <li>SessionID - Varchar(255), Primary Key</li>
                 <li>UserID - Integer, Not null</li>
@@ -60,14 +67,6 @@
     </ul>
 
     <p>You may use other data types, but be aware that they may not work. It is also strongly suggested to use Timestamp types for date-time values.</p>
-
-    <h2>Important Rules</h2>
-
-    <ul>
-        <li>ALL tables should have only 1 Primary Key.</li>
-        <li>Properties which are unique and constitute other kinds of identification should be set as unique and indexed.</li>
-
-    </ul>
 
 
 
