@@ -27,21 +27,21 @@ if (isset($_GET["status"])) {
 
 ?>
 
-<h1>Generate PHP Classes</h1>
+<h1>Generate Java Classes</h1>
 
-<form name="generateLoginScriptForm" action="scripts/GeneratePHPClasses.php">
+<form name="generateLoginScriptForm" action="scripts/GenerateJavaClasses.php">
 
     <p>Please fill in the required information and click on "Generate Java Classes" to <b>generate classes</b> for your database tables supporting basic <b>CRUD operations</b>.</p>
 
-    <p style="color:blue"><b>Info:</b> Basic CRUD operations are: Create, Retrieve, Update and Delete. Java classes will be created representing each table and these basic operations.</p>
+    <p style="color:blue"><b>Info:</b> Java classes will be created representing each table and its fields as class members.</p>
 
     <p>Database Name: <input type="text" name="dbName" title="Database name" placeholder="Database name" /></p>
     <p>Database Host IP: <input type="text" name="dbHostIP" title="Database host IP" placeholder="Database host IP" /></p>
     <p>Database User: <input type="text" name="dbUser" title="Database user" placeholder="Database user" /></p>
     <p>Database Password: <input type="text" name="dbPassword" title="Database password" placeholder="Database password" /></p>
 
-    <input class="button" value="Generate Java Classes" type="submit" />
-    <a class="button" href="generateClasses.php">Back</a>
+    <input style="float:right;" class="button" value="Generate Java Classes" type="submit" />
+    <a style="float:left;" class="button" href="generateClasses.php">Back</a>
 
 </form>
 

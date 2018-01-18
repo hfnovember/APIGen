@@ -47,9 +47,9 @@
 
         $classOutput = FunctionGenerator::generate($table, $fieldsArray, $primaryKeyField, $indexableFields);
 
-        writeToPHPFile("../Generated/Scripts/Entity Classes/PHP/", ucfirst($table). ".php", $classOutput);
+        writeToJavaFile("../Generated/Scripts/Entity Classes/Java/", ucfirst($table). ".java", $classOutput);
 
-        header("Location: ../index.php?status=PHPClassesGenerated&dbName=" . $_GET["dbName"]);
+        header("Location: ../index.php?status=JavaClassesGenerated&dbName=" . $_GET["dbName"]);
 
     }//end foreach table
 
@@ -58,19 +58,27 @@
         public static function wrapClass($tableName, $classContent) {
             include_once("GeneratorUtils.php");
             $str = "";
-            $str .= getGeneratorHeader($_GET["dbName"], $tableName . ".php", $tableName, "");
-            $str .= "include_once(\"DBLogin.php\");\r\n\r\n";
-            $str .= "class " . ucfirst($tableName) . " implements JsonSerializable {\r\n";
+            $str .= getGeneratorHeader($_GET["dbName"], $tableName . ".java", $tableName, "");
+            //$str .= "include_once(\"DBLogin.php\");\r\n\r\n";
+            $str .= self::generateImports();
+            $str .= "class " . ucfirst($tableName) . " implements Serializable {\r\n";
             $str .= $classContent;
             $str .= "\r\n}";
             return $str;
         }//end wrapClass()
 
+        public static function generateImports() {
+            $str =
+                "import java.io.Serializable;"
+            . "\r\n";
+            return $str;
+        }//end generateImports()
+
 
         public static function getObjectConstructorBindings($allFields) {
             $objectBindings = "";
             foreach ($allFields as $field) {
-                $objectBindings .= "\$this->" . $field["Field"] . " = \$" . $field["Field"] . ";\n\t\t";
+                $objectBindings .= "this->" . $field["Field"] . " = " . $field["Field"] . ";\n\t\t";
             }//end foreach field
             $objectBindings = substr($objectBindings, 0, strlen($objectBindings) - 3);
             return $objectBindings;
@@ -80,7 +88,7 @@
         public static function getConstructorParameters($allFields) {
             $constructorParams = "";
             foreach ($allFields as $field) {
-                $constructorParams .= "\r\n\t\t\$" . $field["Field"] . ", ";
+                $constructorParams .= "\r\n\t\t" . $field["Field"] . ", ";
             }//end foreach field
             $constructorParams = substr($constructorParams, 0, strlen($constructorParams) - 2);
             return $constructorParams . "\r\n\t\t";
@@ -90,7 +98,7 @@
         public static function getObjectConstructorParameterizer($allFields, $inputVariableName) {
             $objectConstructionParameterizer = "";
             foreach ($allFields as $field) {
-                $objectConstructionParameterizer .= "\r\n\t\t\t\t\$" . $inputVariableName . "[\"" . $field["Field"] . "\"], ";
+                $objectConstructionParameterizer .= "\r\n\t\t\t\t" . $inputVariableName . "[\"" . $field["Field"] . "\"], ";
             }//end foreach field
             $objectConstructionParameterizer = substr($objectConstructionParameterizer, 0, strlen($objectConstructionParameterizer) - 2);
             return $objectConstructionParameterizer;
@@ -100,7 +108,7 @@
         public static function generate($tableName, $allFields, $primaryKeyField, $indexFields) {
             $combinedGenerationString =
                 self::generatePrivateFields($allFields) .
-                self::generateConstructors($allFields) .
+                self::generateConstructors($tableName, $allFields) .
                 self::generateGetters($allFields) .
                 self::generateSetters($allFields) .
                 self::generateCreateFunction($tableName, $allFields) .
@@ -121,15 +129,15 @@
             $str = "\r\n\t//-------------------- Attributes --------------------\r\n";
             foreach ($allFields as $field) {
                 $str .= "
-    private \$" . $field["Field"] . ";";
+    private " . $field["Field"] . ";";
             }//end foreach field
             return $str;
         }//end generatePrivateFields()
 
 
-        public static function generateConstructors($allFields) {
+        public static function generateConstructors($tableName, $allFields) {
             $strConstructor = "\r\n\r\n\t//-------------------- Constructor --------------------\r\n
-    public function __construct(" . self::getConstructorParameters($allFields) . ") {
+    public " . ucfirst($tableName) . "(" . self::getConstructorParameters($allFields) . ") {
         " . self::getObjectConstructorBindings($allFields) . "
     }\r\n";
             return $strConstructor;
@@ -142,7 +150,7 @@
                 $str .= "\t/**
      * @return " . $field["Type"] . "
      */
-     public function get" . ucfirst($field["Field"]) . "() { return \$this->" . $field["Field"] . "; }\r\n\r\n";
+     public get" . ucfirst($field["Field"]) . "() { return this." . $field["Field"] . "; }\r\n\r\n";
             }//end foreach field
             return $str;
         }//end generateGetters()
@@ -153,7 +161,7 @@
             foreach ($allFields as $field) {
                 if ($field["Key"] != "PRI")
                     $str .= "\t/**
-     * @param \$value " . $field["Type"] . "
+     * @param value " . $field["Type"] . "
      */
      public function set" . ucfirst($field["Field"]) . "(\$value) { \$this->" . $field["Field"] . " = \$value; }\r\n\r\n";
             }//end foreach field

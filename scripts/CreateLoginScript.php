@@ -31,7 +31,7 @@
         else return \$value;
     }\r\n
         ";
-    writeToFile("../Generated/Scripts/", "DBLogin.php", $fileStream);
+    writeToPHPFile("../Generated/Scripts/", "DBLogin.php", $fileStream);
 
     header("Location: ../index.php?status=DBLoginCreated");
 

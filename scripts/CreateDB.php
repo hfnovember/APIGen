@@ -41,7 +41,7 @@ function dbLogin() {
 }\r\n
 	";
 
-    writeToFile("../Generated/Scripts/", $fileName, $fileStream);
+    writeToPHPFile("../Generated/Scripts/", $fileName, $fileStream);
     $result = createNewDatabase($_GET["dbHostIP"], $_GET["dbUser"], $_GET["dbPassword"], $_GET["dbName"]);
 
     switch ($result) {

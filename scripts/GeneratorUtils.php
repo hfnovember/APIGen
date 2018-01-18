@@ -54,18 +54,33 @@
         return $outputString;
     }//end getGeneratorHeader()
 
+
+
     /**
-     * Writes a given string of text into a given file in a given filepath.
+* Writes a given string of text into a given PHP file in a given filepath.
      * @param $filePath (String)
      * @param $fileName (String)
      * @param $text (String)
      */
-    function writeToFile($filePath, $fileName, $text) {
+    function writeToPHPFile($filePath, $fileName, $text) {
         if (!is_dir($filePath)) mkdir( $filePath, 0777, true );
         $file = fopen($filePath . $fileName, "w") or die("Unable to open file!");
         fwrite($file, "<?php\r\n\r\n" . $text . "\r\n\r\n?>");
         fclose($file);
-    }//end writeToFile()
+    }//end writeToPHPFile()
+
+    /**
+     * Writes a given string of text into a given PHP file in a given filepath.
+     * @param $filePath (String)
+     * @param $fileName (String)
+     * @param $text (String)
+     */
+    function writeToJavaFile($filePath, $fileName, $text) {
+        if (!is_dir($filePath)) mkdir( $filePath, 0777, true );
+        $file = fopen($filePath . $fileName, "w") or die("Unable to open file!");
+        fwrite($file, "\r\n\r\n" . $text . "\r\n\r\n");
+        fclose($file);
+    }//end writeToJavaFile()
 
 
 /**

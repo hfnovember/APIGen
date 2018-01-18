@@ -33,15 +33,15 @@ if (isset($_GET["status"])) {
 
     <p>Please fill in the required information and click on "Generate PHP Classes" to <b>generate classes</b> for your database tables supporting basic <b>CRUD operations</b>.</p>
 
-    <p style="color:blue"><b>Info:</b> Basic CRUD operations are: Create, Retrieve, Update and Delete. PHP classes will be created representing each table and these basic operations.</p>
+    <p style="color:blue"><b>Info:</b> PHP classes will be created representing each table and its fields as class members. PHP classes will also support static functions related to CRUD operations directly on the database.</p>
 
     <p>Database Name: <input type="text" name="dbName" title="Database name" placeholder="Database name" /></p>
     <p>Database Host IP: <input type="text" name="dbHostIP" title="Database host IP" placeholder="Database host IP" /></p>
     <p>Database User: <input type="text" name="dbUser" title="Database user" placeholder="Database user" /></p>
     <p>Database Password: <input type="text" name="dbPassword" title="Database password" placeholder="Database password" /></p>
 
-    <input class="button" value="Generate PHP Classes" type="submit" />
-    <a class="button" href="generateClasses.php">Back</a>
+    <input style="float:right;" class="button" value="Generate PHP Classes" type="submit" />
+    <a style="float:left;" class="button" href="generateClasses.php">Back</a>
 
 </form>
 
