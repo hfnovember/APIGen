@@ -35,7 +35,7 @@ if (isset($_GET["status"])) {
 
     <p>Please fill in the required information and click on "Proceed" to proceed to the next step.</p>
 
-    <p style="color:red"><b>Important Note:</b> Your database should be correctly formatted according to the <a href="specification.html">specification of the API generator.</a></p>
+    <p style="color:red"><b>Important Note:</b> Your database should be correctly formatted according to the <a href="specification.html">specification of the API generator.</a> Your database will be checked for consistency.</p>
 
     <p>Database Name: <input type="text" name="dbName" title="Database name" placeholder="Database name" /></p>
     <p>Database Host IP: <input type="text" name="dbHostIP" title="Database host IP" placeholder="Database host IP" /></p>

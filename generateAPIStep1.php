@@ -33,6 +33,8 @@ $dbPassword = $_GET["dbPassword"];
 $conn = new mysqli($dbHostIP, $dbUsername, $dbPassword, $dbName);
 if ($conn->connect_error) die("Connection failed: " . $conn->connect_error);
 
+//---- TABLE CHECKING BEGINS
+
 $sql = "SHOW TABLES";
 $result = $conn->query($sql);
 
@@ -53,55 +55,90 @@ if (!($sessionsTableFound && $usersTableFound && $userlevelsTableFound)) {
     header("Location: ../index.php?status=DatabaseInconsistency"); exit();
 }
 
-//TODO: Check that all necessary fields exist in the necessary tables.
+$sqlDescribeUsers = "DESCRIBE users";
+$sqlDescribeUserLevels = "DESCRIBE userlevels";
+$sqlDescribeSessions = "DESCRIBE sessions";
+$resultDescribeUsers = $conn->query($sqlDescribeUsers);
+$resultDescribeUserLevels = $conn->query($sqlDescribeUserLevels);
+$resultDescribeSessions = $conn->query($sqlDescribeSessions);
+
+if ($resultDescribeUsers->num_rows > 0 && $resultDescribeUserLevels->num_rows > 0 && $resultDescribeSessions->num_rows > 0) {
+    $usersFields = array();
+    $userLevelsFields = array();
+    $sessionsFields = array();
+
+    while ($row = $resultDescribeUsers->fetch_assoc()) array_push($usersFields, $row);
+    while ($row = $resultDescribeUserLevels->fetch_assoc()) array_push($userLevelsFields, $row);
+    while ($row = $resultDescribeSessions->fetch_assoc()) array_push($sessionsFields, $row);
+
+    //Users Table Fields checking:
+    $check_userID = false;
+    $check_username = false;
+    $check_password = false;
+    $check_userlevelID = false;
+
+    $usersTableOK = false;
+
+    foreach ($usersFields as $field) {
+        if ($field["Field"] == "UserID" && $field["Type"] == "int(10) unsigned" && $field["Key"] == "PRI" && $field["Extra"] == "auto_increment") $check_userID = true;
+        if ($field["Field"] == "Username" && $field["Type"] == "varchar(100)") $check_username = true;
+        if ($field["Field"] == "Password" && $field["Type"] == "varchar(255)") $check_password = true;
+        if ($field["Field"] == "UserLevelID" && $field["Type"] == "int(10) unsigned") $check_userlevelID = true;
+    }//end foreach userField
+
+    if ($check_userID && $check_username && $check_password && $check_userlevelID) $usersTableOK = true;
+
+
+    //UserLevels Table Fields Checking:
+    $check_userLevelID = false;
+    $check_userLevelName = false;
+    $userLevelsTableOK = false;
+
+    foreach ($userLevelsFields as $field) {
+        if ($field["Field"] == "UserLevelID" && $field["Type"] == "int(10) unsigned" && $field["Key"] == "PRI" && $field["Extra"] == "auto_increment") $check_userLevelID = true;
+        if ($field["Field"] == "UserLevelName" && $field["Type"] == "varchar(255)") $check_userLevelName = true;
+    }//end foreach userLevelField
+
+    if ($check_userLevelID && $check_userLevelName) $userLevelsTableOK = true;
+
+    //Sessions Table Fields Checking:
+    $check_sessionID = false;
+    $check_userID = false;
+    $check_initiatedOn = false;
+    $check_finalizedOn = false;
+    $check_clientIPAddress= false;
+
+    $sessionsTableOK = false;
+
+    foreach($sessionsFields as $field) {
+        if ($field["Field"] == "SessionID" && $field["Type"] == "varchar(255)" && $field["Key"] == "PRI") $check_sessionID = true;
+        if ($field["Field"] == "UserID" && $field["Type"] == "int(10) unsigned") $check_userID = true;
+        if ($field["Field"] == "InitiatedOn" && $field["Type"] == "int(10) unsigned") $check_initiatedOn = true;
+        if ($field["Field"] == "FinalizedOn" && $field["Type"] == "int(10) unsigned") $check_finalizedOn = true;
+        if ($field["Field"] == "ClientIPAddress" && $field["Type"] == "varchar(255)") $check_clientIPAddress = true;
+    }//end foreach sessionField
+
+    if ($check_sessionID && $check_userID && $check_initiatedOn && $check_finalizedOn && $check_clientIPAddress) $sessionsTableOK = true;
+
+    //Check ALL:
+    if (($usersTableOK && $userLevelsTableOK && $sessionsTableOK) == false) {
+        header("Location: ../index.php?status=DatabaseInconsistency"); exit();
+    }
+
+}//end if there are table in the database
+else {
+    header("Location: ../index.php?status=DatabaseInconsistency"); exit();
+}
+
+//---- TABLE CHECKING ENDS
+
 
 $sqlUsersTable = "SELECT * FROM userlevels";
 $result = $conn->query($sqlUsersTable);
 $userLevels = array();
 while ($row = $result->fetch_object()) array_push($userLevels, $row);
-$userLevelsTableHeaderContents = "";
-$userLevelsTableRowContents = "";
-foreach ($userLevels as $userLevel) {
-    $userLevelsTableHeaderContents .= "<th>" . $userLevel->UserLevelName . "</th>\r\n";
-    $userLevelsTableRowContents .= "
-                        <td>
-                            <p><input class='writeDelete " . $userLevel->UserLevelID . "' title=\"" . $userLevel->UserLevelName . " Write/Delete\" type=\"checkbox\"/> Write/Delete</p>
-                            <p><input class='view " . $userLevel->UserLevelID . "' title=\"" . $userLevel->UserLevelName . " View\" type=\"checkbox\"/> View</p>
-                        </td>";
-}
 
-$allTablesFormHTML = "
-    <table border=\"1\">
-        <tr>
-            <th>Endpoint Name</th>
-            <th>Endpoint Page</th>
-            <th>Access Authorization</th>
-            <th>Generate?</th>
-        </tr>";
-
-foreach ($tableNames as $table) {
-    $tableFormHTML = "<tr>
-            <td style='text-align: center;'>" . ucfirst($table) . "</td>
-            <td>API/<input class='endpointName' name='endpointName_" . ucfirst($table) . "' style='display:inline-block; max-width: 100px;' type='text' maxlength='20' value='" . $table . "'/>.php</td>
-            <td>
-                <table border=\"1\">
-                    <tr>
-                        " . $userLevelsTableHeaderContents . "
-                        <th>Public</th>
-                    </tr>
-                    <tr>
-                        " . $userLevelsTableRowContents . "
-                        <td>
-                            <p><input class='writeDelete public' title=\"Public Write/Delete\" type=\"checkbox\"/> Write/Delete</p>
-                            <p><input class='view public' title=\"Public View\" type=\"checkbox\"/> View</p>
-                        </td>
-                    </tr>
-                </table>
-            </td>
-            <td><p><input class='doGenerate " . $table . "' title=\"" . $table . " Generation\" checked=\"checked\" type=\"checkbox\"/> Generate</p></td>
-        </tr>";
-    $allTablesFormHTML .= $tableFormHTML;
-}
+//TODO
 
 
 if (isset($_GET["status"])) {
@@ -120,7 +157,7 @@ if (isset($_GET["status"])) {
 
 <form name="next" action="generateAPIStep2.php" type="post">
 
-    <?php echo $allTablesFormHTML; ?>
+    
 
     <div style="margin-top: 30px;"></div>
 

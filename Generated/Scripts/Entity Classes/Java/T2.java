@@ -9,7 +9,7 @@
 /* DATABASE:		test */
 /* FILE:		t2.java */
 /* TABLE:		t2 */
-/* DATETIME:		2018-01-18 07:06:20pm */
+/* DATETIME:		2018-01-18 09:59:05pm */
 /* DESCRIPTION:		N/A*/
 
 /**********************************************************************************/
@@ -22,6 +22,9 @@ import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
 
 
 class T2 implements Serializable {
@@ -95,7 +98,7 @@ class T2 implements Serializable {
     
     /**
      * Converts an array of T2 objects to a JSON Array.
-     * @param T2_array T2 []
+     * @param t2_array
      * @return String
      */
     public static String toJSONArray(T2 [] t2_array) {
@@ -107,6 +110,59 @@ class T2 implements Serializable {
         strArray = new StringBuilder(strArray.substring(0, strArray.length() - 3));
         strArray.append("} ] ");
         return strArray.toString();
+    }
+    
+    /**
+     * Converts an ArrayList of T2 objects to a JSON Array.
+     * @param t2_arraylist ArrayList of T2 to convert to JSON.
+     * @return String
+     */
+    public static String toJSONArray(ArrayList<T2> t2_arraylist) {
+        StringBuilder strArray = new StringBuilder("[ ");
+        for (final T2 i : t2_arraylist) {
+            strArray.append(i.toJSON());
+            strArray.append(", ");
+        }
+        strArray = new StringBuilder(strArray.substring(0, strArray.length() - 3));
+        strArray.append("} ] ");
+        return strArray.toString();
+    }
+    
+    /**
+     * Converts an Vector of T2 objects to a JSON Array.
+     * @param t2_vector Vector of T2 to convert to JSON.
+     * @return String
+     */
+    public static String toJSONArray(Vector<T2> t2_vector) {
+        StringBuilder strArray = new StringBuilder("[ ");
+        for (final T2 i : t2_vector) {
+            strArray.append(i.toJSON());
+            strArray.append(", ");
+        }
+        strArray = new StringBuilder(strArray.substring(0, strArray.length() - 3));
+        strArray.append("} ] ");
+        return strArray.toString();
+    }
+    
+    /**
+     * Converts a List of T2 objects to a JSON Array.
+     * @param t2_list List of T2 to convert to JSON.
+     * @return String
+     */
+    public static String toJSONArray(List<T2> t2_list) {
+        StringBuilder strArray = new StringBuilder("[ ");
+        for (final T2 i : t2_list) {
+            strArray.append(i.toJSON());
+            strArray.append(", ");
+        }
+        strArray = new StringBuilder(strArray.substring(0, strArray.length() - 3));
+        strArray.append("} ] ");
+        return strArray.toString();
+    }
+    
+    @Override
+    public String toString() {
+        return toJSON();
     }
 
 }

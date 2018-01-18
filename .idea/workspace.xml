@@ -2,10 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ee09baf4-5eb2-452a-b73e-bbcf2215a9d4" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Generated/Scripts/Entity Classes/Java/Students.java" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Generated/Scripts/DBLogin.php" afterPath="$PROJECT_DIR$/Generated/Scripts/DBLogin.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Generated/Scripts/Entity Classes/Java/T1.java" afterPath="$PROJECT_DIR$/Generated/Scripts/Entity Classes/Java/T1.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Generated/Scripts/Entity Classes/Java/T2.java" afterPath="$PROJECT_DIR$/Generated/Scripts/Entity Classes/Java/T2.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/generateAPIStep0.php" afterPath="$PROJECT_DIR$/generateAPIStep0.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/generateAPIStep1.php" afterPath="$PROJECT_DIR$/generateAPIStep1.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/generateClasses.php" afterPath="$PROJECT_DIR$/generateClasses.php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/scripts/GenerateJavaClasses.php" afterPath="$PROJECT_DIR$/scripts/GenerateJavaClasses.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/specification.html" afterPath="$PROJECT_DIR$/specification.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/scripts/GeneratorUtils.php" afterPath="$PROJECT_DIR$/scripts/GeneratorUtils.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -22,10 +26,7 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="119">
               <caret line="18" column="0" lean-forward="false" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
-              <folding>
-                <marker date="1516289218233" expanded="true" signature="1675:1803" ph="..." />
-                <marker date="1516289218233" expanded="true" signature="1819:1953" ph="..." />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -33,10 +34,13 @@
       <file leaf-file-name="GeneratorUtils.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/scripts/GeneratorUtils.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1394">
-              <caret line="97" column="0" lean-forward="false" selection-start-line="97" selection-start-column="0" selection-end-line="97" selection-end-column="0" />
+            <state relative-caret-position="597">
+              <caret line="121" column="43" lean-forward="true" selection-start-line="121" selection-start-column="43" selection-end-line="121" selection-end-column="43" />
               <folding>
-                <marker date="1516289218264" expanded="true" signature="3061:3160" ph=" @param $dbHostIP ..." />
+                <marker date="1516308686879" expanded="true" signature="3777:4040" ph="CREATE TABLE... Users" />
+                <marker date="1516308686879" expanded="true" signature="4089:4257" ph="CREATE TABLE... UserLevels" />
+                <marker date="1516308686879" expanded="true" signature="4308:4400" ph="INSERT INTO UserLevels... " />
+                <marker date="1516308686879" expanded="true" signature="4446:4751" ph="CREATE TABLE... Sessions" />
               </folding>
             </state>
           </provider>
@@ -67,49 +71,21 @@
       <file leaf-file-name="generateAPIStep0.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/generateAPIStep0.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="765">
-              <caret line="45" column="63" lean-forward="false" selection-start-line="45" selection-start-column="63" selection-end-line="45" selection-end-column="63" />
+            <state relative-caret-position="475">
+              <caret line="37" column="224" lean-forward="false" selection-start-line="37" selection-start-column="224" selection-end-line="37" selection-end-column="224" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="generateClasses.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/generateClasses.php">
+      <file leaf-file-name="generateAPIStep1.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/generateAPIStep1.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="476">
-              <caret line="28" column="0" lean-forward="false" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="generateJavaClasses.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/generateJavaClasses.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="611">
-              <caret line="43" column="7" lean-forward="false" selection-start-line="43" selection-start-column="7" selection-end-line="43" selection-end-column="26" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GenerateJavaClasses.php" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/scripts/GenerateJavaClasses.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="526">
-              <caret line="206" column="65" lean-forward="false" selection-start-line="206" selection-start-column="65" selection-end-line="206" selection-end-column="65" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="T1.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Generated/Scripts/Entity Classes/Java/T1.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="382">
-              <caret line="206" column="21" lean-forward="true" selection-start-line="206" selection-start-column="21" selection-end-line="206" selection-end-column="21" />
-              <folding />
+            <state relative-caret-position="543">
+              <caret line="159" column="4" lean-forward="false" selection-start-line="159" selection-start-column="4" selection-end-line="159" selection-end-column="4" />
+              <folding>
+                <marker date="1516309097786" expanded="true" signature="5232:5256" ph="SELECT * FRO... userlevels" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -175,18 +151,18 @@
         <option value="$PROJECT_DIR$/Generated/Scripts/DeleteMe.php" />
         <option value="$PROJECT_DIR$/scripts/CreateLoginScript.php" />
         <option value="$PROJECT_DIR$/scripts/GenerateClasses.php" />
-        <option value="$PROJECT_DIR$/generateAPIStep0.php" />
         <option value="$PROJECT_DIR$/createLoginScript.php" />
-        <option value="$PROJECT_DIR$/generateAPIStep1.php" />
-        <option value="$PROJECT_DIR$/generateClasses.php" />
         <option value="$PROJECT_DIR$/index.php" />
         <option value="$PROJECT_DIR$/scripts/GeneratePHPClasses.php" />
-        <option value="$PROJECT_DIR$/scripts/GeneratorUtils.php" />
         <option value="$PROJECT_DIR$/generateJavaClasses.php" />
         <option value="$PROJECT_DIR$/generatePHPClasses.php" />
         <option value="$PROJECT_DIR$/specification.html" />
-        <option value="$PROJECT_DIR$/Generated/Scripts/Entity Classes/Java/T1.java" />
         <option value="$PROJECT_DIR$/scripts/GenerateJavaClasses.php" />
+        <option value="$PROJECT_DIR$/Generated/Scripts/Entity Classes/Java/T1.java" />
+        <option value="$PROJECT_DIR$/generateClasses.php" />
+        <option value="$PROJECT_DIR$/scripts/GeneratorUtils.php" />
+        <option value="$PROJECT_DIR$/generateAPIStep0.php" />
+        <option value="$PROJECT_DIR$/generateAPIStep1.php" />
       </list>
     </option>
   </component>
@@ -436,7 +412,7 @@
       <workItem from="1516265998809" duration="1264000" />
       <workItem from="1516268095359" duration="721000" />
       <workItem from="1516270395297" duration="535000" />
-      <workItem from="1516289244449" duration="5880000" />
+      <workItem from="1516289244449" duration="11625000" />
     </task>
     <task id="LOCAL-00001" summary="Removed unncessary methods. Tested and corrected all remaining class method generators.">
       <created>1516140703804</created>
@@ -449,7 +425,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="86367000" />
+    <option name="totallyTimeSpent" value="92112000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -506,17 +482,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/scripts/CreateDB.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="35" column="34" lean-forward="false" selection-start-line="35" selection-start-column="34" selection-end-line="35" selection-end-column="34" />
-          <folding>
-            <marker date="1516289218233" expanded="true" signature="1675:1803" ph="..." />
-            <marker date="1516289218233" expanded="true" signature="1819:1953" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/specification.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1003">
@@ -576,10 +541,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="408">
           <caret line="35" column="34" lean-forward="false" selection-start-line="35" selection-start-column="34" selection-end-line="35" selection-end-column="34" />
-          <folding>
-            <marker date="1516289218233" expanded="true" signature="1675:1803" ph="..." />
-            <marker date="1516289218233" expanded="true" signature="1819:1953" ph="..." />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -642,10 +604,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="408">
           <caret line="35" column="34" lean-forward="true" selection-start-line="35" selection-start-column="34" selection-end-line="35" selection-end-column="34" />
-          <folding>
-            <marker date="1516289218233" expanded="true" signature="1675:1803" ph="..." />
-            <marker date="1516289218233" expanded="true" signature="1819:1953" ph="..." />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -739,41 +698,6 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Generated/Scripts/T1.php" />
-    <entry file="file://$PROJECT_DIR$/generateAPIStep1.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1700">
-          <caret line="100" column="54" lean-forward="false" selection-start-line="100" selection-start-column="54" selection-end-line="100" selection-end-column="54" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/CreateDB.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="18" column="0" lean-forward="false" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
-          <folding>
-            <marker date="1516289218233" expanded="true" signature="1675:1803" ph="..." />
-            <marker date="1516289218233" expanded="true" signature="1819:1953" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/generateAPIStep0.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="765">
-          <caret line="45" column="63" lean-forward="false" selection-start-line="45" selection-start-column="63" selection-end-line="45" selection-end-column="63" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/generateClasses.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="476">
-          <caret line="28" column="0" lean-forward="false" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/scripts/GeneratePHPClasses.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-33">
@@ -786,16 +710,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/GeneratorUtils.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1394">
-          <caret line="97" column="0" lean-forward="false" selection-start-line="97" selection-start-column="0" selection-end-line="97" selection-end-column="0" />
-          <folding>
-            <marker date="1516289218264" expanded="true" signature="3061:3160" ph=" @param $dbHostIP ..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -814,8 +728,8 @@
         <state relative-caret-position="135">
           <caret line="15" column="29" lean-forward="true" selection-start-line="15" selection-start-column="29" selection-end-line="15" selection-end-column="29" />
           <folding>
-            <element signature="n#style#0;n#input#0;n#form#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#a#0;n#form#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#input#0;n#form#0;n#body#0;n#html#0;n#!!top" expanded="false" />
+            <element signature="n#style#0;n#a#0;n#form#0;n#body#0;n#html#0;n#!!top" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -828,6 +742,30 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Generated/Scripts/Entity Classes/Java/T2.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="12" column="25" lean-forward="true" selection-start-line="12" selection-start-column="25" selection-end-line="12" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Generated/Scripts/Entity Classes/Java/T1.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="212">
+          <caret line="65" column="23" lean-forward="true" selection-start-line="65" selection-start-column="23" selection-end-line="65" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/GenerateJavaClasses.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="271">
+          <caret line="98" column="183" lean-forward="false" selection-start-line="98" selection-start-column="183" selection-end-line="98" selection-end-column="183" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/generateJavaClasses.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="611">
@@ -836,19 +774,50 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Generated/Scripts/Entity Classes/Java/T1.java">
+    <entry file="file://$PROJECT_DIR$/generateClasses.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="382">
-          <caret line="206" column="21" lean-forward="true" selection-start-line="206" selection-start-column="21" selection-end-line="206" selection-end-column="21" />
+        <state relative-caret-position="731">
+          <caret line="43" column="33" lean-forward="false" selection-start-line="43" selection-start-column="33" selection-end-line="43" selection-end-column="33" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/GenerateJavaClasses.php">
+    <entry file="file://$PROJECT_DIR$/scripts/GeneratorUtils.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="526">
-          <caret line="206" column="65" lean-forward="false" selection-start-line="206" selection-start-column="65" selection-end-line="206" selection-end-column="65" />
+        <state relative-caret-position="597">
+          <caret line="121" column="43" lean-forward="true" selection-start-line="121" selection-start-column="43" selection-end-line="121" selection-end-column="43" />
+          <folding>
+            <marker date="1516308686879" expanded="true" signature="3777:4040" ph="CREATE TABLE... Users" />
+            <marker date="1516308686879" expanded="true" signature="4089:4257" ph="CREATE TABLE... UserLevels" />
+            <marker date="1516308686879" expanded="true" signature="4308:4400" ph="INSERT INTO UserLevels... " />
+            <marker date="1516308686879" expanded="true" signature="4446:4751" ph="CREATE TABLE... Sessions" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/CreateDB.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="18" column="0" lean-forward="false" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/generateAPIStep0.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="475">
+          <caret line="37" column="224" lean-forward="false" selection-start-line="37" selection-start-column="224" selection-end-line="37" selection-end-column="224" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/generateAPIStep1.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="543">
+          <caret line="159" column="4" lean-forward="false" selection-start-line="159" selection-start-column="4" selection-end-line="159" selection-end-column="4" />
+          <folding>
+            <marker date="1516309097786" expanded="true" signature="5232:5256" ph="SELECT * FRO... userlevels" />
+          </folding>
         </state>
       </provider>
     </entry>

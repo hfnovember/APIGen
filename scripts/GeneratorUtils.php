@@ -106,7 +106,7 @@
                   UserID INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
                   Username VARCHAR(100) NOT NULL UNIQUE,
                   Password VARCHAR(255) NOT NULL,
-                  UserLevelID INT UNSIGNED
+                  UserLevelID INT UNSIGNED NOT NULL
                 )";
 
                 $sqlCreateTableUserLevels = "CREATE TABLE UserLevels (
@@ -119,7 +119,8 @@
                   SessionID VARCHAR(255) NOT NULL PRIMARY KEY,
                   UserID INT UNSIGNED NOT NULL,
                   InitiatedOn INT UNSIGNED NOT NULL,
-                  FinalizedOn INT UNSIGNED
+                  FinalizedOn INT UNSIGNED,
+                  ClientIPAddress VARCHAR(255) NOT NULL
                 )";
 
                 if ($conn2->query($sqlCreateTableUsers) === TRUE &&

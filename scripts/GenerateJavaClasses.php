@@ -73,8 +73,11 @@
                 "import java.sql.Time;\r\n" .
                 "import java.text.ParseException;\r\n" .
                 "import java.text.SimpleDateFormat;\r\n" .
-                "import java.util.Date;\r\n"
-            . "\r\n\r\n";
+                "import java.util.Date;\r\n" .
+                "import java.util.ArrayList;\r\n" .
+                "import java.util.List;\r\n" .
+                "import java.util.Vector;\r\n" .
+             "\r\n\r\n";
             return $str;
         }//end generateImports()
 
@@ -90,7 +93,12 @@
         public static function getObjectConstructorBindings($allFields) {
             $objectBindings = "";
             foreach ($allFields as $field) {
-                $objectBindings .= "this." . $field["Field"] . " = " . $field["Field"] . ";\n\t\t";
+                if ($field["Type"] == "date")
+                    $objectBindings .= "try { this." . $field["Field"] . " = DATE_FORMAT.parse(" . $field["Field"] . "); }\r\n\t\tcatch (ParseException e) { e.printStackTrace(); }\n\t\t";
+                else if ($field["Type"] == "time")
+                    $objectBindings .= "try { \r\n\t\tDate date = TIME_FORMAT.parse(" . $field["Field"] . "); \r\n\t\tthis." . $field["Field"] . " = new Time(date.getTime()); \r\n\t\t} catch (ParseException e) { e.printStackTrace(); }\n\t\t";
+                else
+                    $objectBindings .= "this." . $field["Field"] . " = " . $field["Field"] . ";\n\t\t";
             }//end foreach field
             $objectBindings = substr($objectBindings, 0, strlen($objectBindings) - 3);
             return $objectBindings;
@@ -100,7 +108,7 @@
         public static function getConstructorParameters($allFields) {
             $constructorParams = "";
             foreach ($allFields as $field) {
-                $constructorParams .= "\r\n\t\t" . getFieldJavaType($field["Type"]) . " " . $field["Field"] . ", ";
+                $constructorParams .= "\r\n\t\t" . getFieldJavaTypeForConstructor($field["Type"]) . " " . $field["Field"] . ", ";
             }//end foreach field
             $constructorParams = substr($constructorParams, 0, strlen($constructorParams) - 2);
             return $constructorParams . "\r\n\t\t";
@@ -201,7 +209,7 @@
     
     /**
      * Converts an array of " . ucfirst($tableName) . " objects to a JSON Array.
-     * @param " . ucfirst($tableName) . "[] " . ucfirst($tableName) . " array
+     * @param " . $tableName . "_array
      * @return String
      */
     public static String toJSONArray(" . ucfirst($tableName) . " [] " . $tableName . "_array) {
@@ -213,6 +221,59 @@
         strArray = new StringBuilder(strArray.substring(0, strArray.length() - 3));
         strArray.append(\"} ] \");
         return strArray.toString();
+    }
+    
+    /**
+     * Converts an ArrayList of " . ucfirst($tableName) . " objects to a JSON Array.
+     * @param " . $tableName . "_arraylist ArrayList of " . ucfirst($tableName) . " to convert to JSON.
+     * @return String
+     */
+    public static String toJSONArray(ArrayList<" . ucfirst($tableName) . "> " . $tableName . "_arraylist) {
+        StringBuilder strArray = new StringBuilder(\"[ \");
+        for (final " . ucfirst($tableName) . " i : " . $tableName . "_arraylist) {
+            strArray.append(i.toJSON());
+            strArray.append(\", \");
+        }
+        strArray = new StringBuilder(strArray.substring(0, strArray.length() - 3));
+        strArray.append(\"} ] \");
+        return strArray.toString();
+    }
+    
+    /**
+     * Converts an Vector of " . ucfirst($tableName) . " objects to a JSON Array.
+     * @param " . $tableName . "_vector Vector of " . ucfirst($tableName) . " to convert to JSON.
+     * @return String
+     */
+    public static String toJSONArray(Vector<" . ucfirst($tableName) . "> " . $tableName . "_vector) {
+        StringBuilder strArray = new StringBuilder(\"[ \");
+        for (final " . ucfirst($tableName) . " i : " . $tableName . "_vector) {
+            strArray.append(i.toJSON());
+            strArray.append(\", \");
+        }
+        strArray = new StringBuilder(strArray.substring(0, strArray.length() - 3));
+        strArray.append(\"} ] \");
+        return strArray.toString();
+    }
+    
+    /**
+     * Converts a List of " . ucfirst($tableName) . " objects to a JSON Array.
+     * @param " . $tableName . "_list List of " . ucfirst($tableName) . " to convert to JSON.
+     * @return String
+     */
+    public static String toJSONArray(List<" . ucfirst($tableName) . "> " . $tableName . "_list) {
+        StringBuilder strArray = new StringBuilder(\"[ \");
+        for (final " . ucfirst($tableName) . " i : " . $tableName . "_list) {
+            strArray.append(i.toJSON());
+            strArray.append(\", \");
+        }
+        strArray = new StringBuilder(strArray.substring(0, strArray.length() - 3));
+        strArray.append(\"} ] \");
+        return strArray.toString();
+    }
+    
+    @Override
+    public String toString() {
+        return toJSON();
     }\r\n";
             return $str;
         }//end generateToJSON()
@@ -244,5 +305,18 @@
         else if (strpos($fieldType, "int") !== false) return "int";
         else if (strpos($fieldType, "varchar") !== false) return "String";
     }//end getFieldJavaType()
+
+    function getFieldJavaTypeForConstructor($fieldType) {
+        if ($fieldType == "tinyint(1)") return "boolean";
+        else if ($fieldType == "char(1)") return "char";
+        else if ($fieldType == "float") return "float";
+        else if ($fieldType == "double") return "double";
+        else if ($fieldType == "text") return "String";
+        else if ($fieldType == "longtext") return "String";
+        else if ($fieldType == "date") return "String";
+        else if ($fieldType == "time") return "String";
+        else if (strpos($fieldType, "int") !== false) return "int";
+        else if (strpos($fieldType, "varchar") !== false) return "String";
+    }//end getFieldJavaTypeForConstructor()
 
 ?>
