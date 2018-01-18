@@ -114,7 +114,7 @@
                   UserLevelName VARCHAR(255) NOT NULL
                 )";
 
-                $sqlInsertDefaultUserLevels = "INSERT INTO UserLevels (UserLevelName) VALUES (\"Administrator\"), (\"Manager\"), (\"User\");";
+                $sqlInsertDefaultUserLevels = "INSERT INTO UserLevels (UserLevelName) VALUES (\"Administrator\"), (\"Manager\"), (\"User\"), (\"Public\");";
                 $sqlCreateTableSession = "CREATE TABLE Sessions (
                   SessionID VARCHAR(255) NOT NULL PRIMARY KEY,
                   UserID INT UNSIGNED NOT NULL,
