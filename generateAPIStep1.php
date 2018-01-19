@@ -197,7 +197,7 @@ foreach ($tableNames as $tableName) {
         $delete_users .= "<td style=\"text-align: center\"><input title=\"" . $uln . " access to delete " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"delete_" . $tableName . "_" . $uln . "\" class=\"" . $tableName . " delete\"/> </td>\r\n";
         $getsize_users .= "<td style=\"text-align: center\"><input title=\"" . $uln . " access to get size " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"getSize_" . $tableName . "_" . $uln . "\" class=\"" . $tableName . " getSize\"/> </td>\r\n";
         $isEmpty_users .= "<td style=\"text-align: center\"><input title=\"" . $uln . " access to isEmpty " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"isEmpty_" . $tableName . "_" . $uln . "\" class=\"" . $tableName . " isEmpty\"/> </td>\r\n";
-    }
+    }//end foreach userLevel
 
     $str = "
 

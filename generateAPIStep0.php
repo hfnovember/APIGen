@@ -18,8 +18,6 @@ if (isset($_GET["status"])) {
              echo "<p class='errorCard'>Database name cannot be empty.</p>";
              break; */
 
-
-
     }
 }
 

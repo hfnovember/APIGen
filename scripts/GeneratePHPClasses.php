@@ -59,7 +59,7 @@
             include_once("GeneratorUtils.php");
             $str = "";
             $str .= getGeneratorHeader($_GET["dbName"], $tableName . ".php", $tableName, "");
-            $str .= "include_once(\"DBLogin.php\");\r\n\r\n";
+            $str .= "include_once(\"../../DBLogin.php\");\r\n\r\n";
             $str .= "class " . ucfirst($tableName) . " implements JsonSerializable {\r\n";
             $str .= $classContent;
             $str .= "\r\n}";
@@ -111,6 +111,7 @@
                 self::generateDelete($tableName, $primaryKeyField) .
                 self::generateGetSize($tableName, $primaryKeyField) .
                 self::generateIsEmpty($tableName, $primaryKeyField) .
+                self::generateSearchByField($tableName) .
                 self::generateJsonSerialize($tableName, $allFields)
             ;
 
@@ -381,6 +382,32 @@
     }\r\n";
             return $str;
         }//end generateIsEmpty()
+
+        public static function generateSearchByField($tableName) {
+            $str = "\r\n
+    /**
+     * Searches the database for matches in the given field-value pairs in the given associative array.
+     * The array should be in the format FieldName -> ValueToSearch where both values are strings.
+     * @return array|bool
+     */
+    public static function searchByFields(\$fieldsAndValuesAssocArray) {
+        \$conn = dbLogin();
+        
+        \$combinedWhereClause = \"\";
+        
+        foreach (\$fieldsAndValuesAssocArray as \$field => \$value) {
+            \$combinedWhereClause .= \$field . \" = \\\"\" . \$value . \"\\\" AND \";
+        }
+        \$combinedWhereClause = substr(\$combinedWhereClause, 0, strlen(\$combinedWhereClause) - 4);
+        
+        \$sql = \"SELECT * FROM " . $tableName . " WHERE \" . \$combinedWhereClause;
+        \$result = \$conn->query(\$sql);
+        \$itemsArray = array();
+        while (\$row = \$result->fetch_object()) array_push(\$itemsArray, \$row);
+        return \$itemsArray;
+    }\r\n";
+            return $str;
+        }//end generateSearchByField()
 
 
         public static function generateJsonSerialize($tableName, $allFields) {
