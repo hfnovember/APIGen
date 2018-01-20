@@ -413,7 +413,7 @@ foreach ($tableNames as $tableName) {
                             }
                             else {
                                 a[i].checked = false;
-                                a[i].disabled = true;
+                                a[i].disabled = false;
                             }
                         }
                     }
@@ -424,13 +424,14 @@ foreach ($tableNames as $tableName) {
                 var a = document.getElementsByTagName(\"input\");
                 for (i = 0; i < a.length; i++) {
                     if (a[i].type == \"checkbox\") {
-                        a[i].disabled = false;
                         var name = a[i].getAttribute(\"name\");
                         if (name.indexOf(\"".$tableName."\") !== -1) {
-                            if (name.indexOf(\"Public\") !== -1 || name.indexOf(\"_generate\") !== -1 || name.indexOf(\"generate_\") !== -1)
-                                a[i].checked = true;
-                            else
-                                a[i].checked = false;
+                            a[i].disabled = false;
+                            if (name.indexOf(\"_generate\") !== -1 || name.indexOf(\"generate_\") !== -1) a[i].checked = true;
+                            else a[i].checked = false;
+            
+                            if (name.indexOf(\"Public\") !== -1) a[i].checked = false;
+                            else a[i].checked = true;
                         }
                     }
                 }
@@ -444,6 +445,10 @@ foreach ($tableNames as $tableName) {
                         if (name.indexOf(\"".$tableName."\") !== -1) {
                             a[i].disabled = true;
                             a[i].checked = false;
+                            if (name.indexOf(\"_generate\") !== -1) {
+                                a[i].checked = false;
+                                a[i].disabled = false;
+                            }
                         }
                     }
                 }
@@ -478,9 +483,11 @@ if (isset($_GET["status"])) {
 
 <form name="next" action="scripts/GenerateAPIFromTables.php" method="post">
 
-    <p><b>Important Note: </b>Administrator users have access to all functions of the generated API by default.</p>
+    <p>Please choosen which API endpoints to generate from the database tables and which users are allowed to access these endpoints. Administrator users have access to all functions of the generated API by default.</p>
 
-    <h4>Presets for all tables</h4>
+    <hr/>
+
+    <h3>Presets for all tables</h3>
 
     <a class="button blue" onclick="adminOnly()">Admin-Only Endpoints</a>
     <a class="button blue" onclick="nonPublic()">Non-Public Endpoints</a>
@@ -522,7 +529,7 @@ if (isset($_GET["status"])) {
                 }
                 else {
                     a[i].checked = false;
-                    a[i].disabled = true;
+                    a[i].disabled = false;
                 }
             }
         }
@@ -534,10 +541,12 @@ if (isset($_GET["status"])) {
             if (a[i].type == "checkbox") {
                 a[i].disabled = false;
                 var name = a[i].getAttribute("name");
-                if (name.indexOf("Public") !== -1 || name.indexOf("_generate") !== -1 || name.indexOf("generate_") !== -1)
-                    a[i].checked = true;
-                else
-                    a[i].checked = false;
+
+                if (name.indexOf("_generate") !== -1 || name.indexOf("generate_") !== -1) a[i].checked = true;
+                else a[i].checked = false;
+
+                if (name.indexOf("Public") !== -1) a[i].checked = false;
+                else a[i].checked = true;
             }
         }
     }
@@ -546,8 +555,13 @@ if (isset($_GET["status"])) {
         var a = document.getElementsByTagName("input");
         for (i = 0; i < a.length; i++) {
             if (a[i].type == "checkbox") {
+                var name = a[i].getAttribute("name");
                 a[i].disabled = true;
                 a[i].checked = false;
+                if (name.indexOf("_generate") !== -1) {
+                    a[i].checked = false;
+                    a[i].disabled = false;
+                }
             }
         }
     }
