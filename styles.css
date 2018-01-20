@@ -25,6 +25,7 @@ input {
 }
 
 .button {
+    display: inline-block;
     background-color: grey;
     color: white;
     border: 1px solid black;
@@ -35,6 +36,18 @@ input {
     text-decoration: none;
 }
 
+.small {
+    font-size: small; !important;
+}
+
 .button:hover {
     background-color: black;
+}
+
+.red {
+    background-color: crimson; !important
+}
+
+.blue {
+    background-color: dodgerblue; !important
 }

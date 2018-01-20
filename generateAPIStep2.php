@@ -164,9 +164,19 @@ foreach ($tableNames as $tableName) {
             <td style=\"text-align: center\"><input title=\"Generate " . $tableName . " get by #indexName\" class=\"" . $tableName . "\" type=\"checkbox\" checked=\"checked\" id=\"generate_" . $tableName . "_getBy" . ucfirst($indexer["Field"]) . "\" name=\"generate_" . $tableName . "_getBy" . ucfirst($indexer["Field"]) . "\" onclick=\"" . $tableName . "_GetBy" . ucfirst($indexer["Field"]) . "()\"/> </td>
         ";
             foreach ($userLevels as $userLevel) {
-                $ul = "<td style=\"text-align: center\"><input title=\"" . ucfirst($indexer["Field"]) . " access to get by " . ucfirst($indexer["Field"]) . " " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"getBy" . ucfirst($indexer["Field"]) . "_" . $tableName . "_" . $userLevel->UserLevelName . "\" class=\"" . $tableName . " getBy" . ucfirst($indexer["Field"]) . "\"/> </td>";
-                $x .= $ul;
+                if ($userLevel->UserLevelName != "Public" && $userLevel->UserLevelName != "Administrator") {
+                    $ul = "<td style=\"text-align: center\"><input title=\"" . ucfirst($indexer["Field"]) . " access to get by " . ucfirst($indexer["Field"]) . " " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"getBy" . ucfirst($indexer["Field"]) . "_" . $tableName . "_" . $userLevel->UserLevelName . "\" class=\"" . $tableName . " getBy" . ucfirst($indexer["Field"]) . "\"/> </td>";
+                    $x .= $ul;
+                }
             }
+
+            foreach ($userLevels as $userLevel) {
+                if ($userLevel->UserLevelName == "Public") {
+                    $ul = "<td style=\"text-align: center\"><input title=\"" . ucfirst($indexer["Field"]) . " access to get by " . ucfirst($indexer["Field"]) . " " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"getBy" . ucfirst($indexer["Field"]) . "_" . $tableName . "_" . $userLevel->UserLevelName . "\" class=\"" . $tableName . " getBy" . ucfirst($indexer["Field"]) . "\"/> </td>";
+                    $x .= $ul;
+                }
+            }
+
             $indexerTableHTML .= $x . "</tr>";
 
             $indexFunctions .= "
@@ -191,10 +201,10 @@ foreach ($tableNames as $tableName) {
         $isEmpty_users = "";
 
         foreach ($userLevels as $userLevel) {
-            if ($userLevel->UserLevelName != "Public") {
+            if ($userLevel->UserLevelName != "Public" && $userLevel->UserLevelName != "Administrator") {
                 $uln = $userLevel->UserLevelName;
                 $headerUserTypes .= "<th>" . $uln . "</th>\r\n";
-                $create_users .= "<td style=\"text-align: center\"><input title=\"" . $uln . " access to create " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"create_" . $tableName . "_" . $uln . "\" class=\"" . $tableName . " create\"/> </td>\r\n";
+                $create_users .= "<td style=\"text-align: center;\"><input title=\"" . $uln . " access to create " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"create_" . $tableName . "_" . $uln . "\" class=\"" . $tableName . " create\"/> </td>\r\n";
                 $getByID_users .= "<td style=\"text-align: center\"><input title=\"" . $uln . " access to get by ID " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"getByID_" . $tableName . "_" . $uln . "\" class=\"" . $tableName . " getByID\"/> </td>\r\n";
                 $getMultiple_users .= "<td style=\"text-align: center\"><input title=\"" . $uln . " access to get multiple " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"getMultiple_" . $tableName . "_" . $uln . "\" class=\"" . $tableName . " getMultiple\"/> </td>\r\n";
                 $update_users .= "<td style=\"text-align: center\"><input title=\"" . $uln . " access to update " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"update_" . $tableName . "_" . $uln . "\" class=\"" . $tableName . " update\"/> </td>\r\n";
@@ -225,6 +235,11 @@ foreach ($tableNames as $tableName) {
     <hr/>
     
     <h3>" . ucfirst($tableName) . "</h3>
+    
+    <div class='button small' onclick='".$tableName."_adminOnly()'>Admin only</div>
+    <div class='button small' onclick='".$tableName."_nonPublic()'>Non-Public</div>
+    <div class='button small' onclick='".$tableName."_allEndpoints()'>All</div>
+    <div class='button small' onclick='".$tableName."_noEndpoints()'>None</div>
     
      <p><b>Base URL:</b> <i>API/ </i><input style=\"font-style: italic;\" type=\"text\" maxlength=\"50\" title=\"" . $tableName . " URL\" value=\"" . $tableName . "\" name=\"url_" . $tableName . "\"/> Generate:
         <input type=\"checkbox\" id=\"" . $tableName . "_generate\" name=\"" . $tableName . "_generate\" checked=\"checked\" onclick=\"" . $tableName . "_Generate()\"/></p>
@@ -372,6 +387,67 @@ foreach ($tableNames as $tableName) {
                     a[i].disabled = !c.checked;
                 }
             }
+            
+            function ".$tableName."_allEndpoints() {
+                var a = document.getElementsByTagName(\"input\");
+                for (i = 0; i < a.length; i++) {
+                    if (a[i].type == \"checkbox\") {
+                        var name = a[i].getAttribute(\"name\");
+                        if (name.indexOf(\"".$tableName."\") !== -1) {
+                            a[i].checked = true;
+                            a[i].disabled = false;
+                        }
+                    }
+                }
+            }
+        
+            function ".$tableName."_adminOnly() {
+                var a = document.getElementsByTagName(\"input\");
+                for (i = 0; i < a.length; i++) {
+                    if (a[i].type == \"checkbox\") {
+                        var name = a[i].getAttribute(\"name\");
+                        if (name.indexOf(\"".$tableName."\") !== -1) {
+                            if (name.indexOf(\"_generate\") !== -1 || name.indexOf(\"generate_\") !== -1) {
+                                a[i].checked = true;
+                                a[i].disabled = false;
+                            }
+                            else {
+                                a[i].checked = false;
+                                a[i].disabled = true;
+                            }
+                        }
+                    }
+                }
+            }
+        
+            function ".$tableName."_nonPublic() {
+                var a = document.getElementsByTagName(\"input\");
+                for (i = 0; i < a.length; i++) {
+                    if (a[i].type == \"checkbox\") {
+                        a[i].disabled = false;
+                        var name = a[i].getAttribute(\"name\");
+                        if (name.indexOf(\"".$tableName."\") !== -1) {
+                            if (name.indexOf(\"Public\") !== -1 || name.indexOf(\"_generate\") !== -1 || name.indexOf(\"generate_\") !== -1)
+                                a[i].checked = true;
+                            else
+                                a[i].checked = false;
+                        }
+                    }
+                }
+            }
+        
+            function ".$tableName."_noEndpoints() {
+                var a = document.getElementsByTagName(\"input\");
+                for (i = 0; i < a.length; i++) {
+                    if (a[i].type == \"checkbox\") {
+                        var name = a[i].getAttribute(\"name\");
+                        if (name.indexOf(\"".$tableName."\") !== -1) {
+                            a[i].disabled = true;
+                            a[i].checked = false;
+                        }
+                    }
+                }
+            }
 
         </script>
     
@@ -402,17 +478,81 @@ if (isset($_GET["status"])) {
 
 <form name="next" action="scripts/GenerateAPIFromTables.php" method="post">
 
+    <p><b>Important Note: </b>Administrator users have access to all functions of the generated API by default.</p>
+
+    <h4>Presets for all tables</h4>
+
+    <a class="button blue" onclick="adminOnly()">Admin-Only Endpoints</a>
+    <a class="button blue" onclick="nonPublic()">Non-Public Endpoints</a>
+    <a class="button blue" onclick="allEndpoints()">All Endpoints</a>
+    <a class="button blue" onclick="noEndpoints()">No Endpoints</a>
+
     <?php echo $fullTable; ?>
 
     <div style="margin-top: 30px; clear:both; float:none;"></div>
 
     <input style="float: right;" class="button" type="submit" value="Next ->" />
-    <a class="button" style="float: left;" href="generateAPIStep0.php"><- Back to Step 0</a>
+    <a class="button" style="float: left;" href="generateAPIStep1.php"><- Back to Step 1</a>
 
 </form>
 
 
 </body>
+
+<script>
+
+    function allEndpoints() {
+        var a = document.getElementsByTagName("input");
+        for (i = 0; i < a.length; i++) {
+            if (a[i].type == "checkbox") {
+                a[i].checked = true;
+                a[i].disabled = false;
+            }
+        }
+    }
+
+    function adminOnly() {
+        var a = document.getElementsByTagName("input");
+        for (i = 0; i < a.length; i++) {
+            if (a[i].type == "checkbox") {
+                var name = a[i].getAttribute("name");
+                if (name.indexOf("_generate") !== -1 || name.indexOf("generate_") !== -1) {
+                    a[i].checked = true;
+                    a[i].disabled = false;
+                }
+                else {
+                    a[i].checked = false;
+                    a[i].disabled = true;
+                }
+            }
+        }
+    }
+
+    function nonPublic() {
+        var a = document.getElementsByTagName("input");
+        for (i = 0; i < a.length; i++) {
+            if (a[i].type == "checkbox") {
+                a[i].disabled = false;
+                var name = a[i].getAttribute("name");
+                if (name.indexOf("Public") !== -1 || name.indexOf("_generate") !== -1 || name.indexOf("generate_") !== -1)
+                    a[i].checked = true;
+                else
+                    a[i].checked = false;
+            }
+        }
+    }
+
+    function noEndpoints() {
+        var a = document.getElementsByTagName("input");
+        for (i = 0; i < a.length; i++) {
+            if (a[i].type == "checkbox") {
+                a[i].disabled = true;
+                a[i].checked = false;
+            }
+        }
+    }
+
+</script>
 
 
 </html>
