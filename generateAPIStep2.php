@@ -172,7 +172,7 @@ foreach ($tableNames as $tableName) {
 
             foreach ($userLevels as $userLevel) {
                 if ($userLevel->UserLevelName == "Public") {
-                    $ul = "<td style=\"text-align: center\"><input title=\"" . ucfirst($indexer["Field"]) . " access to get by " . ucfirst($indexer["Field"]) . " " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"getBy" . ucfirst($indexer["Field"]) . "_" . $tableName . "_" . $userLevel->UserLevelName . "\" class=\"" . $tableName . " getBy" . ucfirst($indexer["Field"]) . "\"/> </td>";
+                    $ul = "<td style=\"text-align: center\"><input onclick='".$tableName."_getBy".ucfirst($indexer["Field"])."PublicAccess()' title=\"" . ucfirst($indexer["Field"]) . " access to get by " . ucfirst($indexer["Field"]) . " " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"getBy" . ucfirst($indexer["Field"]) . "_" . $tableName . "_" . $userLevel->UserLevelName . "\" class=\"" . $tableName . " getBy" . ucfirst($indexer["Field"]) . "\"/> </td>";
                     $x .= $ul;
                 }
             }
@@ -186,6 +186,32 @@ foreach ($tableNames as $tableName) {
             var a = document.getElementsByClassName(\"" . $tableName . " getBy" . ucfirst($indexer["Field"]) . "\");
             for (i = 0; i < a.length; i++) a[i].checked = c.checked;
         }
+        
+        function ".$tableName."_getBy".ucfirst($indexer["Field"])."PublicAccess() {
+                var a = document.getElementsByTagName(\"input\");
+                var pu;
+                
+                
+                for (i = 0; i < a.length; i++) {
+                    if (a[i].type == \"checkbox\") {
+                        var name = a[i].getAttribute(\"name\");
+                         if (name.indexOf(\"getBy".ucfirst($indexer["Field"])."\") !== -1 && name.indexOf(\"Public\") !== -1 && name.indexOf(\"".$tableName."\") !== -1) {
+                            pu = a[i];
+                         }
+                    }
+                }
+                
+                
+                for (i = 0; i < a.length; i++) {
+                    if (a[i].type == \"checkbox\") {
+                        var name = a[i].getAttribute(\"name\");
+                        if (name.indexOf(\"".ucfirst($indexer["Field"])."\") !== -1 && name.indexOf(\"".$tableName."\") !== -1 && name.indexOf(\"generate\") === -1) {
+                            a[i].checked = pu.checked;
+                            a[i].disabled = false;
+                        }
+                    }
+                }
+            }
         
         ";
         }
@@ -219,14 +245,14 @@ foreach ($tableNames as $tableName) {
             if ($userLevel->UserLevelName == "Public") {
                 $uln = $userLevel->UserLevelName;
                 $headerUserTypes .= "<th>" . $uln . "</th>\r\n";
-                $create_users .= "<td style=\"text-align: center\"><input title=\"" . $uln . " access to create " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"create_" . $tableName . "_" . $uln . "\" class=\"" . $tableName . " create\"/> </td>\r\n";
-                $getByID_users .= "<td style=\"text-align: center\"><input title=\"" . $uln . " access to get by ID " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"getByID_" . $tableName . "_" . $uln . "\" class=\"" . $tableName . " getByID\"/> </td>\r\n";
-                $getMultiple_users .= "<td style=\"text-align: center\"><input title=\"" . $uln . " access to get multiple " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"getMultiple_" . $tableName . "_" . $uln . "\" class=\"" . $tableName . " getMultiple\"/> </td>\r\n";
-                $update_users .= "<td style=\"text-align: center\"><input title=\"" . $uln . " access to update " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"update_" . $tableName . "_" . $uln . "\" class=\"" . $tableName . " update\"/> </td>\r\n";
-                $searchByField_users .= "<td style=\"text-align: center\"><input title=\"" . $uln . " access to searchByField " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"searchByField_" . $tableName . "_" . $uln . "\" class=\"" . $tableName . " searchByField\"/> </td>\r\n";
-                $delete_users .= "<td style=\"text-align: center\"><input title=\"" . $uln . " access to delete " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"delete_" . $tableName . "_" . $uln . "\" class=\"" . $tableName . " delete\"/> </td>\r\n";
-                $getsize_users .= "<td style=\"text-align: center\"><input title=\"" . $uln . " access to get size " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"getSize_" . $tableName . "_" . $uln . "\" class=\"" . $tableName . " getSize\"/> </td>\r\n";
-                $isEmpty_users .= "<td style=\"text-align: center\"><input title=\"" . $uln . " access to isEmpty " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"isEmpty_" . $tableName . "_" . $uln . "\" class=\"" . $tableName . " isEmpty\"/> </td>\r\n";
+                $create_users .= "<td style=\"text-align: center\"><input onclick='".$tableName."_createPublicAccess()' title=\"" . $uln . " access to create " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"create_" . $tableName . "_" . $uln . "\" class=\"" . $tableName . " create\"/> </td>\r\n";
+                $getByID_users .= "<td style=\"text-align: center\"><input onclick='".$tableName."_getByIDPublicAccess()' title=\"" . $uln . " access to get by ID " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"getByID_" . $tableName . "_" . $uln . "\" class=\"" . $tableName . " getByID\"/> </td>\r\n";
+                $getMultiple_users .= "<td style=\"text-align: center\"><input onclick='".$tableName."_getMultiplePublicAccess()'  title=\"" . $uln . " access to get multiple " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"getMultiple_" . $tableName . "_" . $uln . "\" class=\"" . $tableName . " getMultiple\"/> </td>\r\n";
+                $update_users .= "<td style=\"text-align: center\"><input onclick='".$tableName."_updatePublicAccess()'  title=\"" . $uln . " access to update " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"update_" . $tableName . "_" . $uln . "\" class=\"" . $tableName . " update\"/> </td>\r\n";
+                $searchByField_users .= "<td style=\"text-align: center\"><input onclick='".$tableName."_searchByFieldPublicAccess()'  title=\"" . $uln . " access to searchByField " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"searchByField_" . $tableName . "_" . $uln . "\" class=\"" . $tableName . " searchByField\"/> </td>\r\n";
+                $delete_users .= "<td style=\"text-align: center\"><input onclick='".$tableName."_deletePublicAccess()'  title=\"" . $uln . " access to delete " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"delete_" . $tableName . "_" . $uln . "\" class=\"" . $tableName . " delete\"/> </td>\r\n";
+                $getsize_users .= "<td style=\"text-align: center\"><input onclick='".$tableName."_getSizePublicAccess()'  title=\"" . $uln . " access to get size " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"getSize_" . $tableName . "_" . $uln . "\" class=\"" . $tableName . " getSize\"/> </td>\r\n";
+                $isEmpty_users .= "<td style=\"text-align: center\"><input onclick='".$tableName."_isEmptyPublicAccess()'  title=\"" . $uln . " access to isEmpty " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"isEmpty_" . $tableName . "_" . $uln . "\" class=\"" . $tableName . " isEmpty\"/> </td>\r\n";
             }
         }//end foreach userLevel
 
@@ -449,6 +475,214 @@ foreach ($tableNames as $tableName) {
                                 a[i].checked = false;
                                 a[i].disabled = false;
                             }
+                        }
+                    }
+                }
+            }
+            
+            function ".$tableName."_createPublicAccess() {
+                var a = document.getElementsByTagName(\"input\");
+                var pu;
+                
+                
+                for (i = 0; i < a.length; i++) {
+                    if (a[i].type == \"checkbox\") {
+                        var name = a[i].getAttribute(\"name\");
+                         if (name.indexOf(\"create\") !== -1 && name.indexOf(\"Public\") !== -1 && name.indexOf(\"".$tableName."\") !== -1) {
+                            pu = a[i];
+                         }
+                    }
+                }
+                
+                
+                for (i = 0; i < a.length; i++) {
+                    if (a[i].type == \"checkbox\") {
+                        var name = a[i].getAttribute(\"name\");
+                        if (name.indexOf(\"create\") !== -1 && name.indexOf(\"".$tableName."\") !== -1 && name.indexOf(\"generate\") === -1) {
+                            a[i].checked = pu.checked;
+                            a[i].disabled = false;
+                        }
+                    }
+                }
+            }
+            
+            function ".$tableName."_getByIDPublicAccess() {
+                var a = document.getElementsByTagName(\"input\");
+                var pu;
+                
+                
+                for (i = 0; i < a.length; i++) {
+                    if (a[i].type == \"checkbox\") {
+                        var name = a[i].getAttribute(\"name\");
+                         if (name.indexOf(\"getByID\") !== -1 && name.indexOf(\"Public\") !== -1 && name.indexOf(\"".$tableName."\") !== -1) {
+                            pu = a[i];
+                         }
+                    }
+                }
+                
+                
+                for (i = 0; i < a.length; i++) {
+                    if (a[i].type == \"checkbox\") {
+                        var name = a[i].getAttribute(\"name\");
+                        if (name.indexOf(\"getByID\") !== -1 && name.indexOf(\"".$tableName."\") !== -1 && name.indexOf(\"generate\") === -1) {
+                            a[i].checked = pu.checked;
+                            a[i].disabled = false;
+                        }
+                    }
+                }
+            }
+            
+            function ".$tableName."_getMultiplePublicAccess() {
+                var a = document.getElementsByTagName(\"input\");
+                var pu;
+                
+                
+                for (i = 0; i < a.length; i++) {
+                    if (a[i].type == \"checkbox\") {
+                        var name = a[i].getAttribute(\"name\");
+                         if (name.indexOf(\"getMultiple\") !== -1 && name.indexOf(\"Public\") !== -1 && name.indexOf(\"".$tableName."\") !== -1) {
+                            pu = a[i];
+                         }
+                    }
+                }
+                
+                
+                for (i = 0; i < a.length; i++) {
+                    if (a[i].type == \"checkbox\") {
+                        var name = a[i].getAttribute(\"name\");
+                        if (name.indexOf(\"getMultiple\") !== -1 && name.indexOf(\"".$tableName."\") !== -1 && name.indexOf(\"generate\") === -1) {
+                            a[i].checked = pu.checked;
+                            a[i].disabled = false;
+                        }
+                    }
+                }
+            }
+            
+            function ".$tableName."_updatePublicAccess() {
+                var a = document.getElementsByTagName(\"input\");
+                var pu;
+                
+                
+                for (i = 0; i < a.length; i++) {
+                    if (a[i].type == \"checkbox\") {
+                        var name = a[i].getAttribute(\"name\");
+                         if (name.indexOf(\"update\") !== -1 && name.indexOf(\"Public\") !== -1 && name.indexOf(\"".$tableName."\") !== -1) {
+                            pu = a[i];
+                         }
+                    }
+                }
+                
+                
+                for (i = 0; i < a.length; i++) {
+                    if (a[i].type == \"checkbox\") {
+                        var name = a[i].getAttribute(\"name\");
+                        if (name.indexOf(\"update\") !== -1 && name.indexOf(\"".$tableName."\") !== -1 && name.indexOf(\"generate\") === -1) {
+                            a[i].checked = pu.checked;
+                            a[i].disabled = false;
+                        }
+                    }
+                }
+            }
+            
+            function ".$tableName."_searchByFieldPublicAccess() {
+                var a = document.getElementsByTagName(\"input\");
+                var pu;
+                
+                
+                for (i = 0; i < a.length; i++) {
+                    if (a[i].type == \"checkbox\") {
+                        var name = a[i].getAttribute(\"name\");
+                         if (name.indexOf(\"searchByField\") !== -1 && name.indexOf(\"Public\") !== -1 && name.indexOf(\"".$tableName."\") !== -1) {
+                            pu = a[i];
+                         }
+                    }
+                }
+                
+                
+                for (i = 0; i < a.length; i++) {
+                    if (a[i].type == \"checkbox\") {
+                        var name = a[i].getAttribute(\"name\");
+                        if (name.indexOf(\"searchByField\") !== -1 && name.indexOf(\"".$tableName."\") !== -1 && name.indexOf(\"generate\") === -1) {
+                            a[i].checked = pu.checked;
+                            a[i].disabled = false;
+                        }
+                    }
+                }
+            }
+            
+            function ".$tableName."_deletePublicAccess() {
+                var a = document.getElementsByTagName(\"input\");
+                var pu;
+                
+                
+                for (i = 0; i < a.length; i++) {
+                    if (a[i].type == \"checkbox\") {
+                        var name = a[i].getAttribute(\"name\");
+                         if (name.indexOf(\"delete\") !== -1 && name.indexOf(\"Public\") !== -1 && name.indexOf(\"".$tableName."\") !== -1) {
+                            pu = a[i];
+                         }
+                    }
+                }
+                
+                
+                for (i = 0; i < a.length; i++) {
+                    if (a[i].type == \"checkbox\") {
+                        var name = a[i].getAttribute(\"name\");
+                        if (name.indexOf(\"delete\") !== -1 && name.indexOf(\"".$tableName."\") !== -1 && name.indexOf(\"generate\") === -1) {
+                            a[i].checked = pu.checked;
+                            a[i].disabled = false;
+                        }
+                    }
+                }
+            }
+            
+            function ".$tableName."_getSizePublicAccess() {
+                var a = document.getElementsByTagName(\"input\");
+                var pu;
+                
+                
+                for (i = 0; i < a.length; i++) {
+                    if (a[i].type == \"checkbox\") {
+                        var name = a[i].getAttribute(\"name\");
+                         if (name.indexOf(\"getSize\") !== -1 && name.indexOf(\"Public\") !== -1 && name.indexOf(\"".$tableName."\") !== -1) {
+                            pu = a[i];
+                         }
+                    }
+                }
+                
+                
+                for (i = 0; i < a.length; i++) {
+                    if (a[i].type == \"checkbox\") {
+                        var name = a[i].getAttribute(\"name\");
+                        if (name.indexOf(\"getSize\") !== -1 && name.indexOf(\"".$tableName."\") !== -1 && name.indexOf(\"generate\") === -1) {
+                            a[i].checked = pu.checked;
+                            a[i].disabled = false;
+                        }
+                    }
+                }
+            }
+            
+            function ".$tableName."_isEmptyPublicAccess() {
+                var a = document.getElementsByTagName(\"input\");
+                var pu;
+                
+                
+                for (i = 0; i < a.length; i++) {
+                    if (a[i].type == \"checkbox\") {
+                        var name = a[i].getAttribute(\"name\");
+                         if (name.indexOf(\"isEmpty\") !== -1 && name.indexOf(\"Public\") !== -1 && name.indexOf(\"".$tableName."\") !== -1) {
+                            pu = a[i];
+                         }
+                    }
+                }
+                
+                
+                for (i = 0; i < a.length; i++) {
+                    if (a[i].type == \"checkbox\") {
+                        var name = a[i].getAttribute(\"name\");
+                        if (name.indexOf(\"isEmpty\") !== -1 && name.indexOf(\"".$tableName."\") !== -1 && name.indexOf(\"generate\") === -1) {
+                            a[i].checked = pu.checked;
+                            a[i].disabled = false;
                         }
                     }
                 }
