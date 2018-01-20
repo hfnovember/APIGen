@@ -111,7 +111,7 @@
 
                 $sqlCreateTableUserLevels = "CREATE TABLE UserLevels (
                   UserLevelID INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-                  UserLevelName VARCHAR(255) NOT NULL
+                  UserLevelName VARCHAR(255) NOT NULL UNIQUE
                 )";
 
                 $sqlInsertDefaultUserLevels = "INSERT INTO UserLevels (UserLevelName) VALUES (\"Administrator\"), (\"Manager\"), (\"User\"), (\"Public\");";
