@@ -120,7 +120,7 @@
     ";
 
                 //Create the allowedUserLevelIDs Array:
-                $export_allowedUserLevelIDsArray = "const allowedUserLevelIDs = array(1, ";
+                $export_allowedUserLevelIDsArray = "\$allowedUserLevelIDs = array(1, ";
                 foreach ($userLevels as $userLevel) {
                     if (isset($_POST[$endpointName. "_" . $table . "_" . $userLevel->UserLevelName])) {
                         $export_allowedUserLevelIDsArray .= $userLevel->UserLevelID . ", ";
@@ -135,8 +135,9 @@
                 foreach ($allFields as $field) {
                     if (($field->Key != "PRI") || ($field->Key == "PRI" && isQuotableType($field->Type))) {
                         $parametersMessage .= $field->Field . " (".toJavaType($field->Type)."), ";
+                        $parameterChecks .= "\tif (!isset(\$_POST[\"".$field->Field."\"]) || \$_POST[\"".$field->Field."\"] == \"\") die(json_encode(\$JSON_INVALID_PARAMS));\r\n";
                     }//end if not primary key
-                    $parameterChecks .= "\tif (!isset(\$_POST[\"".$field->Field."\"]) || \$_POST[\"".$field->Field."\"] == \"\" || ".getTypeCheck($field).") die(json_encode(JSON_INVALID_PARAMS));\r\n";
+                    //$parameterChecks .= "\tif (!isset(\$_POST[\"".$field->Field."\"]) || \$_POST[\"".$field->Field."\"] == \"\" || ".getTypeCheck($field).") die(json_encode(\$JSON_INVALID_PARAMS));\r\n";
                 }//end foreach field
                 $parametersMessage = substr($parametersMessage, 0, strlen($parametersMessage) - 2);
                 $parametersMessage .= ".";
@@ -164,9 +165,9 @@
     const AUTHORIZATION_ERROR_MESSAGE = \"You are not authorized to access this procedure. If you think you should be able to do so, please consult your system's administrator.\";
 
     //JSON returns:
-    const JSON_INVALID_PARAMS = array(STATUS => STATUS_ERROR, TITLE => INVALID_PARAMS_TITLE, MESSAGE => INVALID_PARAMS_MESSAGE);
-    const JSON_TECHNICAL_ERROR = array(STATUS => STATUS_ERROR, TITLE => TECHNICAL_ERROR_TITLE, MESSAGE => TECHNICAL_ERROR_MESSAGE);
-    const JSON_AUTHORIZATION_ERROR = array(STATUS => STATUS_ERROR, TITLE => AUTHORIZATION_ERROR_TITLE, MESSAGE => AUTHORIZATION_ERROR_MESSAGE);
+    \$JSON_INVALID_PARAMS = array(STATUS => STATUS_ERROR, TITLE => INVALID_PARAMS_TITLE, MESSAGE => INVALID_PARAMS_MESSAGE);
+    \$JSON_TECHNICAL_ERROR = array(STATUS => STATUS_ERROR, TITLE => TECHNICAL_ERROR_TITLE, MESSAGE => TECHNICAL_ERROR_MESSAGE);
+    \$JSON_AUTHORIZATION_ERROR = array(STATUS => STATUS_ERROR, TITLE => AUTHORIZATION_ERROR_TITLE, MESSAGE => AUTHORIZATION_ERROR_MESSAGE);
 ";
 
                 echo $strConstants . "<br>";
@@ -184,19 +185,19 @@
     \$conn = dbLogin();
     \$sqlSessions = \"SELECT * FROM Sessions WHERE SessionID = '\" . \$sessionID . \"'\";
     \$result = \$conn->query(\$sqlSessions);
-    if (\$result === FALSE) die(json_encode(JSON_AUTHORIZATION_ERROR));
+    if (\$result === FALSE) die(json_encode(\$JSON_AUTHORIZATION_ERROR));
     else {
         \$session = \$result->fetch_object();
         \$sqlGetUser = \"SELECT UserLevelID FROM Users WHERE UserID = \" . \$session->UserID;
         \$result = \$conn->query(\$sqlGetUser);
         \$user = \$result->fetch_object();
         \$allowed = false;
-        foreach (allowedUserLevelIDs as \$id) {
+        foreach (\$allowedUserLevelIDs as \$id) {
             if (\$user->UserLevelID == \$id) {
                 \$allowed = true; break;
             }//end if match
         }//end foreach UserLevelID
-        if (!\$allowed) die(json_encode(JSON_AUTHORIZATION_ERROR));
+        if (!\$allowed) die(json_encode(\$JSON_AUTHORIZATION_ERROR));
     }//end if session found
     ";
 
