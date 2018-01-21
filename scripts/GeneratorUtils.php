@@ -214,14 +214,26 @@
             \$result = \$conn->query(\$sql);
             if (\$result->num_rows > 0) {
                 \$currentUser = \$result->fetch_object();
-                \$newSessionID = md5(time() . \$currentUser->Username . generateRandomString(5)); //MD5 Hash will be: Timestamp + Username + generateRandomString(5)
-                \$sql = \"INSERT INTO Sessions (SessionID, UserID, InitiatedOn, ClientIPAddress) VALUES (\\\"\".\$newSessionID.\"\\\", \".\$currentUser->UserID.\", \".time().\", \\\"\".getRealIPAddress().\"\\\")\";
+                
+                \$sql = \"SELECT * FROM Sessions WHERE UserID = \" . \$currentUser->UserID;
                 \$result = \$conn->query(\$sql);
-                if (\$result === TRUE) {
-                    \$successResponse = array(STATUS => STATUS_OK, TITLE => LOGIN_SUCCESS_TITLE, MESSAGE => LOGIN_SUCCESS_MESSAGE, SESSIONID => \".\$newSessionID.\");
+                if (\$result->num_rows > 0) {
+                    \$session = \$result->fetch_object();
+                    \$sessionID = \$session->SessionID;
+                    \$successResponse = array(STATUS => STATUS_OK, TITLE => LOGIN_SUCCESS_TITLE, MESSAGE => LOGIN_SUCCESS_MESSAGE, SESSIONID => \"\$sessionID\");
                     echo json_encode(\$successResponse);
+                    exit();
                 }
-                else echo json_encode(\$JSON_TECHNICAL_ERROR); exit();
+                else {
+                    \$newSessionID = md5(time() . \$currentUser->Username . generateRandomString(5)); //MD5 Hash will be: Timestamp + Username + generateRandomString(5)
+                    \$sql = \"INSERT INTO Sessions (SessionID, UserID, InitiatedOn, ClientIPAddress) VALUES (\\\"\".\$newSessionID.\"\\\", \".\$currentUser->UserID.\", \".time().\", \\\"\".getRealIPAddress().\"\\\")\";
+                    \$result = \$conn->query(\$sql);
+                    if (\$result === TRUE) {
+                        \$successResponse = array(STATUS => STATUS_OK, TITLE => LOGIN_SUCCESS_TITLE, MESSAGE => LOGIN_SUCCESS_MESSAGE, SESSIONID => \"\$newSessionID\");
+                        echo json_encode(\$successResponse);
+                    }
+                    else echo json_encode(\$JSON_TECHNICAL_ERROR); exit();
+                }
             }
             else echo json_encode(\$JSON_LOGIN_ERROR); exit();
             
