@@ -2,11 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ee09baf4-5eb2-452a-b73e-bbcf2215a9d4" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Tests/CallCreatePage.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Tests/CreateAPICaller.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Tests/LoginAPICaller.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Generated/API/Users/Create/index.php" afterPath="$PROJECT_DIR$/Generated/API/Users/Create/index.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Tests/CreateAPICaller.js" afterPath="$PROJECT_DIR$/Tests/CreateAPICaller.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/scripts/GenerateAPIFromTables.php" afterPath="$PROJECT_DIR$/scripts/GenerateAPIFromTables.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/scripts/GeneratorUtils.php" afterPath="$PROJECT_DIR$/scripts/GeneratorUtils.php" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/Tests/CallCreatePage.html" afterPath="$PROJECT_DIR$/Tests/ajaxCallsPage.html" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -18,17 +20,32 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="GeneratorUtils.php" pinned="false" current-in-tab="false">
+      <file leaf-file-name="GeneratorUtils.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/scripts/GeneratorUtils.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="782">
-              <caret line="46" column="4" lean-forward="false" selection-start-line="46" selection-start-column="4" selection-end-line="46" selection-end-column="4" />
+            <state relative-caret-position="155">
+              <caret line="202" column="61" lean-forward="false" selection-start-line="202" selection-start-column="61" selection-end-line="202" selection-end-column="61" />
               <folding>
-                <marker date="1516494345341" expanded="true" signature="3775:4038" ph="CREATE TABLE... Users" />
-                <marker date="1516494345341" expanded="true" signature="4087:4262" ph="CREATE TABLE... UserLevels" />
-                <marker date="1516494345341" expanded="true" signature="4313:4395" ph="INSERT INTO UserLevels... " />
-                <marker date="1516494345341" expanded="true" signature="4313:4419" ph="INSERT INTO UserLevels... " />
-                <marker date="1516494345341" expanded="true" signature="4465:4770" ph="CREATE TABLE... Sessions" />
+                <marker date="1516537559989" expanded="true" signature="3775:4038" ph="CREATE TABLE... Users" />
+                <marker date="1516537559989" expanded="true" signature="4087:4262" ph="CREATE TABLE... UserLevels" />
+                <marker date="1516537559989" expanded="true" signature="4313:4395" ph="INSERT INTO UserLevels... " />
+                <marker date="1516537559989" expanded="true" signature="4313:4419" ph="INSERT INTO UserLevels... " />
+                <marker date="1516537559989" expanded="true" signature="4465:4770" ph="CREATE TABLE... Sessions" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Generated/API/Login/index.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="274">
+              <caret line="65" column="193" lean-forward="false" selection-start-line="65" selection-start-column="193" selection-end-line="65" selection-end-column="193" />
+              <folding>
+                <marker date="1516537514508" expanded="true" signature="3345:3432" ph="SELECT * FRO... Users" />
+                <marker date="1516537514508" expanded="true" signature="3517:4339" ph="..." />
+                <marker date="1516537514508" expanded="true" signature="3761:3889" ph="INSERT INTO Sessions... " />
+                <marker date="1516537514508" expanded="true" signature="4016:4255" ph="..." />
               </folding>
             </state>
           </provider>
@@ -37,7 +54,7 @@
       <file leaf-file-name="generateAPIStep2.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/generateAPIStep2.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2958">
+            <state relative-caret-position="-34">
               <caret line="174" column="92" lean-forward="false" selection-start-line="174" selection-start-column="92" selection-end-line="174" selection-end-column="92" />
               <folding>
                 <marker date="1516452932926" expanded="true" signature="5358:5382" ph="SELECT * FRO... userlevels" />
@@ -236,7 +253,7 @@
       <file leaf-file-name="GeneratePHPClasses.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/scripts/GeneratePHPClasses.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="7820">
+            <state relative-caret-position="529">
               <caret line="460" column="0" lean-forward="false" selection-start-line="460" selection-start-column="0" selection-end-line="460" selection-end-column="0" />
               <folding />
             </state>
@@ -246,44 +263,44 @@
       <file leaf-file-name="GenerateAPIFromTables.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/scripts/GenerateAPIFromTables.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="139" column="205" lean-forward="false" selection-start-line="139" selection-start-column="205" selection-end-line="139" selection-end-column="205" />
+            <state relative-caret-position="391">
+              <caret line="71" column="17" lean-forward="false" selection-start-line="71" selection-start-column="17" selection-end-line="71" selection-end-column="17" />
               <folding>
-                <marker date="1516532938069" expanded="true" signature="3215:3239" ph="SELECT * FRO... UserLevels" />
-                <marker date="1516532938069" expanded="true" signature="9871:9893" ph="..." />
+                <marker date="1516535161465" expanded="true" signature="3215:3239" ph="SELECT * FRO... UserLevels" />
+                <marker date="1516535161465" expanded="true" signature="10006:10028" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CreateAPICaller.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Tests/CreateAPICaller.js">
+      <file leaf-file-name="LoginAPICaller.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Tests/LoginAPICaller.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="11" column="57" lean-forward="false" selection-start-line="11" selection-start-column="57" selection-end-line="11" selection-end-column="57" />
+            <state relative-caret-position="119">
+              <caret line="7" column="9" lean-forward="true" selection-start-line="7" selection-start-column="9" selection-end-line="7" selection-end-column="9" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CallCreatePage.html" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Tests/CallCreatePage.html">
+      <file leaf-file-name="ajaxCallsPage.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Tests/ajaxCallsPage.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="9" column="0" lean-forward="true" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+            <state relative-caret-position="255">
+              <caret line="15" column="23" lean-forward="false" selection-start-line="15" selection-start-column="23" selection-end-line="15" selection-end-column="23" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.php" pinned="false" current-in-tab="true">
+      <file leaf-file-name="index.php" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Generated/API/Users/Create/index.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-253">
-              <caret line="21" column="37" lean-forward="true" selection-start-line="21" selection-start-column="37" selection-end-line="21" selection-end-column="37" />
+            <state relative-caret-position="121">
+              <caret line="58" column="49" lean-forward="true" selection-start-line="58" selection-start-column="49" selection-end-line="58" selection-end-column="49" />
               <folding>
-                <marker date="1516533324779" expanded="true" signature="2672:2733" ph="SELECT * FRO... Sessions" />
-                <marker date="1516533324779" expanded="true" signature="2928:2973" ph="SELECT UserL... Users" />
+                <marker date="1516537514517" expanded="true" signature="2670:2731" ph="SELECT * FRO... Sessions" />
+                <marker date="1516537514517" expanded="true" signature="2926:2971" ph="SELECT UserL... Users" />
               </folding>
             </state>
           </provider>
@@ -338,6 +355,7 @@
       <find>Generate?</find>
       <find>#indexName</find>
       <find>header</find>
+      <find>generatorutils</find>
     </findStrings>
     <replaceStrings>
       <replace>&quot;</replace>
@@ -394,11 +412,14 @@
         <option value="$PROJECT_DIR$/Generated/Scripts/Entity Classes/PHP/Users.php" />
         <option value="$PROJECT_DIR$/scripts/GeneratePHPClasses.php" />
         <option value="$PROJECT_DIR$/scripts/DeleteMe.php" />
-        <option value="$PROJECT_DIR$/scripts/GeneratorUtils.php" />
         <option value="$PROJECT_DIR$/Tests/CallCreatePage.html" />
         <option value="$PROJECT_DIR$/scripts/GenerateAPIFromTables.php" />
         <option value="$PROJECT_DIR$/Tests/CreateAPICaller.js" />
+        <option value="$PROJECT_DIR$/Tests/ajaxCallsPage.html" />
         <option value="$PROJECT_DIR$/Generated/API/Users/Create/index.php" />
+        <option value="$PROJECT_DIR$/Tests/LoginAPICaller.js" />
+        <option value="$PROJECT_DIR$/Generated/API/Login/index.php" />
+        <option value="$PROJECT_DIR$/scripts/GeneratorUtils.php" />
       </list>
     </option>
   </component>
@@ -562,6 +583,28 @@
               <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="root" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="root" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Generated" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="API" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Login" />
+              <option name="myItemType" value="com.jetbrains.php.projectView.PhpTreeStructureProvider$1" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
       <pane id="PackagesPane" />
@@ -575,13 +618,14 @@
     <property name="aspect.path.notification.shown" value="true" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="D:\Users\hfnov\Web Development\! Projects\API Generator\root\Generated\Scripts" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Users\hfnov\Web Development\! Projects\API Generator\root\Tests" />
       <recent name="C:\Users\hfnov\Desktop\Projects\API Generator\root\scripts" />
       <recent name="C:\Users\hfnov\Desktop\Projects\API Generator" />
       <recent name="D:\Users\hfnov\Web Development\! Projects\API Generator\root" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Users\hfnov\Web Development\! Projects\API Generator\root\Generated\Scripts" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -691,7 +735,7 @@
       <workItem from="1516289244449" duration="20489000" />
       <workItem from="1516362084720" duration="11180000" />
       <workItem from="1516441253736" duration="23259000" />
-      <workItem from="1516531095924" duration="2246000" />
+      <workItem from="1516531095924" duration="6437000" />
     </task>
     <task id="LOCAL-00001" summary="Removed unncessary methods. Tested and corrected all remaining class method generators.">
       <created>1516140703804</created>
@@ -704,7 +748,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="137661000" />
+    <option name="totallyTimeSpent" value="141852000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -762,23 +806,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/generateClasses.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="51" lean-forward="true" selection-start-line="5" selection-start-column="51" selection-end-line="5" selection-end-column="51" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/GeneratePHPClasses.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="646">
-          <caret line="38" column="22" lean-forward="true" selection-start-line="38" selection-start-column="22" selection-end-line="38" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Generated/Scripts/testclass.php" />
     <entry file="file://$PROJECT_DIR$/createLoginScript.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="476">
@@ -974,9 +1001,92 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/styles.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="314">
+          <caret line="24" column="1" lean-forward="true" selection-start-line="24" selection-start-column="1" selection-end-line="24" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Test.php" />
+    <entry file="file://$PROJECT_DIR$/scripts/CreateDB.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="18" column="0" lean-forward="false" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Generated/Scripts/Entity Classes/PHP/Users.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2569">
+          <caret line="227" column="58" lean-forward="true" selection-start-line="227" selection-start-column="58" selection-end-line="227" selection-end-column="58" />
+          <folding>
+            <marker date="1516487241449" expanded="true" signature="2248:2409" ph="INSERT INTO users... " />
+            <marker date="1516487241449" expanded="true" signature="2730:2765" ph="SELECT * FRO... users" />
+            <marker date="1516487241449" expanded="true" signature="3480:3538" ph="SELECT * FRO... users" />
+            <marker date="1516487241449" expanded="true" signature="4286:4305" ph="SELECT * FRO... users" />
+            <marker date="1516487241449" expanded="true" signature="5077:5269" ph="UPDATE users... " />
+            <marker date="1516487241449" expanded="true" signature="5618:5651" ph="DELETE FROM " />
+            <marker date="1516487241449" expanded="true" signature="5943:5974" ph="SELECT COUNT... users" />
+            <marker date="1516487241449" expanded="true" signature="6248:6279" ph="SELECT COUNT... users" />
+            <marker date="1516487241449" expanded="true" signature="7049:7075" ph="SELECT * FRO... users" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/GenerateJavaClasses.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="325">
+          <caret line="295" column="13" lean-forward="false" selection-start-line="295" selection-start-column="13" selection-end-line="295" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/DeleteMe.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="94" column="0" lean-forward="false" selection-start-line="94" selection-start-column="0" selection-end-line="94" selection-end-column="0" />
+          <folding>
+            <marker date="1516488234901" expanded="true" signature="3872:3914" ph="SELECT Sessi... Sessions" />
+            <marker date="1516488234901" expanded="true" signature="3872:3933" ph="SELECT Sessi... Sessions" />
+            <marker date="1516488234901" expanded="true" signature="3872:3934" ph="SELECT Sessi... Sessions" />
+            <marker date="1516488234901" expanded="true" signature="4127:4171" ph="SELECT UserL... Users" />
+            <marker date="1516488234901" expanded="true" signature="4127:4172" ph="SELECT UserL... Users" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/GeneratePHPClasses.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="529">
+          <caret line="460" column="0" lean-forward="false" selection-start-line="460" selection-start-column="0" selection-end-line="460" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/GenerateAPIFromTables.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="71" column="17" lean-forward="false" selection-start-line="71" selection-start-column="17" selection-end-line="71" selection-end-column="17" />
+          <folding>
+            <marker date="1516535161465" expanded="true" signature="3215:3239" ph="SELECT * FRO... UserLevels" />
+            <marker date="1516535161465" expanded="true" signature="10006:10028" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/lib/JavaScriptLanguage.jar!/com/intellij/lang/javascript/index/predefined/DHTML.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="196">
+          <caret line="1625" column="0" lean-forward="false" selection-start-line="1625" selection-start-column="0" selection-end-line="1625" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/generateAPIStep2.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2958">
+        <state relative-caret-position="-34">
           <caret line="174" column="92" lean-forward="false" selection-start-line="174" selection-start-column="92" selection-end-line="174" selection-end-column="92" />
           <folding>
             <marker date="1516452932926" expanded="true" signature="5358:5382" ph="SELECT * FRO... userlevels" />
@@ -1171,118 +1281,64 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/styles.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="314">
-          <caret line="24" column="1" lean-forward="true" selection-start-line="24" selection-start-column="1" selection-end-line="24" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Test.php" />
-    <entry file="file://$PROJECT_DIR$/scripts/CreateDB.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="18" column="0" lean-forward="false" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Generated/Scripts/Entity Classes/PHP/Users.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2569">
-          <caret line="227" column="58" lean-forward="true" selection-start-line="227" selection-start-column="58" selection-end-line="227" selection-end-column="58" />
-          <folding>
-            <marker date="1516487241449" expanded="true" signature="2248:2409" ph="INSERT INTO users... " />
-            <marker date="1516487241449" expanded="true" signature="2730:2765" ph="SELECT * FRO... users" />
-            <marker date="1516487241449" expanded="true" signature="3480:3538" ph="SELECT * FRO... users" />
-            <marker date="1516487241449" expanded="true" signature="4286:4305" ph="SELECT * FRO... users" />
-            <marker date="1516487241449" expanded="true" signature="5077:5269" ph="UPDATE users... " />
-            <marker date="1516487241449" expanded="true" signature="5618:5651" ph="DELETE FROM " />
-            <marker date="1516487241449" expanded="true" signature="5943:5974" ph="SELECT COUNT... users" />
-            <marker date="1516487241449" expanded="true" signature="6248:6279" ph="SELECT COUNT... users" />
-            <marker date="1516487241449" expanded="true" signature="7049:7075" ph="SELECT * FRO... users" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/GenerateJavaClasses.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="325">
-          <caret line="295" column="13" lean-forward="false" selection-start-line="295" selection-start-column="13" selection-end-line="295" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/GeneratePHPClasses.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7820">
-          <caret line="460" column="0" lean-forward="false" selection-start-line="460" selection-start-column="0" selection-end-line="460" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/GeneratorUtils.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="782">
-          <caret line="46" column="4" lean-forward="false" selection-start-line="46" selection-start-column="4" selection-end-line="46" selection-end-column="4" />
-          <folding>
-            <marker date="1516494345341" expanded="true" signature="3775:4038" ph="CREATE TABLE... Users" />
-            <marker date="1516494345341" expanded="true" signature="4087:4262" ph="CREATE TABLE... UserLevels" />
-            <marker date="1516494345341" expanded="true" signature="4313:4395" ph="INSERT INTO UserLevels... " />
-            <marker date="1516494345341" expanded="true" signature="4313:4419" ph="INSERT INTO UserLevels... " />
-            <marker date="1516494345341" expanded="true" signature="4465:4770" ph="CREATE TABLE... Sessions" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/DeleteMe.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="94" column="0" lean-forward="false" selection-start-line="94" selection-start-column="0" selection-end-line="94" selection-end-column="0" />
-          <folding>
-            <marker date="1516488234901" expanded="true" signature="3872:3914" ph="SELECT Sessi... Sessions" />
-            <marker date="1516488234901" expanded="true" signature="3872:3933" ph="SELECT Sessi... Sessions" />
-            <marker date="1516488234901" expanded="true" signature="3872:3934" ph="SELECT Sessi... Sessions" />
-            <marker date="1516488234901" expanded="true" signature="4127:4171" ph="SELECT UserL... Users" />
-            <marker date="1516488234901" expanded="true" signature="4127:4172" ph="SELECT UserL... Users" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/scripts/GenerateAPIFromTables.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="139" column="205" lean-forward="false" selection-start-line="139" selection-start-column="205" selection-end-line="139" selection-end-column="205" />
-          <folding>
-            <marker date="1516532938069" expanded="true" signature="3215:3239" ph="SELECT * FRO... UserLevels" />
-            <marker date="1516532938069" expanded="true" signature="9871:9893" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Tests/CreateAPICaller.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="57" lean-forward="false" selection-start-line="11" selection-start-column="57" selection-end-line="11" selection-end-column="57" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Tests/CallCreatePage.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" column="0" lean-forward="true" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+        <state relative-caret-position="17">
+          <caret line="1" column="26" lean-forward="false" selection-start-line="1" selection-start-column="26" selection-end-line="1" selection-end-column="26" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Generated/API/Users/Create/index.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-253">
-          <caret line="21" column="37" lean-forward="true" selection-start-line="21" selection-start-column="37" selection-end-line="21" selection-end-column="37" />
+        <state relative-caret-position="121">
+          <caret line="58" column="49" lean-forward="true" selection-start-line="58" selection-start-column="49" selection-end-line="58" selection-end-column="49" />
           <folding>
-            <marker date="1516533324779" expanded="true" signature="2672:2733" ph="SELECT * FRO... Sessions" />
-            <marker date="1516533324779" expanded="true" signature="2928:2973" ph="SELECT UserL... Users" />
+            <marker date="1516537514517" expanded="true" signature="2670:2731" ph="SELECT * FRO... Sessions" />
+            <marker date="1516537514517" expanded="true" signature="2926:2971" ph="SELECT UserL... Users" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tests/ajaxCallsPage.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="15" column="23" lean-forward="false" selection-start-line="15" selection-start-column="23" selection-end-line="15" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Tests/LoginAPICaller.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="9" lean-forward="true" selection-start-line="7" selection-start-column="9" selection-end-line="7" selection-end-column="9" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Generated/API/Login/index.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="274">
+          <caret line="65" column="193" lean-forward="false" selection-start-line="65" selection-start-column="193" selection-end-line="65" selection-end-column="193" />
+          <folding>
+            <marker date="1516537514508" expanded="true" signature="3345:3432" ph="SELECT * FRO... Users" />
+            <marker date="1516537514508" expanded="true" signature="3517:4339" ph="..." />
+            <marker date="1516537514508" expanded="true" signature="3761:3889" ph="INSERT INTO Sessions... " />
+            <marker date="1516537514508" expanded="true" signature="4016:4255" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/scripts/GeneratorUtils.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="155">
+          <caret line="202" column="61" lean-forward="false" selection-start-line="202" selection-start-column="61" selection-end-line="202" selection-end-column="61" />
+          <folding>
+            <marker date="1516537559989" expanded="true" signature="3775:4038" ph="CREATE TABLE... Users" />
+            <marker date="1516537559989" expanded="true" signature="4087:4262" ph="CREATE TABLE... UserLevels" />
+            <marker date="1516537559989" expanded="true" signature="4313:4395" ph="INSERT INTO UserLevels... " />
+            <marker date="1516537559989" expanded="true" signature="4313:4419" ph="INSERT INTO UserLevels... " />
+            <marker date="1516537559989" expanded="true" signature="4465:4770" ph="CREATE TABLE... Sessions" />
           </folding>
         </state>
       </provider>

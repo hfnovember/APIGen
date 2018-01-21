@@ -9,7 +9,7 @@
 //  DATABASE:     Nicos
 //  FILE:         API/create/index.php
 //  TABLE:        users
-//  DATETIME:     2018-01-21 01:09:03pm
+//  DATETIME:     2018-01-21 02:25:14pm
 //  DESCRIPTION:  N/A
 
 /**********************************************************************************/
@@ -59,7 +59,7 @@
 	include_once("../../../Scripts/DBLogin.php");
      
 	//-- SECURITY CHECKS
-/*
+
     //Allowed user levels:
     $allowedUserLevelIDs = array(1, 2, 4, 3);
 
@@ -82,10 +82,10 @@
         }//end foreach UserLevelID
         if (!$allowed) die(json_encode($JSON_AUTHORIZATION_ERROR));
     }//end if session found
-    */
+    
 
 	onRequest(); 
 
-	//$conn->close();
+	$conn->close();
 
 ?>

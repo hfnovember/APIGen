@@ -77,6 +77,10 @@
 
     include_once("GeneratorUtils.php");
 
+    //Create the login API
+    createSessionCreationScript($dbHostIP, $dbUsername, $dbPassword, $dbName);
+
+    //Create the table APIs
     foreach ($tableNames as $table) {
 
         if (isset($_POST[$table . "_generate"])) {
