@@ -8,7 +8,7 @@
 
 /* DATABASE:		Nicos */
 /* FILE:		DBLogin.php */
-/* DATETIME:		2018-01-19 01:17:53am */
+/* DATETIME:		2018-01-20 11:53:54pm */
 /* DESCRIPTION:		This file is used to log in to the database.*/
 
 /**********************************************************************************/
