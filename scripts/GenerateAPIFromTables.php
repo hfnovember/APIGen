@@ -80,6 +80,9 @@
     //Create the login API
     createSessionCreationScript($dbHostIP, $dbUsername, $dbPassword, $dbName);
 
+    //Create the logout API
+    createSessionDestructionScript($dbHostIP, $dbUsername, $dbPassword, $dbName);
+
     //Create the table APIs
     foreach ($tableNames as $table) {
 
