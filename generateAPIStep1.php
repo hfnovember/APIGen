@@ -106,8 +106,9 @@ if (isset($_GET["status"])) {
     <input type="hidden" name="dbUser" value="<?php echo $dbUsername;?>" />
     <input type="hidden" name="dbPassword" value="<?php echo $dbPassword;?>" />
 
-    <input style="float: right;" class="button" value="Proceed to Step 2 ->" type="submit" />
-    <a style="float: left;" class="button" href="generateAPIStep0.php"><- Back to Step 0</a>
+    <a class="button red" href="generateAPIStep0.php">Back</a>
+    <input class="button green" value="Proceed" type="submit" />
+
 </form>
 
 

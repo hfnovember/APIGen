@@ -732,8 +732,8 @@ if (isset($_GET["status"])) {
 
     <div style="margin-top: 30px; clear:both; float:none;"></div>
 
-    <input style="float: right;" class="button" type="submit" value="Next ->" />
-    <a class="button" style="float: left;" href="generateAPIStep1.php"><- Back to Step 1</a>
+    <a class="button red" href="generateAPIStep1.php">Back</a>
+    <input class="button green" type="submit" value="Proceed" />
 
 </form>
 

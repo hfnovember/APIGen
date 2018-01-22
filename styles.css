@@ -10,6 +10,14 @@ input {
     font-size: medium;
 }
 
+input[type=text] {
+    border: 1px solid darkblue;
+    border-radius: 4px;
+    padding: 2px 2px 2px 5px;
+    color: grey;
+    font-size: small;
+}
+
 .errorCard {
     background-color:red;
     color: white;
@@ -48,6 +56,14 @@ input {
     background-color: crimson; !important
 }
 
+.green {
+    background-color: green; !important;
+}
+
 .blue {
     background-color: dodgerblue; !important
+}
+
+.purple {
+    background-color: purple; !important;
 }
