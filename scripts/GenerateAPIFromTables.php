@@ -116,7 +116,7 @@
                 $isPublicEndpoint = false;
                 $allowedUsersInstructions = "Administrator (1)";
                 foreach ($userLevels as $userLevel) {
-                    if (isset($_POST[$endpointName. "_" . $table . "_" . $userLevel->UserLevelName])) {
+                    if (isset($_POST[$endpointName. "_" . $table . "___" . $userLevel->UserLevelName])) {
                         if ($userLevel->UserLevelID == 4) $isPublicEndpoint = true;
                         $export_allowedUserLevelIDsArray .= $userLevel->UserLevelID . ", ";
                         $allowedUsersInstructions .= ", " . $userLevel->UserLevelName . "(" . $userLevel->UserLevelID . ")";
@@ -209,7 +209,6 @@
     
 ";
 
-                echo $strConstants . "<br>";
 
                 $includeOnceDBLogin = "\tinclude_once(\"../../../Scripts/DBLogin.php\");";
 

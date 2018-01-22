@@ -164,15 +164,17 @@ foreach ($tableNames as $tableName) {
             <td style=\"text-align: center\"><input title=\"Generate " . $tableName . " get by #indexName\" class=\"" . $tableName . "\" type=\"checkbox\" checked=\"checked\" id=\"generate_" . $tableName . "_getBy" . ucfirst($indexer["Field"]) . "\" name=\"generate_" . $tableName . "_getBy" . ucfirst($indexer["Field"]) . "\" onclick=\"" . $tableName . "_GetBy" . ucfirst($indexer["Field"]) . "()\"/> </td>
         ";
             foreach ($userLevels as $userLevel) {
+                $ulnID = "__" . $userLevel->UserLevelName;
                 if ($userLevel->UserLevelName != "Public" && $userLevel->UserLevelName != "Administrator") {
-                    $ul = "<td style=\"text-align: center\"><input title=\"" . ucfirst($indexer["Field"]) . " access to get by " . ucfirst($indexer["Field"]) . " " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"getBy" . ucfirst($indexer["Field"]) . "_" . $tableName . "_" . $userLevel->UserLevelName . "\" class=\"" . $tableName . " getBy" . ucfirst($indexer["Field"]) . "\"/> </td>";
+                    $ul = "<td style=\"text-align: center\"><input title=\"" . ucfirst($indexer["Field"]) . " access to get by " . ucfirst($indexer["Field"]) . " " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"".$ulnID."_getBy" . ucfirst($indexer["Field"]) . "_" . $tableName . "_" . $userLevel->UserLevelName . "\" class=\"" . $tableName . " getBy" . ucfirst($indexer["Field"]) . "\"/> </td>";
                     $x .= $ul;
                 }
             }
 
             foreach ($userLevels as $userLevel) {
+                $ulnID = "__" . $userLevel->UserLevelName;
                 if ($userLevel->UserLevelName == "Public") {
-                    $ul = "<td style=\"text-align: center\"><input onclick='".$tableName."_getBy".ucfirst($indexer["Field"])."PublicAccess()' title=\"" . ucfirst($indexer["Field"]) . " access to get by " . ucfirst($indexer["Field"]) . " " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"getBy" . ucfirst($indexer["Field"]) . "_" . $tableName . "_" . $userLevel->UserLevelName . "\" class=\"" . $tableName . " getBy" . ucfirst($indexer["Field"]) . "\"/> </td>";
+                    $ul = "<td style=\"text-align: center\"><input onclick='".$tableName."_getBy".ucfirst($indexer["Field"])."PublicAccess()' title=\"" . ucfirst($indexer["Field"]) . " access to get by " . ucfirst($indexer["Field"]) . " " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"".$ulnID."_getBy" . ucfirst($indexer["Field"]) . "_" . $tableName . "_" . $userLevel->UserLevelName . "\" class=\"" . $tableName . " getBy" . ucfirst($indexer["Field"]) . "\"/> </td>";
                     $x .= $ul;
                 }
             }
@@ -225,34 +227,91 @@ foreach ($tableNames as $tableName) {
         $delete_users = "";
         $getsize_users = "";
         $isEmpty_users = "";
+        $usersScripts = "";
 
         foreach ($userLevels as $userLevel) {
             if ($userLevel->UserLevelName != "Public" && $userLevel->UserLevelName != "Administrator") {
                 $uln = $userLevel->UserLevelName;
-                $headerUserTypes .= "<th>" . $uln . "</th>\r\n";
-                $create_users .= "<td style=\"text-align: center;\"><input title=\"" . $uln . " access to create " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"create_" . $tableName . "_" . $uln . "\" class=\"" . $tableName . " create\"/> </td>\r\n";
-                $getByID_users .= "<td style=\"text-align: center\"><input title=\"" . $uln . " access to get by ID " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"getByID_" . $tableName . "_" . $uln . "\" class=\"" . $tableName . " getByID\"/> </td>\r\n";
-                $getMultiple_users .= "<td style=\"text-align: center\"><input title=\"" . $uln . " access to get multiple " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"getMultiple_" . $tableName . "_" . $uln . "\" class=\"" . $tableName . " getMultiple\"/> </td>\r\n";
-                $update_users .= "<td style=\"text-align: center\"><input title=\"" . $uln . " access to update " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"update_" . $tableName . "_" . $uln . "\" class=\"" . $tableName . " update\"/> </td>\r\n";
-                $searchByField_users .= "<td style=\"text-align: center\"><input title=\"" . $uln . " access to searchByField " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"searchByField_" . $tableName . "_" . $uln . "\" class=\"" . $tableName . " searchByField\"/> </td>\r\n";
-                $delete_users .= "<td style=\"text-align: center\"><input title=\"" . $uln . " access to delete " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"delete_" . $tableName . "_" . $uln . "\" class=\"" . $tableName . " delete\"/> </td>\r\n";
-                $getsize_users .= "<td style=\"text-align: center\"><input title=\"" . $uln . " access to get size " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"getSize_" . $tableName . "_" . $uln . "\" class=\"" . $tableName . " getSize\"/> </td>\r\n";
-                $isEmpty_users .= "<td style=\"text-align: center\"><input title=\"" . $uln . " access to isEmpty " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"isEmpty_" . $tableName . "_" . $uln . "\" class=\"" . $tableName . " isEmpty\"/> </td>\r\n";
+                $ulnID = "__" . $userLevel->UserLevelName;
+                $headerUserTypes .= "<th>" . $uln . "<input type='checkbox' checked='checked' name='".$ulnID."_".$tableName."_master' class='".$ulnID." ".$tableName."' onclick='".$ulnID."_".$tableName."()' /></th>\r\n";
+                $create_users .= "<td style=\"text-align: center;\"><input title=\"" . $uln . " access to create " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"create_" . $tableName . "_" . $ulnID . "\" class=\"" . $tableName . " create\"/> </td>\r\n";
+                $getByID_users .= "<td style=\"text-align: center\"><input title=\"" . $uln . " access to get by ID " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"getByID_" . $tableName . "_" . $ulnID . "\" class=\"" . $tableName . " getByID\"/> </td>\r\n";
+                $getMultiple_users .= "<td style=\"text-align: center\"><input title=\"" . $uln . " access to get multiple " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"getMultiple_" . $tableName . "_" . $ulnID . "\" class=\"" . $tableName . " getMultiple\"/> </td>\r\n";
+                $update_users .= "<td style=\"text-align: center\"><input title=\"" . $uln . " access to update " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"update_" . $tableName . "_" . $ulnID . "\" class=\"" . $tableName . " update\"/> </td>\r\n";
+                $searchByField_users .= "<td style=\"text-align: center\"><input title=\"" . $uln . " access to searchByField " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"searchByField_" . $tableName . "_" . $ulnID . "\" class=\"" . $tableName . " searchByField\"/> </td>\r\n";
+                $delete_users .= "<td style=\"text-align: center\"><input title=\"" . $uln . " access to delete " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"delete_" . $tableName . "_" . $ulnID . "\" class=\"" . $tableName . " delete\"/> </td>\r\n";
+                $getsize_users .= "<td style=\"text-align: center\"><input title=\"" . $uln . " access to get size " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"getSize_" . $tableName . "_" . $ulnID . "\" class=\"" . $tableName . " getSize\"/> </td>\r\n";
+                $isEmpty_users .= "<td style=\"text-align: center\"><input title=\"" . $uln . " access to isEmpty " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"isEmpty_" . $tableName . "_" . $ulnID . "\" class=\"" . $tableName . " isEmpty\"/> </td>\r\n";
+                $usersScripts .= "
+            function ".$ulnID."_".$tableName."() {
+                var a = document.getElementsByTagName(\"input\");
+                var pu;
+                
+                
+                for (i = 0; i < a.length; i++) {
+                    if (a[i].type == \"checkbox\") {
+                        var name = a[i].getAttribute(\"name\");
+                         if (name.indexOf(\"".$ulnID."\") !== -1 && name.indexOf(\"".$tableName."\") !== -1 && name.indexOf(\"master\") !== -1) {
+                            pu = a[i];
+                         }
+                    }
+                }
+                
+                
+                for (i = 0; i < a.length; i++) {
+                    if (a[i].type == \"checkbox\") {
+                        var name = a[i].getAttribute(\"name\");
+                         if (name.indexOf(\"".$ulnID."\") !== -1 && name.indexOf(\"".$tableName."\") !== -1) {
+                            a[i].checked = pu.checked;
+                         }
+                    }
+                }
+                
+                
+            }";
             }
         }//end foreach userLevel
 
         foreach ($userLevels as $userLevel) {
             if ($userLevel->UserLevelName == "Public") {
                 $uln = $userLevel->UserLevelName;
-                $headerUserTypes .= "<th>" . $uln . "</th>\r\n";
-                $create_users .= "<td style=\"text-align: center\"><input onclick='".$tableName."_createPublicAccess()' title=\"" . $uln . " access to create " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"create_" . $tableName . "_" . $uln . "\" class=\"" . $tableName . " create\"/> </td>\r\n";
-                $getByID_users .= "<td style=\"text-align: center\"><input onclick='".$tableName."_getByIDPublicAccess()' title=\"" . $uln . " access to get by ID " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"getByID_" . $tableName . "_" . $uln . "\" class=\"" . $tableName . " getByID\"/> </td>\r\n";
-                $getMultiple_users .= "<td style=\"text-align: center\"><input onclick='".$tableName."_getMultiplePublicAccess()'  title=\"" . $uln . " access to get multiple " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"getMultiple_" . $tableName . "_" . $uln . "\" class=\"" . $tableName . " getMultiple\"/> </td>\r\n";
-                $update_users .= "<td style=\"text-align: center\"><input onclick='".$tableName."_updatePublicAccess()'  title=\"" . $uln . " access to update " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"update_" . $tableName . "_" . $uln . "\" class=\"" . $tableName . " update\"/> </td>\r\n";
-                $searchByField_users .= "<td style=\"text-align: center\"><input onclick='".$tableName."_searchByFieldPublicAccess()'  title=\"" . $uln . " access to searchByField " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"searchByField_" . $tableName . "_" . $uln . "\" class=\"" . $tableName . " searchByField\"/> </td>\r\n";
-                $delete_users .= "<td style=\"text-align: center\"><input onclick='".$tableName."_deletePublicAccess()'  title=\"" . $uln . " access to delete " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"delete_" . $tableName . "_" . $uln . "\" class=\"" . $tableName . " delete\"/> </td>\r\n";
-                $getsize_users .= "<td style=\"text-align: center\"><input onclick='".$tableName."_getSizePublicAccess()'  title=\"" . $uln . " access to get size " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"getSize_" . $tableName . "_" . $uln . "\" class=\"" . $tableName . " getSize\"/> </td>\r\n";
-                $isEmpty_users .= "<td style=\"text-align: center\"><input onclick='".$tableName."_isEmptyPublicAccess()'  title=\"" . $uln . " access to isEmpty " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"isEmpty_" . $tableName . "_" . $uln . "\" class=\"" . $tableName . " isEmpty\"/> </td>\r\n";
+                $ulnID = "__" . $userLevel->UserLevelName;
+                $headerUserTypes .= "<th>" . $uln . "<input type='checkbox' checked='checked' name='".$ulnID."_".$tableName."' class='".$ulnID." ".$tableName."' onclick='".$ulnID."_".$tableName."()' /></th>\r\n";
+                $create_users .= "<td style=\"text-align: center\"><input onclick='".$tableName."_createPublicAccess()' title=\"" . $uln . " access to create " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"create_" . $tableName . "_" . $ulnID . "\" class=\"" . $tableName . " create\"/> </td>\r\n";
+                $getByID_users .= "<td style=\"text-align: center\"><input onclick='".$tableName."_getByIDPublicAccess()' title=\"" . $uln . " access to get by ID " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"getByID_" . $tableName . "_" . $ulnID . "\" class=\"" . $tableName . " getByID\"/> </td>\r\n";
+                $getMultiple_users .= "<td style=\"text-align: center\"><input onclick='".$tableName."_getMultiplePublicAccess()'  title=\"" . $uln . " access to get multiple " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"getMultiple_" . $tableName . "_" . $ulnID . "\" class=\"" . $tableName . " getMultiple\"/> </td>\r\n";
+                $update_users .= "<td style=\"text-align: center\"><input onclick='".$tableName."_updatePublicAccess()'  title=\"" . $uln . " access to update " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"update_" . $tableName . "_" . $ulnID . "\" class=\"" . $tableName . " update\"/> </td>\r\n";
+                $searchByField_users .= "<td style=\"text-align: center\"><input onclick='".$tableName."_searchByFieldPublicAccess()'  title=\"" . $uln . " access to searchByField " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"searchByField_" . $tableName . "_" . $ulnID . "\" class=\"" . $tableName . " searchByField\"/> </td>\r\n";
+                $delete_users .= "<td style=\"text-align: center\"><input onclick='".$tableName."_deletePublicAccess()'  title=\"" . $uln . " access to delete " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"delete_" . $tableName . "_" . $ulnID . "\" class=\"" . $tableName . " delete\"/> </td>\r\n";
+                $getsize_users .= "<td style=\"text-align: center\"><input onclick='".$tableName."_getSizePublicAccess()'  title=\"" . $uln . " access to get size " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"getSize_" . $tableName . "_" . $ulnID . "\" class=\"" . $tableName . " getSize\"/> </td>\r\n";
+                $isEmpty_users .= "<td style=\"text-align: center\"><input onclick='".$tableName."_isEmptyPublicAccess()'  title=\"" . $uln . " access to isEmpty " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"isEmpty_" . $tableName . "_" . $ulnID . "\" class=\"" . $tableName . " isEmpty\"/> </td>\r\n";
+                $usersScripts .= "
+            function ".$ulnID."_".$tableName."() {
+                var a = document.getElementsByTagName(\"input\");
+                var pu;
+                
+                
+                for (i = 0; i < a.length; i++) {
+                    if (a[i].type == \"checkbox\") {
+                        var name = a[i].getAttribute(\"name\");
+                         if (name.indexOf(\"".$ulnID."\") !== -1 && name.indexOf(\"".$tableName."\") !== -1 && name.indexOf(\"master\") !== -1) {
+                            pu = a[i];
+                         }
+                    }
+                }
+                
+                
+                for (i = 0; i < a.length; i++) {
+                    if (a[i].type == \"checkbox\") {
+                        var name = a[i].getAttribute(\"name\");
+                         if (name.indexOf(\"".$ulnID."\") !== -1 && name.indexOf(\"".$tableName."\") !== -1) {
+                            a[i].checked = pu.checked;
+                         }
+                    }
+                }
+                
+                
+            }";
             }
         }//end foreach userLevel
 
@@ -266,6 +325,7 @@ foreach ($tableNames as $tableName) {
     <div class='button small' onclick='".$tableName."_nonPublic()'>Non-Public</div>
     <div class='button small' onclick='".$tableName."_allEndpoints()'>All</div>
     <div class='button small' onclick='".$tableName."_noEndpoints()'>None</div>
+    <div class='button small' onclick='".$tableName."_disable()'>Disable</div>
     
      <p><b>Base URL:</b> <i>API/ </i><input style=\"font-style: italic;\" type=\"text\" maxlength=\"50\" title=\"" . $tableName . " URL\" value=\"" . $tableName . "\" name=\"url_" . $tableName . "\"/> Generate:
         <input type=\"checkbox\" id=\"" . $tableName . "_generate\" name=\"" . $tableName . "_generate\" checked=\"checked\" onclick=\"" . $tableName . "_Generate()\"/></p>
@@ -463,7 +523,7 @@ foreach ($tableNames as $tableName) {
                 }
             }
         
-            function ".$tableName."_noEndpoints() {
+            function ".$tableName."_disable() {
                 var a = document.getElementsByTagName(\"input\");
                 for (i = 0; i < a.length; i++) {
                     if (a[i].type == \"checkbox\") {
@@ -473,6 +533,23 @@ foreach ($tableNames as $tableName) {
                             a[i].checked = false;
                             if (name.indexOf(\"_generate\") !== -1) {
                                 a[i].checked = false;
+                                a[i].disabled = false;
+                            }
+                        }
+                    }
+                }
+            }
+            
+            function ".$tableName."_noEndpoints() {
+                var a = document.getElementsByTagName(\"input\");
+                for (i = 0; i < a.length; i++) {
+                    if (a[i].type == \"checkbox\") {
+                        var name = a[i].getAttribute(\"name\");
+                        if (name.indexOf(\"".$tableName."\") !== -1) {
+                            a[i].disabled = false;
+                            a[i].checked = false;
+                            if (name.indexOf(\"_generate\") !== -1) {
+                                a[i].checked = true;
                                 a[i].disabled = false;
                             }
                         }
@@ -687,6 +764,9 @@ foreach ($tableNames as $tableName) {
                     }
                 }
             }
+            
+            ".$usersScripts."
+            
 
         </script>
     
@@ -790,10 +870,10 @@ if (isset($_GET["status"])) {
         for (i = 0; i < a.length; i++) {
             if (a[i].type == "checkbox") {
                 var name = a[i].getAttribute("name");
-                a[i].disabled = true;
+                a[i].disabled = false;
                 a[i].checked = false;
                 if (name.indexOf("_generate") !== -1) {
-                    a[i].checked = false;
+                    a[i].checked = true;
                     a[i].disabled = false;
                 }
             }
