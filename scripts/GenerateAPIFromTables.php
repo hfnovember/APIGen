@@ -111,49 +111,75 @@
 
                 $endpointName = "create";
 
+                //Create the allowedUserLevelIDs Array:
+                $export_allowedUserLevelIDsArray = "\$allowedUserLevelIDs = array(1, ";
+                $isPublicEndpoint = false;
+                $allowedUsersInstructions = "Administrator (1)";
+                foreach ($userLevels as $userLevel) {
+                    if (isset($_POST[$endpointName. "_" . $table . "_" . $userLevel->UserLevelName])) {
+                        if ($userLevel->UserLevelID == 4) $isPublicEndpoint = true;
+                        $export_allowedUserLevelIDsArray .= $userLevel->UserLevelID . ", ";
+                        $allowedUsersInstructions .= ", " . $userLevel->UserLevelName . "(" . $userLevel->UserLevelID . ")";
+                    }//end if
+                }//end foreach userlevel
+                $export_allowedUserLevelIDsArray = substr($export_allowedUserLevelIDsArray, 0, strlen($export_allowedUserLevelIDsArray) - 2);
+                $export_allowedUserLevelIDsArray .= ");";
+
+                //Create the parameters lists:
+                $parametersMessage = "Invalid parameters. Expected Parameters: ";
+                $parameterChecks = "\r\n\t//-- PARAMETER CHECKS\r\n\r\n";
+                $parametersForSampleCall = "?";
+                $parametersList = "";
+                $constructorParameters = "";
+                foreach ($allFields as $field) {
+                    if (($field->Key != "PRI") || ($field->Key == "PRI" && isQuotableType($field->Type))) {
+                        //???
+                    }//end if not primary key
+                    $parametersMessage .= $field->Field . " (".toJavaType($field->Type)."), ";
+                    $parameterChecks .= "\tif (!isset(\$_POST[\"".$field->Field."\"]) || \$_POST[\"".$field->Field."\"] == \"\") die(json_encode(\$JSON_INVALID_PARAMS));\r\n";
+                    $parametersForSampleCall .= $field->Field . "...&";
+                    $parametersList .= "\r\n\t\t" . $field->Field . " (" . toJavaType($field->Type) . ")";
+                    $constructorParameters .= "\$_POST[\"" . $field->Field . "\"], ";
+                }//end foreach field
+                $constructorParameters = substr($constructorParameters, 0, strlen($constructorParameters) - 2);
+
+                //Add session parameter:
+                if (!$isPublicEndpoint) {
+                    $parametersMessage .= "SessionID (String)";
+                    $parameterChecks .= "\tif (!isset(\$_POST[\"SessionID\"]) || \$_POST[\"SessionID\"] == \"\") die(json_encode(\$JSON_INVALID_PARAMS));\r\n";
+                    $parametersForSampleCall .= "SessionID=...";
+                    $parametersList .= "\r\n\t\tSessionID (String)";
+                }
+                else {
+                    $parametersMessage = substr($parametersMessage, 0, strlen($parametersMessage) - 2);
+                    $parametersForSampleCall = substr($parametersForSampleCall, 0, strlen($parametersForSampleCall) - 1);
+                    $parametersMessage .= ".";
+                }
+
                 $endpointCode_Create = "";
 
-                //TODO: Implement create functionality...
                 //OnRequest function:
                 $onRequestFunctionCode_Create = "
     function onRequest() {
-    
-        //TODO: Write your code here.
+        \$JSON_ADD_SUCCESS = array(STATUS => STATUS_OK, TITLE => CREATE_SUCCESS_TITLE, MESSAGE => CREATE_SUCCESS_MESSAGE);
+        \$JSON_ADD_ERROR = array(STATUS => STATUS_ERROR, TITLE => CREATE_ERROR_TITLE, MESSAGE => CREATE_ERROR_MESSAGE);
+        \$JSON_EXISTS_ERROR = array(STATUS => STATUS_ERROR, TITLE => \"Item exists.\", MESSAGE => \"The item you tried to create already exists.\"); 
         
+        include_once(\"../../../Scripts/Entity Classes/PHP/".ucfirst($table).".php\");
+        \$object = new ".ucfirst($table)."(".$constructorParameters.");
+        \$result = ".ucfirst($table)."::create(\$object);
+        if (\$result) die(json_encode(\$JSON_ADD_SUCCESS));
+        else die (json_encode(\$JSON_ADD_ERROR));
     }
     
     /*!!!!!!!!!!!!!!!!!!!!! DO NOT EDIT CODE BELOW THIS POINT !!!!!!!!!!!!!!!!!!!!!*/
     
     ";
 
-                //Create the allowedUserLevelIDs Array:
-                $export_allowedUserLevelIDsArray = "\$allowedUserLevelIDs = array(1, ";
-                foreach ($userLevels as $userLevel) {
-                    if (isset($_POST[$endpointName. "_" . $table . "_" . $userLevel->UserLevelName])) {
-                        $export_allowedUserLevelIDsArray .= $userLevel->UserLevelID . ", ";
-                    }//end if
-                }//end foreach userlevel
-                $export_allowedUserLevelIDsArray = substr($export_allowedUserLevelIDsArray, 0, strlen($export_allowedUserLevelIDsArray) - 2);
-                $export_allowedUserLevelIDsArray .= ");";
-
-                //Create the parameters list for invalid params message:
-                $parametersMessage = "Invalid parameters. Expected Parameters: ";
-                $parameterChecks = "\r\n\t//-- PARAMETER CHECKS\r\n\r\n";
-                foreach ($allFields as $field) {
-                    if (($field->Key != "PRI") || ($field->Key == "PRI" && isQuotableType($field->Type))) {
-                        $parametersMessage .= $field->Field . " (".toJavaType($field->Type)."), ";
-                        $parameterChecks .= "\tif (!isset(\$_POST[\"".$field->Field."\"]) || \$_POST[\"".$field->Field."\"] == \"\") die(json_encode(\$JSON_INVALID_PARAMS));\r\n";
-                    }//end if not primary key
-                    //$parameterChecks .= "\tif (!isset(\$_POST[\"".$field->Field."\"]) || \$_POST[\"".$field->Field."\"] == \"\" || ".getTypeCheck($field).") die(json_encode(\$JSON_INVALID_PARAMS));\r\n";
-                }//end foreach field
-                $parametersMessage = substr($parametersMessage, 0, strlen($parametersMessage) - 2);
-                $parametersMessage .= ".";
-
                 //Create the constant fields:
                 $strConstants = "
     //Locals:
-    const ENDPOINT_NAME = \"\";
-    const ENDPOINT_SAMPLE_CALL = \"API/\"; //TODO Endpoint Sample call
+    const ENDPOINT_NAME = \"API/".ucfirst($table)."/Create\";
                 
     //Statuses:
     const STATUS_ERROR = \"Error\";
@@ -170,11 +196,17 @@
     const TECHNICAL_ERROR_MESSAGE = \"A technical error has occured. Please consult the system's administrator.\";
     const AUTHORIZATION_ERROR_TITLE = \"Authorization Error\";
     const AUTHORIZATION_ERROR_MESSAGE = \"You are not authorized to access this procedure. If you think you should be able to do so, please consult your system's administrator.\";
+    const CREATE_SUCCESS_TITLE = \"Item added.\";
+    const CREATE_SUCCESS_MESSAGE = \"Item added successfully.\";
+    const CREATE_ERROR_TITLE = \"Item add failed.\";
+    const CREATE_ERROR_MESSAGE = \"Failed to add item.\";
+    
 
     //JSON returns:
     \$JSON_INVALID_PARAMS = array(STATUS => STATUS_ERROR, TITLE => INVALID_PARAMS_TITLE, MESSAGE => INVALID_PARAMS_MESSAGE);
     \$JSON_TECHNICAL_ERROR = array(STATUS => STATUS_ERROR, TITLE => TECHNICAL_ERROR_TITLE, MESSAGE => TECHNICAL_ERROR_MESSAGE);
     \$JSON_AUTHORIZATION_ERROR = array(STATUS => STATUS_ERROR, TITLE => AUTHORIZATION_ERROR_TITLE, MESSAGE => AUTHORIZATION_ERROR_MESSAGE);
+    
 ";
 
                 echo $strConstants . "<br>";
@@ -206,12 +238,88 @@
         }//end foreach UserLevelID
         if (!\$allowed) die(json_encode(\$JSON_AUTHORIZATION_ERROR));
     }//end if session found
+    \$conn->close();
     ";
 
-                $funcCallAndConnClose = "\r\n\r\n\tonRequest(); \r\n\r\n\t\$conn->close();";
+                //Endpoint instructions:
+
+                $instructions_public = "This endpoint is public and requires no authorization.";
+                $instructions_nonpublic = "This endpoint is not public and requires a Session ID to be provided for authorization.";
+
+                $instructions_additional = "";
+                if ($isPublicEndpoint)  $instructions_additional = $instructions_public;
+                else $instructions_additional = $instructions_nonpublic;
+
+                $instructions = "
+                
+/*
+        ~~~ API Endpoint Instructions ~~~
+        
+        " . $instructions_additional . "
+        
+        Sample call for API/".ucfirst($table)."/".$endpointName.":
+
+            API/".ucfirst($table)."/".$endpointName. $parametersForSampleCall . "
+
+        /----------------------------------------------------------------
+
+        Valid UserLevels are: ".$allowedUsersInstructions."
+
+        Call Parameters List:
+        ".$parametersList."
+
+        ------------------------------------------------------------------
+
+
+        This endpoint responds with JSON data in the following ways.
+
+        Response Format:
+
+        1) Response OK
+
+            --> \"Status\": \"OK\"
+            --> \"Title\": \"Item added.\"
+            --> \"Message\": \"Item added successfully.\"
+
+        2) Response ERROR
+        
+            --> \"Status\": \"Error\"
+            --> \"Title\": \"Item exists.\"
+            --> \"Message\": \"The item you tried to create already exists.\"
+
+                (Invalid parameters)
+
+            --> \"Status\": \"Error\"
+            --> \"Title\": \"Invalid Parameters\"
+            --> \"Message\": \"".$parametersMessage."\"
+
+                (Technical error)
+
+            --> \"Status\": \"Error\"
+            --> \"Title\": \"Technical Error\"
+            --> \"Message\": \"A technical error has occured. Please consult the system's administrator.\"
+
+                (Invalid identification)
+
+            --> \"Status\": \"Error\"
+            --> \"Title\": \"Authorization Error\"
+            --> \"Message\": \"You are not authorized to access this procedure. If you think you should be able to do so, please consult your system's administrator.\"
+
+
+        ------------------------------------------------------------------
+
+    */
+                
+                
+                ";
+
+                if ($isPublicEndpoint) $securityChecks = "";
+
+                $funcCallAndConnClose = "\r\n\r\n\tonRequest(); ";
 
                 $endpointCode_Create =
                     getHeader($endpointName, $table, $dbName) .
+                    $instructions .
                     $onRequestFunctionCode_Create .
                     $strConstants .
                     $parameterChecks .

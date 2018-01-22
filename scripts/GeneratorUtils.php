@@ -24,7 +24,7 @@
 //  DATETIME:     " . date("Y-m-d h:i:sa", time()) . "
 //  DESCRIPTION:  " . $description . "\r\n
 /**********************************************************************************/
-			\r\n\r\n\r\n";
+			\r\n\r\n";
 
         return $outputString;
     }//end getGeneratorHeader()
@@ -49,7 +49,7 @@
 //  DATETIME:     " . date("Y-m-d h:i:sa", time()) . "
 //  DESCRIPTION:  " . $description . "\r\n
 /**********************************************************************************/
-            \r\n\r\n\r\n";
+            \r\n\r\n";
 
         return $outputString;
     }//end getGeneratorHeader()

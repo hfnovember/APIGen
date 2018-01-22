@@ -59,7 +59,7 @@
             include_once("GeneratorUtils.php");
             $str = "";
             $str .= getGeneratorHeader($_GET["dbName"], $tableName . ".php", $tableName, "");
-            $str .= "include_once(\"../../DBLogin.php\");\r\n\r\n";
+            //$str .= "include_once(\"../../DBLogin.php\");\r\n\r\n";
             $str .= "class " . ucfirst($tableName) . " implements JsonSerializable {\r\n";
             $str .= $classContent;
             $str .= "\r\n}";
@@ -101,7 +101,7 @@
             $combinedGenerationString =
                 self::generatePrivateFields($allFields) .
                 self::generateConstructors($allFields) .
-                self::generateGetters($allFields) .
+                self::generateGetters($allFields, $primaryKeyField) .
                 self::generateSetters($allFields) .
                 self::generateCreateFunction($tableName, $allFields) .
                 self::generateGetByID($tableName, $primaryKeyField, $allFields) .
@@ -137,7 +137,7 @@
         }//end generateConstructors()
 
 
-        public static function generateGetters($allFields) {
+        public static function generateGetters($allFields, $primaryKeyField) {
             $str = "\r\n\t//-------------------- Getter Methods --------------------\r\n\r\n";
             foreach ($allFields as $field) {
                 $str .= "\t/**
@@ -145,6 +145,13 @@
      */
      public function get" . ucfirst($field["Field"]) . "() { return \$this->" . $field["Field"] . "; }\r\n\r\n";
             }//end foreach field
+
+            $str .= "
+    /**
+     * @return " . $primaryKeyField["Type"] . "
+     */
+     public function getID() { return \$this->" . $primaryKeyField["Field"] . "; }\r\n\r\n";
+
             return $str;
         }//end generateGetters()
 

@@ -9,5 +9,5 @@ function myAJAXFunc_Create() {
     };
     xhttp.open("POST", "http://localhost:8080/Generated/API/Users/Create/", true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhttp.send("Username=TestUser&Password=1234&UserLevelID=1");
+    xhttp.send("UserID=1&Username=TestUser&Password=1234&UserLevelID=1");
 }
