@@ -101,6 +101,7 @@
             $combinedGenerationString =
                 self::generatePrivateFields($allFields) .
                 self::generateConstructors($allFields) .
+                self::generateHasUniqueFields($indexFields) .
                 self::generateGetters($allFields, $primaryKeyField) .
                 self::generateSetters($allFields) .
                 self::generateCreateFunction($tableName, $allFields) .
@@ -135,6 +136,17 @@
     }\r\n";
             return $strConstructor;
         }//end generateConstructors()
+
+        public static function generateHasUniqueFields($indexFields) {
+            $str = "";
+            if (sizeof($indexFields) > 0) {
+                $str = "\r\n\tpublic static \$hasUniqueFields = true;\r\n";
+            }
+            else {
+                $str = "\r\n\tpublic static \$hasUniqueFields = false;\r\n";
+            }
+            return $str;
+        }//end generateHasUniqueFields()
 
 
         public static function generateGetters($allFields, $primaryKeyField) {

@@ -159,20 +159,29 @@
                 $endpointCode_Create = "";
 
                 //OnRequest function:
+                $class = ucfirst($table);
                 $onRequestFunctionCode_Create = "
+    
+    //The onRequest() function is called once all security constraints are passed and all parameters have been verified.
+    //Important Notice: This function has been automatically generated based on your database.
+    //Editing this function is OK, but not recommended.                              
     function onRequest() {
         \$JSON_ADD_SUCCESS = array(STATUS => STATUS_OK, TITLE => CREATE_SUCCESS_TITLE, MESSAGE => CREATE_SUCCESS_MESSAGE);
         \$JSON_ADD_ERROR = array(STATUS => STATUS_ERROR, TITLE => CREATE_ERROR_TITLE, MESSAGE => CREATE_ERROR_MESSAGE);
         \$JSON_EXISTS_ERROR = array(STATUS => STATUS_ERROR, TITLE => \"Item exists.\", MESSAGE => \"The item you tried to create already exists.\"); 
         
-        include_once(\"../../../Scripts/Entity Classes/PHP/".ucfirst($table).".php\");
-        \$object = new ".ucfirst($table)."(".$constructorParameters.");
-        \$result = ".ucfirst($table)."::create(\$object);
+        include_once(\"../../../Scripts/Entity Classes/PHP/".$class.".php\");
+        \$object = new ".$class."(".$constructorParameters.");
+        \$result = ".$class."::create(\$object);
         if (\$result) die(json_encode(\$JSON_ADD_SUCCESS));
-        else die (json_encode(\$JSON_ADD_ERROR));
+        else {
+            if (".$class."::\$hasUniqueFields) die(json_encode(\$JSON_EXISTS_ERROR));
+            else die (json_encode(\$JSON_ADD_ERROR));
+        }
     }
     
-    /*!!!!!!!!!!!!!!!!!!!!! DO NOT EDIT CODE BELOW THIS POINT !!!!!!!!!!!!!!!!!!!!!*/
+    /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! DO NOT EDIT CODE BELOW THIS POINT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
+    //Editing the code below will compromise the reliability and security of your API.
     
     ";
 
@@ -252,22 +261,23 @@
                 $instructions = "
                 
 /*
-        ~~~ API Endpoint Instructions ~~~
+        ~~~~~~ API Endpoint Instructions ~~~~~~
         
         " . $instructions_additional . "
         
-        Sample call for API/".ucfirst($table)."/".$endpointName.":
+        Sample call for API/".ucfirst($table)."/".ucfirst($endpointName).":
 
-            API/".ucfirst($table)."/".$endpointName. $parametersForSampleCall . "
+            API/".ucfirst($table)."/".ucfirst($endpointName). $parametersForSampleCall . "
 
-        /----------------------------------------------------------------
+        /----------------------------------------------------------------/
 
-        Valid UserLevels are: ".$allowedUsersInstructions."
+        User Types/Levels who can access this endpoint:
+         ".$allowedUsersInstructions."
 
         Call Parameters List:
         ".$parametersList."
 
-        ------------------------------------------------------------------
+        /----------------------------------------------------------------/
 
 
         This endpoint responds with JSON data in the following ways.
@@ -304,9 +314,6 @@
             --> \"Title\": \"Authorization Error\"
             --> \"Message\": \"You are not authorized to access this procedure. If you think you should be able to do so, please consult your system's administrator.\"
 
-
-        ------------------------------------------------------------------
-
     */
                 
                 
@@ -332,7 +339,13 @@
 
             }//end if create endpoint
 
-            //TODO Implement other endpoints
+            //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            //Endpoint "GET BY ID":
+            if (isset($_POST["generate_" . $table . "_getByID"])) {
+                //TODO... Implement.
+            }
+            //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+            //TODO: Implement rest of calls.
 
         }//end if generate table is set
 

@@ -9,7 +9,7 @@
 //  DATABASE:     Nicos
 //  FILE:         API/create/index.php
 //  TABLE:        users
-//  DATETIME:     2018-01-23 12:48:44am
+//  DATETIME:     2018-01-23 01:15:32am
 //  DESCRIPTION:  N/A
 
 /**********************************************************************************/
@@ -18,17 +18,18 @@
 
                 
 /*
-        ~~~ API Endpoint Instructions ~~~
+        ~~~~~~ API Endpoint Instructions ~~~~~~
         
         This endpoint is public and requires no authorization.
         
-        Sample call for API/Users/create:
+        Sample call for API/Users/Create:
 
-            API/Users/create?UserID...&Username...&Password...&UserLevelID...
+            API/Users/Create?UserID...&Username...&Password...&UserLevelID...
 
-        /----------------------------------------------------------------
+        /----------------------------------------------------------------/
 
-        Valid UserLevels are: Administrator (1), Manager(2), Public(4), User(3)
+        User Types/Levels who can access this endpoint:
+         Administrator (1), Manager(2), Public(4), User(3)
 
         Call Parameters List:
         
@@ -37,7 +38,7 @@
 		Password (String)
 		UserLevelID (int)
 
-        ------------------------------------------------------------------
+        /----------------------------------------------------------------/
 
 
         This endpoint responds with JSON data in the following ways.
@@ -74,13 +75,14 @@
             --> "Title": "Authorization Error"
             --> "Message": "You are not authorized to access this procedure. If you think you should be able to do so, please consult your system's administrator."
 
-
-        ------------------------------------------------------------------
-
     */
                 
                 
                 
+    
+    //The onRequest() function is called once all security constraints are passed and all parameters have been verified.
+    //Important Notice: This function has been automatically generated based on your database.
+    //Editing this function is OK, but not recommended.                              
     function onRequest() {
         $JSON_ADD_SUCCESS = array(STATUS => STATUS_OK, TITLE => CREATE_SUCCESS_TITLE, MESSAGE => CREATE_SUCCESS_MESSAGE);
         $JSON_ADD_ERROR = array(STATUS => STATUS_ERROR, TITLE => CREATE_ERROR_TITLE, MESSAGE => CREATE_ERROR_MESSAGE);
@@ -90,10 +92,14 @@
         $object = new Users($_POST["UserID"], $_POST["Username"], $_POST["Password"], $_POST["UserLevelID"]);
         $result = Users::create($object);
         if ($result) die(json_encode($JSON_ADD_SUCCESS));
-        else die (json_encode($JSON_ADD_ERROR));
+        else {
+            if (Users::$hasUniqueFields) die(json_encode($JSON_EXISTS_ERROR));
+            else die (json_encode($JSON_ADD_ERROR));
+        }
     }
     
-    /*!!!!!!!!!!!!!!!!!!!!! DO NOT EDIT CODE BELOW THIS POINT !!!!!!!!!!!!!!!!!!!!!*/
+    /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! DO NOT EDIT CODE BELOW THIS POINT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
+    //Editing code below will compromise the reliability and security of your API.
     
     
     //Locals:
