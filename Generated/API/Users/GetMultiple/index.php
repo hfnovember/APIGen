@@ -9,7 +9,7 @@
 //  DATABASE:     Nicos
 //  FILE:         API/getMultiple/index.php
 //  TABLE:        users
-//  DATETIME:     2018-01-23 11:16:36pm
+//  DATETIME:     2018-01-23 11:44:10pm
 //  DESCRIPTION:  N/A
 
 /**********************************************************************************/
@@ -52,7 +52,7 @@
         
             --> "Status": "Error"
             --> "Title": "Item retrieval failed."
-            --> "Message": "Failed to retrieve item with specified ID."
+            --> "Message": "Failed to retrieve items."
 
                 (Invalid parameters)
 

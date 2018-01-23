@@ -9,7 +9,7 @@
 //  DATABASE:     Nicos
 //  FILE:         sessions.php
 //  TABLE:        sessions
-//  DATETIME:     2018-01-23 09:31:42pm
+//  DATETIME:     2018-01-23 11:42:07pm
 //  DESCRIPTION:  N/A
 
 /**********************************************************************************/
@@ -178,7 +178,8 @@ class Sessions implements JsonSerializable {
     public static function update($sessions_object) {
         $conn = dbLogin();
         $sql = "UPDATE sessions SET UserID = " . $sessions_object->getUserID() . ", InitiatedOn = " . $sessions_object->getInitiatedOn() . ", FinalizedOn = " . $sessions_object->getFinalizedOn() . ", ClientIPAddress = \"" . $sessions_object->getClientIPAddress() . "\" WHERE SessionID = \"" . $sessions_object->getSessionID() . "\"";
-        if ($conn->query($sql) === TRUE) return true;
+        $conn->query($sql);
+        if ($conn->affected_rows > 0) return true;
         else return false;
     }
 

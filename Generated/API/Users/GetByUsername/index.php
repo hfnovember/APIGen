@@ -9,7 +9,7 @@
 //  DATABASE:     Nicos
 //  FILE:         API/getByUsername/index.php
 //  TABLE:        users
-//  DATETIME:     2018-01-23 11:16:36pm
+//  DATETIME:     2018-01-23 11:44:10pm
 //  DESCRIPTION:  N/A
 
 /**********************************************************************************/
@@ -52,7 +52,7 @@
         
             --> "Status": "Error"
             --> "Title": "Item retrieval failed."
-            --> "Message": "Failed to retrieve item with specified ID."
+            --> "Message": "Failed to retrieve item with specified index value."
 
                 (Invalid parameters)
 
@@ -120,7 +120,7 @@
         const GET_SUCCESS_TITLE = "Item retrieved.";
         const GET_SUCCESS_MESSAGE = "Item retrieved successfully.";
         const GET_ERROR_TITLE = "Item retrieval failed.";
-        const GET_ERROR_MESSAGE = "Failed to retrieve item.";
+        const GET_ERROR_MESSAGE = "Failed to retrieve item with specified index value.";
         
     
         //JSON returns:

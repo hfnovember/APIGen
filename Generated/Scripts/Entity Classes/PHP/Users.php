@@ -9,7 +9,7 @@
 //  DATABASE:     Nicos
 //  FILE:         users.php
 //  TABLE:        users
-//  DATETIME:     2018-01-23 09:31:42pm
+//  DATETIME:     2018-01-23 11:42:07pm
 //  DESCRIPTION:  N/A
 
 /**********************************************************************************/
@@ -186,7 +186,8 @@ class Users implements JsonSerializable {
     public static function update($users_object) {
         $conn = dbLogin();
         $sql = "UPDATE users SET Username = \"" . $users_object->getUsername() . "\", Password = \"" . $users_object->getPassword() . "\", UserLevelID = " . $users_object->getUserLevelID() . " WHERE UserID = " . $users_object->getUserID();
-        if ($conn->query($sql) === TRUE) return true;
+        $conn->query($sql);
+        if ($conn->affected_rows > 0) return true;
         else return false;
     }
 

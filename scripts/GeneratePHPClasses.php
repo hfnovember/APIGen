@@ -338,7 +338,8 @@
     public static function update(" . $parameters . ") {
         \$conn = dbLogin();
         " . $sql . "
-        if (\$conn->query(\$sql) === TRUE) return true;
+        \$conn->query(\$sql);
+        if (\$conn->affected_rows > 0) return true;
         else return false;
     }\r\n";
             return $str;
