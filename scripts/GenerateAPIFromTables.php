@@ -405,7 +405,7 @@
         
         include_once(\"../../../Scripts/Entity Classes/PHP/".$class.".php\");     
            
-        \$object = Users::getByID(\$_POST[\"".$constructorParameters."\"]);
+        \$object = Users::getByID(".$constructorParameters.");
         if (!\$object) die(json_encode(\$JSON_GET_ERROR));
         \$returnArray = array(STATUS => STATUS_OK, TITLE => GET_SUCCESS_TITLE, MESSAGE => GET_SUCCESS_MESSAGE);
         \$statusJson = json_encode(\$returnArray);
