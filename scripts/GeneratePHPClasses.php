@@ -374,7 +374,8 @@
     public static function delete(" . $parameters . ") {
         \$conn = dbLogin();
         " . $sql . "
-        if (\$conn->query(\$sql) === TRUE) return true;
+        \$result = \$conn->query(\$sql);
+        if (\$conn->affected_rows > 0) return true;
         else return false;
     }\r\n";
             return $str;

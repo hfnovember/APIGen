@@ -9,7 +9,7 @@
 //  DATABASE:     Nicos
 //  FILE:         userlevels.php
 //  TABLE:        userlevels
-//  DATETIME:     2018-01-24 12:54:16am
+//  DATETIME:     2018-01-24 01:21:37am
 //  DESCRIPTION:  N/A
 
 /**********************************************************************************/
@@ -175,7 +175,8 @@ class Userlevels implements JsonSerializable {
     public static function delete($userlevels_object) {
         $conn = dbLogin();
         $sql = "DELETE FROM userlevels WHERE UserLevelID = " . $userlevels_object->getUserLevelID();
-        if ($conn->query($sql) === TRUE) return true;
+        $result = $conn->query($sql);
+        if ($conn->affected_rows > 0) return true;
         else return false;
     }
 

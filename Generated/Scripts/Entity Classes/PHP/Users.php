@@ -9,7 +9,7 @@
 //  DATABASE:     Nicos
 //  FILE:         users.php
 //  TABLE:        users
-//  DATETIME:     2018-01-24 12:54:16am
+//  DATETIME:     2018-01-24 01:21:37am
 //  DESCRIPTION:  N/A
 
 /**********************************************************************************/
@@ -209,7 +209,8 @@ class Users implements JsonSerializable {
     public static function delete($users_object) {
         $conn = dbLogin();
         $sql = "DELETE FROM users WHERE UserID = " . $users_object->getUserID();
-        if ($conn->query($sql) === TRUE) return true;
+        $result = $conn->query($sql);
+        if ($conn->affected_rows > 0) return true;
         else return false;
     }
 
