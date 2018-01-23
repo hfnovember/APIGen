@@ -8,7 +8,7 @@
 
 //  DATABASE:     Nicos
 //  FILE:         Logout
-//  DATETIME:     2018-01-23 10:36:49pm
+//  DATETIME:     2018-01-23 11:11:05pm
 //  DESCRIPTION:  Logs the user out of the system.
 
 /**********************************************************************************/

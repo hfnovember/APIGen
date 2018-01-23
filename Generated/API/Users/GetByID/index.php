@@ -9,7 +9,7 @@
 //  DATABASE:     Nicos
 //  FILE:         API/getByID/index.php
 //  TABLE:        users
-//  DATETIME:     2018-01-23 10:36:49pm
+//  DATETIME:     2018-01-23 11:11:05pm
 //  DESCRIPTION:  N/A
 
 /**********************************************************************************/
@@ -85,7 +85,7 @@
         
         include_once("../../../Scripts/Entity Classes/PHP/Users.php");     
            
-        $object = Users::getByID($_POST["UserID"]);
+        $object = Users::getByID($_POST["$_POST["UserID"]"]);
         if (!$object) die(json_encode($JSON_GET_ERROR));
         $returnArray = array(STATUS => STATUS_OK, TITLE => GET_SUCCESS_TITLE, MESSAGE => GET_SUCCESS_MESSAGE);
         $statusJson = json_encode($returnArray);
