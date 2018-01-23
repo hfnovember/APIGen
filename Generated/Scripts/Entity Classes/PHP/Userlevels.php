@@ -9,7 +9,7 @@
 //  DATABASE:     Nicos
 //  FILE:         userlevels.php
 //  TABLE:        userlevels
-//  DATETIME:     2018-01-23 11:42:07pm
+//  DATETIME:     2018-01-24 12:54:16am
 //  DESCRIPTION:  N/A
 
 /**********************************************************************************/
@@ -31,6 +31,13 @@ class Userlevels implements JsonSerializable {
         $this->UserLevelID = $UserLevelID;
 		$this->UserLevelName = $UserLevelName;
     }
+
+	//-------------------- Reflectors --------------------
+
+	public static $allFields = array(
+		"UserLevelID", 
+		"UserLevelName"
+	);
 
 	public static $hasUniqueFields = true;
 
@@ -214,8 +221,14 @@ class Userlevels implements JsonSerializable {
         
         $sql = "SELECT * FROM userlevels WHERE " . $combinedWhereClause;
         $result = $conn->query($sql);
+        if (!$result) return false;
         $itemsArray = array();
-        while ($row = $result->fetch_object()) array_push($itemsArray, $row);
+        while ($row = $result->fetch_assoc()) {
+            $object = new Userlevels(
+				$row["UserLevelID"], 
+				$row["UserLevelName"]);
+            array_push($itemsArray, $object);
+        }
         return $itemsArray;
     }
 

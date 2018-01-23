@@ -187,7 +187,7 @@
                 //Create the constant fields:
                 $strConstants = "
     //Locals:
-    const ENDPOINT_NAME = \"API/".ucfirst($table)."/Create\";
+    const ENDPOINT_NAME = \"API/".ucfirst($table)."/".ucfirst($endpointName)."\";
                 
     //Statuses:
     const STATUS_ERROR = \"Error\";
@@ -423,7 +423,7 @@
                 //Create the constant fields:
                 $strConstants = "
     //Locals:
-    const ENDPOINT_NAME = \"API/".ucfirst($table)."/GetByID\";
+    const ENDPOINT_NAME = \"API/".ucfirst($table)."/".ucfirst($endpointName)."\";
                 
     //Statuses:
     const STATUS_ERROR = \"Error\";
@@ -819,7 +819,7 @@
 
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
             //Endpoint "GET MULTIPLE":
-            if (isset($_POST["generate_" . $table . "_getByID"])) {
+            if (isset($_POST["generate_" . $table . "_getMultiple"])) {
 
                 $endpointName = "getMultiple";
 
@@ -875,11 +875,12 @@
     //Editing this function is OK, but not recommended.                              
     function onRequest(\$limit) {
         \$JSON_GET_ERROR = array(STATUS => STATUS_ERROR, TITLE => GET_ERROR_TITLE, MESSAGE => GET_ERROR_MESSAGE);
+        \$JSON_NO_ITEMS = array(STATUS => STATUS_ERROR, TITLE => \"No items found.\", MESSAGE => \"Your call has return 0 results.\");
         
         include_once(\"../../../Scripts/Entity Classes/PHP/".$class.".php\");     
            
         \$objects = Users::getMultiple(\$limit);
-        if (sizeof(\$objects) <= 0) die(json_encode(\$JSON_GET_ERROR));
+        if (sizeof(\$objects) <= 0) die(json_encode(\$JSON_NO_ITEMS));
         \$returnArray = array(STATUS => STATUS_OK, TITLE => GET_SUCCESS_TITLE, MESSAGE => GET_SUCCESS_MESSAGE);
         \$statusJson = json_encode(\$returnArray);
         \$statusJson = substr(\$statusJson, 0, strlen(\$statusJson) - 1);
@@ -896,7 +897,7 @@
                 //Create the constant fields:
                 $strConstants = "
     //Locals:
-    const ENDPOINT_NAME = \"API/".ucfirst($table)."/GetByID\";
+    const ENDPOINT_NAME = \"API/".ucfirst($table)."/".ucfirst($endpointName)."\";
                 
     //Statuses:
     const STATUS_ERROR = \"Error\";
@@ -1049,7 +1050,7 @@
 
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-            //Endpoint "CREATE":
+            //Endpoint "UPDATE":
             if (isset($_POST["generate_" . $table . "_update"])) {
 
                 $endpointName = "update";
@@ -1124,7 +1125,7 @@
                 //Create the constant fields:
                 $strConstants = "
     //Locals:
-    const ENDPOINT_NAME = \"API/".ucfirst($table)."/Create\";
+    const ENDPOINT_NAME = \"API/".ucfirst($table)."/".ucfirst($endpointName)."\";
                 
     //Statuses:
     const STATUS_ERROR = \"Error\";
@@ -1273,7 +1274,290 @@
                 writeToPHPFile("../Generated/API/" . ucfirst($table) . "/" . ucfirst($endpointName) . "/", "index.php", $endpointCode_Create);
                 echo "<p style='font-family: consolas; text-align: center;'><b>Generated:</b> " . ucfirst($table) . "/" . ucfirst($endpointName) . "</p>";
 
-            }//end if create endpoint
+            }//end if update endpoint
+
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+            //Endpoint "SEARCH BY FIELD":
+            if (isset($_POST["generate_" . $table . "_searchByField"])) {
+
+                $endpointName = "searchByField";
+
+                //Create the allowedUserLevelIDs Array:
+                $export_allowedUserLevelIDsArray = "\$allowedUserLevelIDs = array(1, ";
+                $isPublicEndpoint = false;
+                $allowedUsersInstructions = "Administrator (1)";
+                foreach ($userLevels as $userLevel) {
+                    if (isset($_POST[$endpointName. "_" . $table . "___" . $userLevel->UserLevelName])) {
+                        if ($userLevel->UserLevelID == 4) $isPublicEndpoint = true;
+                        $export_allowedUserLevelIDsArray .= $userLevel->UserLevelID . ", ";
+                        $allowedUsersInstructions .= ", " . $userLevel->UserLevelName . "(" . $userLevel->UserLevelID . ")";
+                    }//end if
+                }//end foreach userlevel
+                $export_allowedUserLevelIDsArray = substr($export_allowedUserLevelIDsArray, 0, strlen($export_allowedUserLevelIDsArray) - 2);
+                $export_allowedUserLevelIDsArray .= ");";
+
+                //Create the parameters lists:
+                $parametersMessage = "Invalid parameters. Expected Parameters: ";
+                $parameterChecks = "\r\n\t//-- PARAMETER CHECKS\r\n\r\n";
+                $parametersForSampleCall = "?";
+                $parametersList = "";
+                $constructorParameters = "";
+
+                $parametersMessage .= "Fields (String list), Values (Mixed type list)";
+                $parameterChecks .= "\tif (!isset(\$_POST[\"Fields\"]) || \$_POST[\"Fields\"] == \"\") die(json_encode(\$JSON_INVALID_PARAMS));\r\n";
+                $parameterChecks .= "\tif (!isset(\$_POST[\"Values\"]) || \$_POST[\"Values\"] == \"\") die(json_encode(\$JSON_INVALID_PARAMS));\r\n";
+                $parametersForSampleCall .= "Fields=...Values=...&";
+                $parametersList .= "\r\n\t\t" . "Fields (String list)";
+                $parametersList .= "\r\n\t\t" . "Values (Mixed type list)";
+                $constructorParameters .= "\$_POST[\"Fields\"], \$_POST[\"Values\"], ";
+
+                //Add session parameter:
+                if (!$isPublicEndpoint) {
+                    $parametersMessage .= "SessionID (String)";
+                    $parameterChecks .= "\tif (!isset(\$_POST[\"SessionID\"]) || \$_POST[\"SessionID\"] == \"\") die(json_encode(\$JSON_INVALID_PARAMS));\r\n";
+                    $parametersForSampleCall .= "SessionID=...";
+                    $parametersList .= "\r\n\t\tSessionID (String)";
+                }
+                else {
+                    $parametersMessage = substr($parametersMessage, 0, strlen($parametersMessage) - 2);
+                    $parametersForSampleCall = substr($parametersForSampleCall, 0, strlen($parametersForSampleCall) - 1);
+                    $parametersMessage .= ".";
+                }
+
+                $endpointCode_Create = "";
+
+                //OnRequest function:
+                $class = ucfirst($table);
+                $onRequestFunctionCode_Create = "
+    
+    //The onRequest() function is called once all security constraints are passed and all parameters have been verified.
+    //Important Notice: This function has been automatically generated based on your database.
+    //Editing this function is OK, but not recommended.                              
+    function onRequest() {
+        \$JSON_BYFIELD_SUCCESS = array(STATUS => STATUS_OK, TITLE => BYFIELD_SUCCESS_TITLE, MESSAGE => BYFIELD_SUCCESS_MESSAGE);
+        \$JSON_BYFIELD_ERROR = array(STATUS => STATUS_ERROR, TITLE => BYFIELD_ERROR_TITLE, MESSAGE => BYFIELD_ERROR_MESSAGE);
+        \$JSON_SIZE_MISMATCH = array(STATUS => STATUS_ERROR, TITLE => BYFIELD_SIZE_MISMATCH_TITLE, MESSAGE => BYFIELD_SIZE_MISMATCH_MESSAGE);
+        \$JSON_NO_ITEMS = array(STATUS => STATUS_ERROR, TITLE => \"No items found.\", MESSAGE => \"Your call has return 0 results.\");
+        \$JSON_INVALID_FIELDS = array(STATUS => STATUS_ERROR, TITLE => \"Invalid field found.\", MESSAGE => \"Your call contains a field that does not exist for this class.\");
+        
+        include_once(\"../../../Scripts/Entity Classes/PHP/".$class.".php\");
+        
+        \$fieldsArray = explode(\",\", \$_POST[\"Fields\"]);
+        \$valuesArray = explode(\",\", \$_POST[\"Values\"]);
+        
+        if (sizeof(\$fieldsArray) != sizeof(\$valuesArray)) die(json_encode(\$JSON_SIZE_MISMATCH));
+        
+        \$assocArray = array();
+        
+        foreach (\$fieldsArray as \$field) {
+            \$exists = false;
+            foreach (".$class."::\$allFields as \$classField) {
+                if (\$field == \$classField) {
+                    \$exists = true;
+                    break;
+                }   
+            }
+            if (!\$exists) die(json_encode(\$JSON_INVALID_FIELDS));
+        }
+        
+        for (\$i = 0; \$i < sizeof(\$fieldsArray); \$i++) {
+            \$field = \$fieldsArray[\$i];
+            \$value = \$valuesArray[\$i];
+            \$assocArray[\$field] = \$value;
+        }
+        
+        \$objects = ".$class."::searchByFields(\$assocArray);
+        
+        if (!\$objects) die(json_encode(\$JSON_BYFIELD_ERROR));
+        if (sizeof(\$objects) <= 0) die(json_encode(\$JSON_NO_ITEMS));
+        
+        \$returnArray = \$JSON_BYFIELD_SUCCESS;
+        \$statusJson = json_encode(\$returnArray);
+        \$statusJson = substr(\$statusJson, 0, strlen(\$statusJson) - 1);
+        \$objectData = \", \\\"Data\\\": \" . ".$class."::toJSONArray(\$objects) . \"}\";
+        \$combinedReturn = \$statusJson . \$objectData;
+        die (\$combinedReturn);
+    }
+    
+    /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! DO NOT EDIT CODE BELOW THIS POINT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
+    //Editing the code below will compromise the reliability and security of your API.
+    
+    ";
+
+                //Create the constant fields:
+                $strConstants = "
+    //Locals:
+    const ENDPOINT_NAME = \"API/".ucfirst($table)."/".ucfirst($endpointName)."\";
+                
+    //Statuses:
+    const STATUS_ERROR = \"Error\";
+    const STATUS_OK = \"OK\";
+
+    //Titles/Messages:
+    const STATUS = \"Status\";
+    const TITLE = \"Title\";
+    const MESSAGE = \"Message\";
+    const DATA = \"Data\";
+    const INVALID_PARAMS_TITLE = \"Invalid Parameters\";
+    const INVALID_PARAMS_MESSAGE = \"".$parametersMessage."\";
+    const TECHNICAL_ERROR_TITLE = \"Technical Error\";
+    const TECHNICAL_ERROR_MESSAGE = \"A technical error has occured. Please consult the system's administrator.\";
+    const AUTHORIZATION_ERROR_TITLE = \"Authorization Error\";
+    const AUTHORIZATION_ERROR_MESSAGE = \"You are not authorized to access this procedure. If you think you should be able to do so, please consult your system's administrator.\";
+    const BYFIELD_SUCCESS_TITLE = \"Item(s) retrieved.\";
+    const BYFIELD_SUCCESS_MESSAGE = \"Item(s) retrieved successfully.\";
+    const BYFIELD_ERROR_TITLE = \"Failed to retrieve item(s).\";
+    const BYFIELD_ERROR_MESSAGE = \"Failed to retrieve item(s). Make sure that all your fields are correctly formatted and match their corresponding values.\";
+    const BYFIELD_SIZE_MISMATCH_TITLE = \"Size mismatch.\";
+    const BYFIELD_SIZE_MISMATCH_MESSAGE = \"The size of the fields list and values list is not the same. Please make sure you correctly format your call.\";
+    
+
+    //JSON returns:
+    \$JSON_INVALID_PARAMS = array(STATUS => STATUS_ERROR, TITLE => INVALID_PARAMS_TITLE, MESSAGE => INVALID_PARAMS_MESSAGE);
+    \$JSON_TECHNICAL_ERROR = array(STATUS => STATUS_ERROR, TITLE => TECHNICAL_ERROR_TITLE, MESSAGE => TECHNICAL_ERROR_MESSAGE);
+    \$JSON_AUTHORIZATION_ERROR = array(STATUS => STATUS_ERROR, TITLE => AUTHORIZATION_ERROR_TITLE, MESSAGE => AUTHORIZATION_ERROR_MESSAGE);
+    
+";
+
+
+                $includeOnceDBLogin = "\tinclude_once(\"../../../Scripts/DBLogin.php\");";
+
+                $securityChecks = "
+     \r\n\t//-- SECURITY CHECKS
+
+    //Allowed user levels:
+    ".$export_allowedUserLevelIDsArray."
+
+    //Validate session if a session is required (not public)
+    \$sessionID = \$_POST[\"SessionID\"];
+    \$conn = dbLogin();
+    \$sqlSessions = \"SELECT * FROM Sessions WHERE SessionID = '\" . \$sessionID . \"'\";
+    \$result = \$conn->query(\$sqlSessions);
+    if (\$result === FALSE) die(json_encode(\$JSON_AUTHORIZATION_ERROR));
+    else {
+        \$session = \$result->fetch_object();
+        \$sqlGetUser = \"SELECT UserLevelID FROM Users WHERE UserID = \" . \$session->UserID;
+        \$result = \$conn->query(\$sqlGetUser);
+        \$user = \$result->fetch_object();
+        \$allowed = false;
+        foreach (\$allowedUserLevelIDs as \$id) {
+            if (\$user->UserLevelID == \$id) {
+                \$allowed = true; break;
+            }//end if match
+        }//end foreach UserLevelID
+        if (!\$allowed) die(json_encode(\$JSON_AUTHORIZATION_ERROR));
+    }//end if session found
+    \$conn->close();
+    ";
+
+                //Endpoint instructions:
+
+                $instructions_public = "This endpoint is public and requires no authorization.";
+                $instructions_nonpublic = "This endpoint is not public and requires a Session ID to be provided for authorization.";
+
+                $instructions_additional = "";
+                if ($isPublicEndpoint)  $instructions_additional = $instructions_public;
+                else $instructions_additional = $instructions_nonpublic;
+
+                $instructions = "
+                
+/*
+        ~~~~~~ API Endpoint Instructions ~~~~~~
+        
+        " . $instructions_additional . "
+        
+        Sample call for API/".ucfirst($table)."/".ucfirst($endpointName).":
+
+            API/".ucfirst($table)."/".ucfirst($endpointName). $parametersForSampleCall . "
+
+        /----------------------------------------------------------------/
+
+        User Types/Levels who can access this endpoint:
+         ".$allowedUsersInstructions."
+
+        Call Parameters List:
+        ".$parametersList."
+
+        /----------------------------------------------------------------/
+
+
+        This endpoint responds with JSON data in the following ways.
+
+        Response Format:
+
+        1) Response OK
+
+            --> \"Status\": \"OK\"
+            --> \"Title\": \"Item(s) retrieved.\"
+            --> \"Message\": \"Item(s) retrieved successfully.\"
+
+        2) Response ERROR
+        
+                (No items)
+        
+            --> \"Status\": \"Error\"
+            --> \"Title\": \"Failed to retrieve item(s).\"
+            --> \"Message\": \"Failed to retrieve item(s). Make sure that all your fields are correctly formatted and match their corresponding values.\"
+            
+                (Fields and Values size mismatch)
+                
+            --> \"Status\": \"Error\"
+            --> \"Title\": \"Size mismatch.\"
+            --> \"Message\": \"The size of the fields list and values list is not the same. Please make sure you correctly format your call.\"
+            
+                (Invalid field name)
+                
+            --> \"Status\": \"Error\"
+            --> \"Title\": \"Invalid Field found.\"
+            --> \"Message\": \"Your call contains a field that does not exist for this class.\"
+
+                (Invalid parameters)
+
+            --> \"Status\": \"Error\"
+            --> \"Title\": \"Invalid Parameters\"
+            --> \"Message\": \"".$parametersMessage."\"
+
+                (Technical error)
+
+            --> \"Status\": \"Error\"
+            --> \"Title\": \"Technical Error\"
+            --> \"Message\": \"A technical error has occured. Please consult the system's administrator.\"
+
+                (Invalid identification)
+
+            --> \"Status\": \"Error\"
+            --> \"Title\": \"Authorization Error\"
+            --> \"Message\": \"You are not authorized to access this procedure. If you think you should be able to do so, please consult your system's administrator.\"
+
+    */
+                
+                
+                ";
+
+                if ($isPublicEndpoint) $securityChecks = "";
+
+                $funcCallAndConnClose = "\r\n\r\n\tonRequest(); ";
+
+                $endpointCode_Create =
+                    getHeader($endpointName, $table, $dbName) .
+                    $instructions .
+                    $onRequestFunctionCode_Create .
+                    $strConstants .
+                    $parameterChecks .
+                    $includeOnceDBLogin .
+                    $securityChecks .
+                    $funcCallAndConnClose
+                ;
+
+                writeToPHPFile("../Generated/API/" . ucfirst($table) . "/" . ucfirst($endpointName) . "/", "index.php", $endpointCode_Create);
+                echo "<p style='font-family: consolas; text-align: center;'><b>Generated:</b> " . ucfirst($table) . "/" . ucfirst($endpointName) . "</p>";
+
+            }//end if searchByField endpoint
+
+//------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
 
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 

@@ -9,7 +9,7 @@
 //  DATABASE:     Nicos
 //  FILE:         API/update/index.php
 //  TABLE:        users
-//  DATETIME:     2018-01-23 11:44:10pm
+//  DATETIME:     2018-01-24 01:05:47am
 //  DESCRIPTION:  N/A
 
 /**********************************************************************************/
@@ -99,7 +99,7 @@
     
     
     //Locals:
-    const ENDPOINT_NAME = "API/Users/Create";
+    const ENDPOINT_NAME = "API/Users/Update";
                 
     //Statuses:
     const STATUS_ERROR = "Error";

@@ -101,6 +101,7 @@
             $combinedGenerationString =
                 self::generatePrivateFields($allFields) .
                 self::generateConstructors($allFields) .
+                self::generateFieldsArray($allFields) .
                 self::generateHasUniqueFields($indexFields) .
                 self::generateGetters($allFields, $primaryKeyField) .
                 self::generateSetters($allFields) .
@@ -112,7 +113,7 @@
                 self::generateDelete($tableName, $primaryKeyField) .
                 self::generateGetSize($tableName, $primaryKeyField) .
                 self::generateIsEmpty($tableName, $primaryKeyField) .
-                self::generateSearchByField($tableName) .
+                self::generateSearchByField($tableName, $allFields) .
                 self::generateJsonSerialize($tableName, $allFields)
             ;
 
@@ -140,13 +141,23 @@
         public static function generateHasUniqueFields($indexFields) {
             $str = "";
             if (sizeof($indexFields) > 0) {
-                $str = "\r\n\tpublic static \$hasUniqueFields = true;\r\n";
+                $str = "\r\n\r\n\tpublic static \$hasUniqueFields = true;\r\n";
             }
             else {
-                $str = "\r\n\tpublic static \$hasUniqueFields = false;\r\n";
+                $str = "\r\n\r\n\tpublic static \$hasUniqueFields = false;\r\n";
             }
             return $str;
         }//end generateHasUniqueFields()
+
+
+        public static function generateFieldsArray($allFields) {
+            $str = "\r\n\t//-------------------- Reflectors --------------------\r\n";
+            $str .= "\r\n\tpublic static \$allFields = array(";
+            foreach ($allFields as $field) $str .= "\r\n\t\t\"".$field["Field"]."\", ";
+            $str = substr($str, 0, strlen($str) - 2);
+            $str .= "\r\n\t);";
+            return $str;
+        }//end generateFieldsArray()
 
 
         public static function generateGetters($allFields, $primaryKeyField) {
@@ -403,7 +414,7 @@
             return $str;
         }//end generateIsEmpty()
 
-        public static function generateSearchByField($tableName) {
+        public static function generateSearchByField($tableName, $allFields) {
             $str = "\r\n
     /**
      * Searches the database for matches in the given field-value pairs in the given associative array.
@@ -422,8 +433,12 @@
         
         \$sql = \"SELECT * FROM " . $tableName . " WHERE \" . \$combinedWhereClause;
         \$result = \$conn->query(\$sql);
+        if (!\$result) return false;
         \$itemsArray = array();
-        while (\$row = \$result->fetch_object()) array_push(\$itemsArray, \$row);
+        while (\$row = \$result->fetch_assoc()) {
+            \$object = new " . ucfirst($tableName) . "(" . self::getObjectConstructorParameterizer($allFields, "row") . ");
+            array_push(\$itemsArray, \$object);
+        }
         return \$itemsArray;
     }\r\n";
             return $str;

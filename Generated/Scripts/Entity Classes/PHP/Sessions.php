@@ -9,7 +9,7 @@
 //  DATABASE:     Nicos
 //  FILE:         sessions.php
 //  TABLE:        sessions
-//  DATETIME:     2018-01-23 11:42:07pm
+//  DATETIME:     2018-01-24 12:54:16am
 //  DESCRIPTION:  N/A
 
 /**********************************************************************************/
@@ -40,6 +40,16 @@ class Sessions implements JsonSerializable {
 		$this->FinalizedOn = $FinalizedOn;
 		$this->ClientIPAddress = $ClientIPAddress;
     }
+
+	//-------------------- Reflectors --------------------
+
+	public static $allFields = array(
+		"SessionID", 
+		"UserID", 
+		"InitiatedOn", 
+		"FinalizedOn", 
+		"ClientIPAddress"
+	);
 
 	public static $hasUniqueFields = false;
 
@@ -238,8 +248,17 @@ class Sessions implements JsonSerializable {
         
         $sql = "SELECT * FROM sessions WHERE " . $combinedWhereClause;
         $result = $conn->query($sql);
+        if (!$result) return false;
         $itemsArray = array();
-        while ($row = $result->fetch_object()) array_push($itemsArray, $row);
+        while ($row = $result->fetch_assoc()) {
+            $object = new Sessions(
+				$row["SessionID"], 
+				$row["UserID"], 
+				$row["InitiatedOn"], 
+				$row["FinalizedOn"], 
+				$row["ClientIPAddress"]);
+            array_push($itemsArray, $object);
+        }
         return $itemsArray;
     }
 
