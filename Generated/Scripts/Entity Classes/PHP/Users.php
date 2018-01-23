@@ -9,7 +9,7 @@
 //  DATABASE:     Nicos
 //  FILE:         users.php
 //  TABLE:        users
-//  DATETIME:     2018-01-23 01:00:38am
+//  DATETIME:     2018-01-23 09:31:42pm
 //  DESCRIPTION:  N/A
 
 /**********************************************************************************/
@@ -257,11 +257,7 @@ class Users implements JsonSerializable {
      * @return string
      */
     public function jsonSerialize() {
-        $jsonStr = "{
-		\"UserID\": $this->UserID,
-		\"Username\": \"" . $this->Username. "\",
-		\"Password\": \"" . $this->Password. "\",
-		\"UserLevelID\": $this->UserLevelID }";
+        $jsonStr = "{\"UserID\": $this->UserID, \"Username\": \"" . $this->Username. "\", \"Password\": \"" . $this->Password. "\", \"UserLevelID\": $this->UserLevelID }";
         return $jsonStr;
     }
     

@@ -9,7 +9,7 @@
 //  DATABASE:     Nicos
 //  FILE:         userlevels.php
 //  TABLE:        userlevels
-//  DATETIME:     2018-01-23 01:00:38am
+//  DATETIME:     2018-01-23 09:31:42pm
 //  DESCRIPTION:  N/A
 
 /**********************************************************************************/
@@ -225,9 +225,7 @@ class Userlevels implements JsonSerializable {
      * @return string
      */
     public function jsonSerialize() {
-        $jsonStr = "{
-		\"UserLevelID\": $this->UserLevelID,
-		\"UserLevelName\": \"" . $this->UserLevelName. "\" }";
+        $jsonStr = "{\"UserLevelID\": $this->UserLevelID, \"UserLevelName\": \"" . $this->UserLevelName. "\" }";
         return $jsonStr;
     }
     

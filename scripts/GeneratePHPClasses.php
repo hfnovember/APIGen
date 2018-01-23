@@ -431,18 +431,18 @@
 
         public static function generateJsonSerialize($tableName, $allFields) {
 
-            $jsonString = "\"{\r\n";
+            $jsonString = "\"{";
 
             foreach ($allFields as $field) {
-                $thisFieldString = "\t\t\\\"" . $field["Field"] . "\\\": ";
+                $thisFieldString = "\\\"" . $field["Field"] . "\\\": ";
                 if (isQuotableType($field["Type"]))
                     $thisFieldString .= "\\\"\" . " . "\$this->" . $field["Field"] . ". \"\\\"";
                 else
                     $thisFieldString .= "\$this->" . $field["Field"];
-                $jsonString .= $thisFieldString . ",\r\n";
+                $jsonString .= $thisFieldString . ", ";
             }//end foreach field
 
-            $jsonString = substr($jsonString, 0, strlen($jsonString) - 3);
+            $jsonString = substr($jsonString, 0, strlen($jsonString) - 2);
             $jsonString .= " }\"";
 
             $str = "\r\n\t//-------------------- JSON Generation Methods --------------------\r\n

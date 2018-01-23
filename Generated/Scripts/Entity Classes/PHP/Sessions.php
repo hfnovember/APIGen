@@ -9,7 +9,7 @@
 //  DATABASE:     Nicos
 //  FILE:         sessions.php
 //  TABLE:        sessions
-//  DATETIME:     2018-01-23 01:00:38am
+//  DATETIME:     2018-01-23 09:31:42pm
 //  DESCRIPTION:  N/A
 
 /**********************************************************************************/
@@ -249,12 +249,7 @@ class Sessions implements JsonSerializable {
      * @return string
      */
     public function jsonSerialize() {
-        $jsonStr = "{
-		\"SessionID\": \"" . $this->SessionID. "\",
-		\"UserID\": $this->UserID,
-		\"InitiatedOn\": $this->InitiatedOn,
-		\"FinalizedOn\": $this->FinalizedOn,
-		\"ClientIPAddress\": \"" . $this->ClientIPAddress. "\" }";
+        $jsonStr = "{\"SessionID\": \"" . $this->SessionID. "\", \"UserID\": $this->UserID, \"InitiatedOn\": $this->InitiatedOn, \"FinalizedOn\": $this->FinalizedOn, \"ClientIPAddress\": \"" . $this->ClientIPAddress. "\" }";
         return $jsonStr;
     }
     

@@ -9,7 +9,7 @@
 //  DATABASE:     Nicos
 //  FILE:         API/create/index.php
 //  TABLE:        userlevels
-//  DATETIME:     2018-01-23 01:15:32am
+//  DATETIME:     2018-01-23 10:22:09pm
 //  DESCRIPTION:  N/A
 
 /**********************************************************************************/
@@ -97,7 +97,7 @@
     }
     
     /*!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! DO NOT EDIT CODE BELOW THIS POINT !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
-    //Editing code below will compromise the reliability and security of your API.
+    //Editing the code below will compromise the reliability and security of your API.
     
     
     //Locals:
