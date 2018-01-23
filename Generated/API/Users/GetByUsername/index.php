@@ -9,7 +9,7 @@
 //  DATABASE:     Nicos
 //  FILE:         API/getByUsername/index.php
 //  TABLE:        users
-//  DATETIME:     2018-01-23 10:27:08pm
+//  DATETIME:     2018-01-23 10:36:49pm
 //  DESCRIPTION:  N/A
 
 /**********************************************************************************/
