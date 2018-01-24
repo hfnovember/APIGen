@@ -2283,7 +2283,7 @@
     }//end foreach table
 
 
-    //TODO: Proceed to generateAPIStep2.php (Creating custom API endpoints)
+    header("Location: ../generateAPIStep3.php?status=Generated"); exit();
 
 
 ?>

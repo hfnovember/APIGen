@@ -9,7 +9,7 @@
 //  DATABASE:     TestDB
 //  FILE:         API/searchByField/index.php
 //  TABLE:        userlevels
-//  DATETIME:     2018-01-24 05:31:30pm
+//  DATETIME:     2018-01-24 07:17:51pm
 //  DESCRIPTION:  N/A
 
 /**********************************************************************************/
@@ -20,22 +20,21 @@
 /*
         ~~~~~~ API Endpoint Instructions ~~~~~~
         
-        This endpoint is not public and requires a Session ID to be provided for authorization.
+        This endpoint is public and requires no authorization.
         
         Sample call for API/Userlevels/SearchByField:
 
-            API/Userlevels/SearchByField?Fields=...Values=...&SessionID=...
+            API/Userlevels/SearchByField?Fields=...Values=...
 
         /----------------------------------------------------------------/
 
         User Types/Levels who can access this endpoint:
-         Administrator (1)
+         Administrator (1), Manager(2), Public(4), User(3)
 
         Call Parameters List:
         
 		Fields (String list)
 		Values (Mixed type list)
-		SessionID (String)
 
         /----------------------------------------------------------------/
 
@@ -74,7 +73,7 @@
 
             --> "Status": "Error"
             --> "Title": "Invalid Parameters"
-            --> "Message": "Invalid parameters. Expected Parameters: Fields (String list), Values (Mixed type list)SessionID (String)"
+            --> "Message": "Invalid parameters. Expected Parameters: Fields (String list), Values (Mixed type lis."
 
                 (Technical error)
 
@@ -159,7 +158,7 @@
     const MESSAGE = "Message";
     const DATA = "Data";
     const INVALID_PARAMS_TITLE = "Invalid Parameters";
-    const INVALID_PARAMS_MESSAGE = "Invalid parameters. Expected Parameters: Fields (String list), Values (Mixed type list)SessionID (String)";
+    const INVALID_PARAMS_MESSAGE = "Invalid parameters. Expected Parameters: Fields (String list), Values (Mixed type lis.";
     const TECHNICAL_ERROR_TITLE = "Technical Error";
     const TECHNICAL_ERROR_MESSAGE = "A technical error has occured. Please consult the system's administrator.";
     const AUTHORIZATION_ERROR_TITLE = "Authorization Error";
@@ -182,35 +181,7 @@
 
 	if (!isset($_POST["Fields"]) || $_POST["Fields"] == "") die(json_encode($JSON_INVALID_PARAMS));
 	if (!isset($_POST["Values"]) || $_POST["Values"] == "") die(json_encode($JSON_INVALID_PARAMS));
-	if (!isset($_POST["SessionID"]) || $_POST["SessionID"] == "") die(json_encode($JSON_INVALID_PARAMS));
 	include_once("../../../Scripts/DBLogin.php");
-     
-	//-- SECURITY CHECKS
-
-    //Allowed user levels:
-    $allowedUserLevelIDs = array(1);
-
-    //Validate session if a session is required (not public)
-    $sessionID = $_POST["SessionID"];
-    $conn = dbLogin();
-    $sqlSessions = "SELECT * FROM Sessions WHERE SessionID = '" . $sessionID . "'";
-    $result = $conn->query($sqlSessions);
-    if ($result === FALSE) die(json_encode($JSON_AUTHORIZATION_ERROR));
-    else {
-        $session = $result->fetch_object();
-        $sqlGetUser = "SELECT UserLevelID FROM Users WHERE UserID = " . $session->UserID;
-        $result = $conn->query($sqlGetUser);
-        $user = $result->fetch_object();
-        $allowed = false;
-        foreach ($allowedUserLevelIDs as $id) {
-            if ($user->UserLevelID == $id) {
-                $allowed = true; break;
-            }//end if match
-        }//end foreach UserLevelID
-        if (!$allowed) die(json_encode($JSON_AUTHORIZATION_ERROR));
-    }//end if session found
-    $conn->close();
-    
 
 	onRequest(); 
 
