@@ -360,18 +360,15 @@
         public static function generateDelete($tableName, $primaryKeyField) {
             $parameters = "\$" . $tableName . "_object";
 
-            if (!isQuotableType($primaryKeyField["Type"]))
-                $sql = "\$sql = \"DELETE FROM " . $tableName . " WHERE " . $primaryKeyField["Field"] . " = \" . \$" . $tableName . "_object->get" . ucfirst($primaryKeyField["Field"]) . "();";
-            else
-                $sql = "\$sql = \"DELETE FROM " . $tableName . " WHERE " . $primaryKeyField["Field"] . " = \\\"\" . " . "\$" . $tableName . "_object->get" . ucfirst($primaryKeyField["Field"]) . "()" . " . \"\\\"\";";
+            $sql = "\$sql = \"DELETE FROM " . $tableName . " WHERE " . $primaryKeyField["Field"] . " = \\\"\" . " . "\$id . \"\\\"\";";
 
             $str = "\r\n
     /**
      * Deletes an entry from the database given the object's data.
-     * @param \$t1_object " . ucfirst($tableName) . "
+     * @param \$id " . ucfirst($primaryKeyField["Type"]) . "
      * @return bool
      */
-    public static function delete(" . $parameters . ") {
+    public static function delete(\$id) {
         \$conn = dbLogin();
         " . $sql . "
         \$result = \$conn->query(\$sql);
@@ -383,7 +380,7 @@
 
 
         public static function generateGetSize($tableName, $primaryKeyField) {
-            $sql = "\$sql = \"SELECT COUNT(" . $primaryKeyField["Field"] . ") FROM " . $tableName . "\";";
+            $sql = "\$sql = \"SHOW TABLE STATUS WHERE Name = \\\"".$tableName."\\\"\";";
             $str = "\r\n
     /**
      * Returns the number of entries in the database.
@@ -393,7 +390,8 @@
         \$conn = dbLogin();
         " . $sql . "
         \$result = \$conn->query(\$sql);
-        return \$result->fetch_array()[0];
+        if (\$result) return \$result->fetch_object()->Rows;
+        else return false;
     }\r\n";
             return $str;
         }//end generateGetSize()
@@ -407,10 +405,8 @@
      * @return bool
      */
     public static function isEmpty() {
-        \$conn = dbLogin();
-        " . $sql . "
-        \$result = \$conn->query(\$sql);
-        return (\$result->fetch_array()[0] == 0);
+        \$size = self::getSize();
+        return (\$size == 0);
     }\r\n";
             return $str;
         }//end generateIsEmpty()

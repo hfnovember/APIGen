@@ -164,7 +164,7 @@ foreach ($tableNames as $tableName) {
             <td style=\"text-align: center\"><input title=\"Generate " . $tableName . " get by #indexName\" class=\"" . $tableName . "\" type=\"checkbox\" checked=\"checked\" id=\"generate_" . $tableName . "_getBy" . ucfirst($indexer["Field"]) . "\" name=\"generate_" . $tableName . "_getBy" . ucfirst($indexer["Field"]) . "\" onclick=\"" . $tableName . "_GetBy" . ucfirst($indexer["Field"]) . "()\"/> </td>
         ";
             foreach ($userLevels as $userLevel) {
-                $ulnID = "__" . $userLevel->UserLevelName;
+                $ulnID = "__" . preg_replace('/\s+/', '_', $userLevel->UserLevelName);
                 if ($userLevel->UserLevelName != "Public" && $userLevel->UserLevelName != "Administrator") {
                     $ul = "<td style=\"text-align: center\"><input title=\"" . ucfirst($indexer["Field"]) . " access to get by " . ucfirst($indexer["Field"]) . " " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"".$ulnID."_getBy" . ucfirst($indexer["Field"]) . "_" . $tableName . "_" . $userLevel->UserLevelName . "\" class=\"" . $tableName . " getBy" . ucfirst($indexer["Field"]) . "\"/> </td>";
                     $x .= $ul;
@@ -172,7 +172,7 @@ foreach ($tableNames as $tableName) {
             }
 
             foreach ($userLevels as $userLevel) {
-                $ulnID = "__" . $userLevel->UserLevelName;
+                $ulnID = "__" . preg_replace('/\s+/', '_', $userLevel->UserLevelName);
                 if ($userLevel->UserLevelName == "Public") {
                     $ul = "<td style=\"text-align: center\"><input onclick='".$tableName."_getBy".ucfirst($indexer["Field"])."PublicAccess()' title=\"" . ucfirst($indexer["Field"]) . " access to get by " . ucfirst($indexer["Field"]) . " " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"".$ulnID."_getBy" . ucfirst($indexer["Field"]) . "_" . $tableName . "_" . $userLevel->UserLevelName . "\" class=\"" . $tableName . " getBy" . ucfirst($indexer["Field"]) . "\"/> </td>";
                     $x .= $ul;
@@ -232,7 +232,7 @@ foreach ($tableNames as $tableName) {
         foreach ($userLevels as $userLevel) {
             if ($userLevel->UserLevelName != "Public" && $userLevel->UserLevelName != "Administrator") {
                 $uln = $userLevel->UserLevelName;
-                $ulnID = "__" . $userLevel->UserLevelName;
+                $ulnID = "__" . preg_replace('/\s+/', '_', $userLevel->UserLevelName);
                 $headerUserTypes .= "<th>" . $uln . "<input type='checkbox' checked='checked' name='".$ulnID."_".$tableName."_master' class='".$ulnID." ".$tableName."' onclick='".$ulnID."_".$tableName."()' /></th>\r\n";
                 $create_users .= "<td style=\"text-align: center;\"><input title=\"" . $uln . " access to create " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"create_" . $tableName . "_" . $ulnID . "\" class=\"" . $tableName . " create\"/> </td>\r\n";
                 $getByID_users .= "<td style=\"text-align: center\"><input title=\"" . $uln . " access to get by ID " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"getByID_" . $tableName . "_" . $ulnID . "\" class=\"" . $tableName . " getByID\"/> </td>\r\n";
@@ -275,7 +275,7 @@ foreach ($tableNames as $tableName) {
         foreach ($userLevels as $userLevel) {
             if ($userLevel->UserLevelName == "Public") {
                 $uln = $userLevel->UserLevelName;
-                $ulnID = "__" . $userLevel->UserLevelName;
+                $ulnID = "__" . preg_replace('/\s+/', '_', $userLevel->UserLevelName);
                 $headerUserTypes .= "<th>" . $uln . "<input type='checkbox' checked='checked' name='".$ulnID."_".$tableName."' class='".$ulnID." ".$tableName."' onclick='".$ulnID."_".$tableName."()' /></th>\r\n";
                 $create_users .= "<td style=\"text-align: center\"><input onclick='".$tableName."_createPublicAccess()' title=\"" . $uln . " access to create " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"create_" . $tableName . "_" . $ulnID . "\" class=\"" . $tableName . " create\"/> </td>\r\n";
                 $getByID_users .= "<td style=\"text-align: center\"><input onclick='".$tableName."_getByIDPublicAccess()' title=\"" . $uln . " access to get by ID " . $tableName . "\" type=\"checkbox\" checked=\"checked\" name=\"getByID_" . $tableName . "_" . $ulnID . "\" class=\"" . $tableName . " getByID\"/> </td>\r\n";

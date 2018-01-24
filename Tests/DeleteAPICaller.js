@@ -9,5 +9,5 @@ function myAJAXFunc_Delete() {
     };
     xhttp.open("POST", "http://localhost:8080/Generated/API/Users/Delete/", true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhttp.send("UserID=27&Username=TestUser&Password=1234&UserLevelID=1");
+    xhttp.send("UserID=24");
 }
