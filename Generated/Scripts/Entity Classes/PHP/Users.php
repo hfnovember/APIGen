@@ -9,7 +9,7 @@
 //  DATABASE:     TestDB
 //  FILE:         users.php
 //  TABLE:        users
-//  DATETIME:     2018-01-24 01:38:32pm
+//  DATETIME:     2018-01-24 02:06:08pm
 //  DESCRIPTION:  N/A
 
 /**********************************************************************************/
@@ -75,7 +75,7 @@ class Users implements JsonSerializable {
     /**
      * @return int(10) unsigned
      */
-     public function getID() { return $this->UserID; }
+     public function getObjectID() { return $this->UserID; }
 
 
 	//-------------------- Setter Methods --------------------

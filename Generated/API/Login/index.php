@@ -8,7 +8,7 @@
 
 //  DATABASE:     TestDB
 //  FILE:         Login
-//  DATETIME:     2018-01-24 01:49:01pm
+//  DATETIME:     2018-01-24 05:31:30pm
 //  DESCRIPTION:  Logs the user into the system.
 
 /**********************************************************************************/

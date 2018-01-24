@@ -173,7 +173,7 @@
     /**
      * @return " . $primaryKeyField["Type"] . "
      */
-     public function getID() { return \$this->" . $primaryKeyField["Field"] . "; }\r\n\r\n";
+     public function getObjectID() { return \$this->" . $primaryKeyField["Field"] . "; }\r\n\r\n";
 
             return $str;
         }//end generateGetters()

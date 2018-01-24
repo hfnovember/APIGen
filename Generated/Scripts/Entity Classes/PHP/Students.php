@@ -9,7 +9,7 @@
 //  DATABASE:     TestDB
 //  FILE:         students.php
 //  TABLE:        students
-//  DATETIME:     2018-01-24 01:38:32pm
+//  DATETIME:     2018-01-24 02:06:08pm
 //  DESCRIPTION:  N/A
 
 /**********************************************************************************/
@@ -66,7 +66,7 @@ class Students implements JsonSerializable {
     /**
      * @return varchar(255)
      */
-     public function getID() { return $this->name; }
+     public function getObjectID() { return $this->name; }
 
 
 	//-------------------- Setter Methods --------------------

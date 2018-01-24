@@ -9,7 +9,7 @@
 //  DATABASE:     TestDB
 //  FILE:         API/getMultiple/index.php
 //  TABLE:        students
-//  DATETIME:     2018-01-24 01:49:01pm
+//  DATETIME:     2018-01-24 05:31:30pm
 //  DESCRIPTION:  N/A
 
 /**********************************************************************************/
@@ -87,7 +87,7 @@
         
         include_once("../../../Scripts/Entity Classes/PHP/Students.php");     
            
-        $objects = Users::getMultiple($limit);
+        $objects = Students::getMultiple($limit);
         if (sizeof($objects) <= 0) die(json_encode($JSON_NO_ITEMS));
         $returnArray = array(STATUS => STATUS_OK, TITLE => GET_SUCCESS_TITLE, MESSAGE => GET_SUCCESS_MESSAGE);
         $statusJson = json_encode($returnArray);

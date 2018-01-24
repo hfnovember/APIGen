@@ -9,7 +9,7 @@
 //  DATABASE:     TestDB
 //  FILE:         colors.php
 //  TABLE:        colors
-//  DATETIME:     2018-01-24 01:38:32pm
+//  DATETIME:     2018-01-24 02:06:08pm
 //  DESCRIPTION:  N/A
 
 /**********************************************************************************/
@@ -66,7 +66,7 @@ class Colors implements JsonSerializable {
     /**
      * @return int(11)
      */
-     public function getID() { return $this->id; }
+     public function getObjectID() { return $this->id; }
 
 
 	//-------------------- Setter Methods --------------------

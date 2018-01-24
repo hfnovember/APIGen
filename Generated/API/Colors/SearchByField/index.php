@@ -9,7 +9,7 @@
 //  DATABASE:     TestDB
 //  FILE:         API/searchByField/index.php
 //  TABLE:        colors
-//  DATETIME:     2018-01-24 01:49:01pm
+//  DATETIME:     2018-01-24 05:31:30pm
 //  DESCRIPTION:  N/A
 
 /**********************************************************************************/
@@ -114,7 +114,7 @@
         foreach ($fieldsArray as $field) {
             $exists = false;
             foreach (Colors::$allFields as $classField) {
-                if ($field == $classField) {
+                if (strtolower($field) == strtolower($classField)) {
                     $exists = true;
                     break;
                 }   

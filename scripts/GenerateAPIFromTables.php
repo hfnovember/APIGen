@@ -405,7 +405,7 @@
         
         include_once(\"../../../Scripts/Entity Classes/PHP/".$class.".php\");     
            
-        \$object = Users::getByID(".$constructorParameters.");
+        \$object = ".$class."::getByID(".$constructorParameters.");
         if (!\$object) die(json_encode(\$JSON_GET_ERROR));
         \$returnArray = array(STATUS => STATUS_OK, TITLE => GET_SUCCESS_TITLE, MESSAGE => GET_SUCCESS_MESSAGE);
         \$statusJson = json_encode(\$returnArray);
@@ -647,7 +647,7 @@
             
             include_once(\"../../../Scripts/Entity Classes/PHP/" . $class . ".php\");     
                
-            \$object = Users::getBy".ucfirst($indexer->Field)."(".$constructorParameters.");
+            \$object = ".$class."::getBy".ucfirst($indexer->Field)."(".$constructorParameters.");
             if (!\$object) die(json_encode(\$JSON_GET_ERROR));
             \$returnArray = array(STATUS => STATUS_OK, TITLE => GET_SUCCESS_TITLE, MESSAGE => GET_SUCCESS_MESSAGE);
             \$statusJson = json_encode(\$returnArray);
@@ -879,7 +879,7 @@
         
         include_once(\"../../../Scripts/Entity Classes/PHP/".$class.".php\");     
            
-        \$objects = Users::getMultiple(\$limit);
+        \$objects = ".$class."::getMultiple(\$limit);
         if (sizeof(\$objects) <= 0) die(json_encode(\$JSON_NO_ITEMS));
         \$returnArray = array(STATUS => STATUS_OK, TITLE => GET_SUCCESS_TITLE, MESSAGE => GET_SUCCESS_MESSAGE);
         \$statusJson = json_encode(\$returnArray);
@@ -1353,7 +1353,7 @@
         foreach (\$fieldsArray as \$field) {
             \$exists = false;
             foreach (".$class."::\$allFields as \$classField) {
-                if (\$field == \$classField) {
+                if (strtolower(\$field) == strtolower(\$classField)) {
                     \$exists = true;
                     break;
                 }   

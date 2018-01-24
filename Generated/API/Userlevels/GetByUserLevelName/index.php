@@ -9,7 +9,7 @@
 //  DATABASE:     TestDB
 //  FILE:         API/getByUserLevelName/index.php
 //  TABLE:        userlevels
-//  DATETIME:     2018-01-24 01:49:01pm
+//  DATETIME:     2018-01-24 05:31:30pm
 //  DESCRIPTION:  N/A
 
 /**********************************************************************************/
@@ -86,7 +86,7 @@
             
             include_once("../../../Scripts/Entity Classes/PHP/Userlevels.php");     
                
-            $object = Users::getByUserLevelName($_POST["UserLevelName"]);
+            $object = Userlevels::getByUserLevelName($_POST["UserLevelName"]);
             if (!$object) die(json_encode($JSON_GET_ERROR));
             $returnArray = array(STATUS => STATUS_OK, TITLE => GET_SUCCESS_TITLE, MESSAGE => GET_SUCCESS_MESSAGE);
             $statusJson = json_encode($returnArray);
