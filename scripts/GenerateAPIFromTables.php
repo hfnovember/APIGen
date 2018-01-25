@@ -234,6 +234,7 @@
     if (\$result === FALSE) die(json_encode(\$JSON_AUTHORIZATION_ERROR));
     else {
         \$session = \$result->fetch_object();
+        if (!\$session) die(json_encode(\$JSON_AUTHORIZATION_ERROR));
         \$sqlGetUser = \"SELECT UserLevelID FROM Users WHERE UserID = \" . \$session->UserID;
         \$result = \$conn->query(\$sqlGetUser);
         \$user = \$result->fetch_object();
