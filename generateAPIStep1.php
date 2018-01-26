@@ -2,12 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="w3.css">
     <link rel="stylesheet" type="text/css"  href="styles.css">
-    <title>PaNick Apps API Generator in PHP</title>
+    <title>PaNick Apps API Generator v1</title>
 </head>
 
 
 <body>
+
+<div class="w3-container">
 
 <?php
 
@@ -32,22 +35,22 @@ $dbPassword = $_GET["dbPassword"];
 if (isset($_GET["status"])) {
     switch($_GET["status"]) {
          case "InvalidUserLevelID":
-             echo "<p class='errorCard'>Invalid user level ID.</p>";
+             echo "<div class='w3-panel w3-black w3-hover-red w3-center'><p>Invalid user level ID.</p></div>";
              break;
         case "UserLevelDeleted":
-            echo "<p class='successCard'>User level deleted.</p>";
+            echo "<div class='w3-panel w3-black w3-hover-green w3-center'><p>User level deleted.</p></div>";
             break;
         case "UserLevelNotDeleted":
-            echo "<p class='errorCard'>Could not delete user level.</p>";
+            echo "<div class='w3-panel w3-black w3-hover-red w3-center'><p>Could not delete user level.</p></div>";
             break;
         case "InvalidUserLevelName":
-            echo "<p class='errorCard'>Invalid user level name.</p>";
+            echo "<div class='w3-panel w3-black w3-hover-red w3-center'><p>Invalid user level name.</p></div>";
             break;
         case "UserLevelCreated":
-            echo "<p class='successCard'>User level created.</p>";
+            echo "<div class='w3-panel w3-black w3-hover-green w3-center'><p>User level created.</p></div>";
             break;
         case "UserLevelNotCreated":
-            echo "<p class='errorCard'>Could not create user level.</p>";
+            echo "<div class='w3-panel w3-black w3-hover-red w3-center'><p>Could not create user level.</p></div>";
             break;
 
     }
@@ -106,13 +109,13 @@ if (isset($_GET["status"])) {
     <input type="hidden" name="dbUser" value="<?php echo $dbUsername;?>" />
     <input type="hidden" name="dbPassword" value="<?php echo $dbPassword;?>" />
 
-    <a class="button red" href="generateAPIStep0.php">Back</a>
-    <input class="button green" value="Proceed" type="submit" />
+    <a class="w3-button w3-black w3-hover-red" href="generateAPIStep0.php">Back</a>
+    <input class="w3-button w3-black w3-hover-green" value="Proceed" type="submit" />
 
 </form>
 
 
-
+</div>
 </body>
 
 

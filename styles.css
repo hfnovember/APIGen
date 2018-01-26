@@ -2,10 +2,6 @@
     font-family: Verdana, sans-serif;
 }
 
-body {
-    padding: 10px;
-}
-
 input {
     font-size: medium;
 }
@@ -18,25 +14,22 @@ input[type=text] {
     font-size: small;
 }
 
-.errorCard {
-    background-color:red;
+.w3-panel w3-black w3-hover-red {
     color: white;
     padding:20px;
     text-align:center;
 }
 
-.successCard {
-    background-color:green;
+.w3-panel w3-black w3-hover-green {
     color: white;
     padding:20px;
     text-align:center;
 }
 
-.button {
+.w3-button {
     display: inline-block;
-    background-color: grey;
     color: white;
-    border: 1px solid black;
+    border: 2px solid black;
     border-radius: 3px;
     padding: 10px 5px;
     margin: 10px;
@@ -46,24 +39,4 @@ input[type=text] {
 
 .small {
     font-size: small; !important;
-}
-
-.button:hover {
-    background-color: black;
-}
-
-.red {
-    background-color: crimson; !important
-}
-
-.green {
-    background-color: green; !important;
-}
-
-.blue {
-    background-color: dodgerblue; !important
-}
-
-.purple {
-    background-color: purple; !important;
 }

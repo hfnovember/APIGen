@@ -2,12 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="w3.css">
     <link rel="stylesheet" type="text/css"  href="styles.css">
-    <title>PaNick Apps API Generator in PHP</title>
+    <title>PaNick Apps API Generator v1</title>
 </head>
 
 
 <body>
+
+<div class="w3-container">
 
 <?php
 
@@ -321,11 +324,11 @@ foreach ($tableNames as $tableName) {
     
     <h3>" . ucfirst($tableName) . "</h3>
     
-    <div class='button small' onclick='".$tableName."_adminOnly()'>Admin only</div>
-    <div class='button small' onclick='".$tableName."_nonPublic()'>Non-Public</div>
-    <div class='button small' onclick='".$tableName."_allEndpoints()'>All</div>
-    <div class='button small' onclick='".$tableName."_noEndpoints()'>None</div>
-    <div class='button small' onclick='".$tableName."_disable()'>Disable</div>
+    <div class='w3-button small' onclick='".$tableName."_adminOnly()'>Admin only</div>
+    <div class='w3-button small' onclick='".$tableName."_nonPublic()'>Non-Public</div>
+    <div class='w3-button small' onclick='".$tableName."_allEndpoints()'>All</div>
+    <div class='w3-button small' onclick='".$tableName."_noEndpoints()'>None</div>
+    <div class='w3-button small' onclick='".$tableName."_disable()'>Disable</div>
     
      <p><b>Base URL:</b> <i>API/ </i><input style=\"font-style: italic;\" type=\"text\" maxlength=\"50\" title=\"" . $tableName . " URL\" value=\"" . $tableName . "\" name=\"url_" . $tableName . "\"/> Generate:
         <input type=\"checkbox\" id=\"" . $tableName . "_generate\" name=\"" . $tableName . "_generate\" checked=\"checked\" onclick=\"" . $tableName . "_Generate()\"/></p>
@@ -782,7 +785,7 @@ foreach ($tableNames as $tableName) {
 if (isset($_GET["status"])) {
     switch($_GET["status"]) {
         case "BaseURLError":
-            echo "<p class='errorCard'>The base URL for table '" . $_GET["table"] . "' is invalid. Please provide a valid base URL.</p>";
+            echo "<div class='w3-panel w3-black w3-hover-red w3-center'><p>The base URL for table '" . $_GET["table"] . "' is invalid. Please provide a valid base URL.</p></div>";
             break;
     }
 }
@@ -803,21 +806,22 @@ if (isset($_GET["status"])) {
 
     <h3>Presets for all tables</h3>
 
-    <a class="button blue" onclick="adminOnly()">Admin-Only Endpoints</a>
-    <a class="button blue" onclick="nonPublic()">Non-Public Endpoints</a>
-    <a class="button blue" onclick="allEndpoints()">All Endpoints</a>
-    <a class="button blue" onclick="noEndpoints()">No Endpoints</a>
+    <a class="w3-button blue" onclick="adminOnly()">Admin-Only Endpoints</a>
+    <a class="w3-button blue" onclick="nonPublic()">Non-Public Endpoints</a>
+    <a class="w3-button blue" onclick="allEndpoints()">All Endpoints</a>
+    <a class="w3-button blue" onclick="noEndpoints()">No Endpoints</a>
 
     <?php echo $fullTable; ?>
 
     <div style="margin-top: 30px; clear:both; float:none;"></div>
 
-    <a class="button red" href="generateAPIStep1.php">Back</a>
-    <input class="button green" type="submit" value="Proceed" />
+    <a class="w3-button w3-black w3-hover-red" href="generateAPIStep1.php">Back</a>
+    <input class="w3-button w3-black w3-hover-green" type="submit" value="Proceed" />
 
 </form>
 
 
+</div>
 </body>
 
 <script>

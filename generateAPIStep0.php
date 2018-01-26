@@ -2,24 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="w3.css">
     <link rel="stylesheet" type="text/css"  href="styles.css">
-    <title>PaNick Apps API Generator in PHP</title>
+    <title>PaNick Apps API Generator v1</title>
 </head>
 
 
 <body>
 
+<div class="w3-container">
+
 <?php
-
-
-if (isset($_GET["status"])) {
-    switch($_GET["status"]) {
-        /* case "EmptyDBName":
-             echo "<p class='errorCard'>Database name cannot be empty.</p>";
-             break; */
-
-    }
-}
 
 session_start();
 
@@ -50,13 +43,13 @@ if (isset($_SESSION["pref_dbPassword"])) $pref_dbPass = $_SESSION["pref_dbPasswo
     <p>Database User: <input type="text" name="dbUser" title="Database user" placeholder="Database user" value="<?php echo $pref_dbUser; ?>" /></p>
     <p>Database Password: <input type="text" name="dbPassword" title="Database password" placeholder="Database password" value="<?php echo $pref_dbPass; ?>" /></p>
 
-    <a class="button red" href="index.php">Back to menu</a>
-    <input class="button green" value="Proceed" type="submit" />
+    <a class="w3-button w3-black w3-hover-red" href="index.php">Back to menu</a>
+    <input class="w3-button w3-black w3-hover-green" value="Proceed" type="submit" />
 
 
 </form>
 
-
+</div>
 
 </body>
 

@@ -2,12 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="w3.css">
     <link rel="stylesheet" type="text/css"  href="styles.css">
-    <title>PaNick Apps API Generator in PHP</title>
+    <title>PaNick Apps API Generator v1</title>
 </head>
 
 
 <body>
+
+<div class="w3-container">
 
 <?php
 
@@ -34,19 +37,19 @@ $dbPassword = $_SESSION["tempDBPassword"];
 if (isset($_GET["status"])) {
     switch($_GET["status"]) {
         case "Generated":
-            echo "<p class='successCard'>Table-related API endpoints generated successfully.</p>";
+            echo "<div class='w3-panel w3-black w3-hover-green  w3-center'><p>Table-related API endpoints generated successfully.</p></div>";
             break;
         case "NameInvalid":
-            echo "<p class='errorCard'>One or more of the endpoint names you provided is invalid.</p>";
+            echo "<div class='w3-panel w3-black w3-hover-red  w3-center'><p>One or more of the endpoint names you provided is invalid.</p></div>";
             break;
         case "InconsistentSizes":
-            echo "<p class='errorCard'>A technical error has occured (endpoint info sizes are inconsistent).</p>";
+            echo "<div class='w3-panel w3-black w3-hover-red  w3-center'><p>A technical error has occured (endpoint info sizes are inconsistent).</p></div>";
             break;
         case "LevelInvalid":
-            echo "<p class='errorCard'>One or more of the endpoint user levels you provided is invalid.</p>";
+            echo "<div class='w3-panel w3-black w3-hover-red w3-center'><p>One or more of the endpoint user levels you provided is invalid.</p></div>";
             break;
         case "ParametersInvalid":
-            echo "<p class='errorCard'>One or more of the endpoint parameters you provided is invalid.</p>";
+            echo "<div class='w3-panel w3-black w3-hover-red w3-center'><p>One or more of the endpoint parameters you provided is invalid.</p></div>";
             break;
 
     }
@@ -217,7 +220,7 @@ else {
 
     <input type="hidden" id="endpointAccess" name="endpointAccess" />
 
-    <input type="submit" name="submit" value="Add endpoint" class="button green" />
+    <input type="submit" name="submit" value="Add endpoint" class="w3-button green" />
 
     <script>checkForUserLevels()</script>
 </form>
@@ -226,13 +229,13 @@ else {
 
 <form action="scripts/GenerateCustomEndpoints.php" method="post">
 
-    <a href="generateAPIStep2.php" class="button red">Back</a>
-    <input type="submit" name="submit" value="Proceed" class="button green" />
+    <a href="generateAPIStep2.php" class="w3-button w3-black w3-hover-red">Back</a>
+    <input type="submit" name="submit" value="Proceed" class="w3-button w3-black w3-hover-green" />
 
 </form>
 
 
-
+</div>
 </body>
 
 
