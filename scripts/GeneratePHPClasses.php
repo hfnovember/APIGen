@@ -220,7 +220,7 @@
      */
     public static function create(" . $parameters . ") {
         \$conn = dbLogin();
-        \$sql = \"INSERT INTO " . $tableName . " (" . $fieldParameters . ") VALUES (" . $fieldValues . ")\";
+        \$sql = \"INSERT INTO " . ucfirst($tableName). " (" . $fieldParameters . ") VALUES (" . $fieldValues . ")\";
         if (\$conn->query(\$sql) === TRUE) return true;
         else return false;
     }\r\n";
@@ -233,9 +233,9 @@
 
         public static function generateGetByID($tableName, $primaryKeyField, $allFields) {
             if (isQuotableType($primaryKeyField["Type"]))
-                $query = "\$sql = \"SELECT * FROM " . $tableName . " WHERE " . $primaryKeyField["Field"] . " = '\" . \$id . \"'\";";
+                $query = "\$sql = \"SELECT * FROM " . ucfirst($tableName) . " WHERE " . $primaryKeyField["Field"] . " = '\" . \$id . \"'\";";
             else
-                $query = "\$sql = \"SELECT * FROM " . $tableName . " WHERE " . $primaryKeyField["Field"] . " = \" . \$id;";
+                $query = "\$sql = \"SELECT * FROM " . ucfirst($tableName) . " WHERE " . $primaryKeyField["Field"] . " = \" . \$id;";
 
             $str = "\r\n
      /**
@@ -264,9 +264,9 @@
             foreach ($indexFields as $indexField) {
 
                 if (isQuotableType($indexField["Type"]))
-                    $query = "\$sql = \"SELECT * FROM " . $tableName . " WHERE " . $indexField["Field"] . " = '\" . \$indexValue . \"'\";";
+                    $query = "\$sql = \"SELECT * FROM " . ucfirst($tableName) . " WHERE " . $indexField["Field"] . " = '\" . \$indexValue . \"'\";";
                 else
-                    $query = "\$sql = \"SELECT * FROM " . $tableName . " WHERE " . $indexField["Field"] . " = \" . \$indexValue;";
+                    $query = "\$sql = \"SELECT * FROM " . ucfirst($tableName) . " WHERE " . $indexField["Field"] . " = \" . \$indexValue;";
 
                 $str .= "\r\n
     /**
@@ -300,7 +300,7 @@
      */
     public static function getMultiple(\$limit) {
         \$conn = dbLogin();
-        \$sql = \"SELECT * FROM " . $tableName . "\";
+        \$sql = \"SELECT * FROM " . ucfirst($tableName) . "\";
         if (\$limit > 0) \$sql .= \" LIMIT \" . \$limit;
         \$result = \$conn->query(\$sql);
         \$itemsArray = array();
@@ -336,9 +336,9 @@
             $fieldValues = substr($fieldValues, 0, strlen($fieldValues) - 2);
 
             if (!isQuotableType($primaryKeyField["Type"]))
-                $sql = "\$sql = \"UPDATE " . $tableName . " SET " . $fieldValues . " WHERE " . $primaryKeyField["Field"] . " = \" . \$" . $tableName . "_object->get" . ucfirst($primaryKeyField["Field"]) . "();";
+                $sql = "\$sql = \"UPDATE " . ucfirst($tableName) . " SET " . $fieldValues . " WHERE " . $primaryKeyField["Field"] . " = \" . \$" . $tableName . "_object->get" . ucfirst($primaryKeyField["Field"]) . "();";
             else
-                $sql = "\$sql = \"UPDATE " . $tableName . " SET " . $fieldValues . " WHERE " . $primaryKeyField["Field"] . " = \\\"\" . " . "\$" . $tableName . "_object->get" . ucfirst($primaryKeyField["Field"]) . "()" . " . \"\\\"\";";
+                $sql = "\$sql = \"UPDATE " . ucfirst($tableName) . " SET " . $fieldValues . " WHERE " . $primaryKeyField["Field"] . " = \\\"\" . " . "\$" . $tableName . "_object->get" . ucfirst($primaryKeyField["Field"]) . "()" . " . \"\\\"\";";
 
             $str = "\r\n
     /**
@@ -360,7 +360,7 @@
         public static function generateDelete($tableName, $primaryKeyField) {
             $parameters = "\$" . $tableName . "_object";
 
-            $sql = "\$sql = \"DELETE FROM " . $tableName . " WHERE " . $primaryKeyField["Field"] . " = \\\"\" . " . "\$id . \"\\\"\";";
+            $sql = "\$sql = \"DELETE FROM " . ucfirst($tableName) . " WHERE " . $primaryKeyField["Field"] . " = \\\"\" . " . "\$id . \"\\\"\";";
 
             $str = "\r\n
     /**
@@ -380,7 +380,7 @@
 
 
         public static function generateGetSize($tableName, $primaryKeyField) {
-            $sql = "\$sql = \"SHOW TABLE STATUS WHERE Name = \\\"".$tableName."\\\"\";";
+            $sql = "\$sql = \"SHOW TABLE STATUS WHERE Name = \\\"".ucfirst($tableName)."\\\"\";";
             $str = "\r\n
     /**
      * Returns the number of entries in the database.
@@ -398,7 +398,7 @@
 
 
         public static function generateIsEmpty($tableName, $primaryKeyField) {
-            $sql = "\$sql = \"SELECT COUNT(" . $primaryKeyField["Field"] . ") FROM " . $tableName . "\";";
+            $sql = "\$sql = \"SELECT COUNT(" . $primaryKeyField["Field"] . ") FROM " . ucfirst($tableName) . "\";";
             $str = "\r\n
     /**
      * Returns true if the database is empty or false otherwise.
@@ -428,7 +428,7 @@
         }
         \$combinedWhereClause = substr(\$combinedWhereClause, 0, strlen(\$combinedWhereClause) - 4);
         
-        \$sql = \"SELECT * FROM " . $tableName . " WHERE \" . \$combinedWhereClause;
+        \$sql = \"SELECT * FROM " . ucfirst($tableName) . " WHERE \" . \$combinedWhereClause;
         \$result = \$conn->query(\$sql);
         if (!\$result) return false;
         \$itemsArray = array();

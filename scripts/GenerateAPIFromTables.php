@@ -75,15 +75,11 @@
 
     include_once("GeneratorUtils.php");
 
-    echo "<p style='font-family: consolas; text-align: center;'><b>Please wait...</b></p>";
-
     //Create the login API
     createSessionCreationScript($dbHostIP, $dbUsername, $dbPassword, $dbName);
-    echo "<p style='font-family: consolas; text-align: center;'><b>Generated:</b> Login</p>";
 
     //Create the logout API
     createSessionDestructionScript($dbHostIP, $dbUsername, $dbPassword, $dbName);
-    echo "<p style='font-family: consolas; text-align: center;'><b>Generated:</b> Logout</p>";
 
     //Create the table APIs
     foreach ($tableNames as $table) {
@@ -335,7 +331,6 @@
                 ;
 
                 writeToPHPFile("../Generated/API/" . ucfirst($table) . "/" . ucfirst($endpointName) . "/", "index.php", $endpointCode_Create);
-                echo "<p style='font-family: consolas; text-align: center;'><b>Generated:</b> " . ucfirst($table) . "/" . ucfirst($endpointName) . "</p>";
 
             }//end if create endpoint
 
@@ -571,7 +566,6 @@
                 ;
 
                 writeToPHPFile("../Generated/API/" . ucfirst($table) . "/" . ucfirst($endpointName) . "/", "index.php", $endpointCode_Create);
-                echo "<p style='font-family: consolas; text-align: center;'><b>Generated:</b> " . ucfirst($table) . "/" . ucfirst($endpointName) . "</p>";
 
             }//end if create getByID endpoint
 
@@ -812,7 +806,6 @@
                         $funcCallAndConnClose;
 
                     writeToPHPFile("../Generated/API/" . ucfirst($table) . "/" . ucfirst($endpointName) . "/", "index.php", $endpointCode_Create);
-                    echo "<p style='font-family: consolas; text-align: center;'><b>Generated:</b> " . ucfirst($table) . "/" . ucfirst($endpointName) . "</p>";
 
                 }//end foreach indexer
 
@@ -1045,7 +1038,6 @@
                 ;
 
                 writeToPHPFile("../Generated/API/" . ucfirst($table) . "/" . ucfirst($endpointName) . "/", "index.php", $endpointCode_Create);
-                echo "<p style='font-family: consolas; text-align: center;'><b>Generated:</b> " . ucfirst($table) . "/" . ucfirst($endpointName) . "</p>";
 
             }//end if create getMultiple endpoint
 
@@ -1273,8 +1265,6 @@
                 ;
 
                 writeToPHPFile("../Generated/API/" . ucfirst($table) . "/" . ucfirst($endpointName) . "/", "index.php", $endpointCode_Create);
-                echo "<p style='font-family: consolas; text-align: center;'><b>Generated:</b> " . ucfirst($table) . "/" . ucfirst($endpointName) . "</p>";
-
             }//end if update endpoint
 
 //------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1321,7 +1311,6 @@
                     $parametersList .= "\r\n\t\tSessionID (String)";
                 }
                 else {
-                    $parametersMessage = substr($parametersMessage, 0, strlen($parametersMessage) - 2);
                     $parametersForSampleCall = substr($parametersForSampleCall, 0, strlen($parametersForSampleCall) - 1);
                     $parametersMessage .= ".";
                 }
@@ -1552,7 +1541,6 @@
                 ;
 
                 writeToPHPFile("../Generated/API/" . ucfirst($table) . "/" . ucfirst($endpointName) . "/", "index.php", $endpointCode_Create);
-                echo "<p style='font-family: consolas; text-align: center;'><b>Generated:</b> " . ucfirst($table) . "/" . ucfirst($endpointName) . "</p>";
 
             }//end if searchByField endpoint
 
@@ -1785,7 +1773,6 @@
                 ;
 
                 writeToPHPFile("../Generated/API/" . ucfirst($table) . "/" . ucfirst($endpointName) . "/", "index.php", $endpointCode_Create);
-                echo "<p style='font-family: consolas; text-align: center;'><b>Generated:</b> " . ucfirst($table) . "/" . ucfirst($endpointName) . "</p>";
 
             }//end if delete endpoint
 
@@ -2023,7 +2010,6 @@
                 ;
 
                 writeToPHPFile("../Generated/API/" . ucfirst($table) . "/" . ucfirst($endpointName) . "/", "index.php", $endpointCode_Create);
-                echo "<p style='font-family: consolas; text-align: center;'><b>Generated:</b> " . ucfirst($table) . "/" . ucfirst($endpointName) . "</p>";
 
             }//end if sizeof endpoint
 
@@ -2271,7 +2257,6 @@
                 ;
 
                 writeToPHPFile("../Generated/API/" . ucfirst($table) . "/" . ucfirst($endpointName) . "/", "index.php", $endpointCode_Create);
-                echo "<p style='font-family: consolas; text-align: center;'><b>Generated:</b> " . ucfirst($table) . "/" . ucfirst($endpointName) . "</p>";
 
             }//end if sizeof endpoint
 
@@ -2279,7 +2264,6 @@
 
         }//end if generate table is set
 
-        echo "<hr/>";
 
     }//end foreach table
 
