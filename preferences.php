@@ -2,13 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="w3.css">
-    <link rel="stylesheet" type="text/css"  href="styles.css">
+    <link rel="stylesheet" href="assets/css/w3.css">
+    <link rel="stylesheet" type="text/css"  href="assets/css/styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>PaNick Apps API Generator v1</title>
 </head>
 
 
 <body>
+
+<div class="header-panel w3-panel w3-indigo">
+    <h1>Preferences</h1>
+</div>
 
 <div class="w3-container">
 
@@ -18,22 +23,22 @@
 if (isset($_GET["status"])) {
     switch($_GET["status"]) {
          case "Saved":
-             echo "<div class='w3-panel w3-black w3-hover-green w3-center'><p>Your preferences have been saved.</p></div>";
+             echo "<div class='w3-panel w3-green w3-animate-right w3-center'><p>Your preferences have been saved.</p></div>";
              break;
         case "EmptyDBName":
-            echo "<div class='w3-panel w3-black w3-hover-red w3-center'><p>Database name cannot be empty.</p></div>";
+            echo "<div class='w3-panel w3-red w3-animate-left w3-center'><p>Database name cannot be empty.</p></div>";
             break;
         case "EmptyDBHostIP":
-            echo "<div class='w3-panel w3-black w3-hover-red w3-center'><p>Database host IP cannot be empty.</p></div>";
+            echo "<div class='w3-panel w3-red w3-animate-left w3-center'><p>Database host IP cannot be empty.</p></div>";
             break;
         case "EmptyDBUser":
-            echo "<div class='w3-panel w3-black w3-hover-red w3-center'><p>Database user cannot be empty.</p></div>";
+            echo "<div class='w3-panel w3-red w3-animate-left w3-center'><p>Database user cannot be empty.</p></div>";
             break;
         case "EmptyDBPassword":
-            echo "<div class='w3-panel w3-black w3-hover-red w3-center'><p>Database password cannot be empty.</p></div>";
+            echo "<div class='w3-panel w3-red w3-animate-left w3-center'><p>Database password cannot be empty.</p></div>";
             break;
         case "NoDBLoginScriptFound":
-            echo "<div class='w3-panel w3-black w3-hover-red w3-center'><p>DBLogin script was not found.</p></div>";
+            echo "<div class='w3-panel ww3-red w3-animate-left w3-center'><p>DBLogin script was not found.</p></div>";
             break;
 
     }
@@ -52,8 +57,6 @@ if (isset($_SESSION["pref_dbUser"])) $pref_dbUser = $_SESSION["pref_dbUser"];
 if (isset($_SESSION["pref_dbPassword"])) $pref_dbPass = $_SESSION["pref_dbPassword"];
 
 ?>
-
-<h1>Preferences</h1>
 
 <form name="preferencesForm" action="scripts/SavePreferences.php">
 

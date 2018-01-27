@@ -89,7 +89,7 @@
             if (!isset($_POST["url_" . $table]) || $_POST["url_" . $table] == "") {
                 $previous = "javascript:history.go(-1)";
                 if(isset($_SERVER['HTTP_REFERER'])) $previous = $_SERVER['HTTP_REFERER'];
-                header("Location: " . $_SERVER["HTTP_REFERER"] . "?status=BaseURLError&table=" . $table); exit();
+                header("Location: " . $_SERVER["HTTP_REFERER"] . "&status=BaseURLError&table=" . $table); exit();
             }//end if url not found
             $export_url = $_POST["url_" . $table];
 

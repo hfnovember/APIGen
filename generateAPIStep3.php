@@ -2,13 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="w3.css">
-    <link rel="stylesheet" type="text/css"  href="styles.css">
+    <link rel="stylesheet" href="assets/css/w3.css">
+    <link rel="stylesheet" type="text/css"  href="assets/css/styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>PaNick Apps API Generator v1</title>
 </head>
 
 
 <body>
+
+<div class="w3-panel header-panel w3-indigo">
+    <h1>Step 3</h1>
+</div>
 
 <div class="w3-container">
 
@@ -37,19 +42,19 @@ $dbPassword = $_SESSION["tempDBPassword"];
 if (isset($_GET["status"])) {
     switch($_GET["status"]) {
         case "Generated":
-            echo "<div class='w3-panel w3-black w3-hover-green  w3-center'><p>Table-related API endpoints generated successfully.</p></div>";
+            echo "<div class='w3-panel w3-green w3-animate-right  w3-center'><p>Table-related API endpoints generated successfully.</p></div>";
             break;
         case "NameInvalid":
-            echo "<div class='w3-panel w3-black w3-hover-red  w3-center'><p>One or more of the endpoint names you provided is invalid.</p></div>";
+            echo "<div class='w3-panel w3-red w3-animate-left  w3-center'><p>One or more of the endpoint names you provided is invalid.</p></div>";
             break;
         case "InconsistentSizes":
-            echo "<div class='w3-panel w3-black w3-hover-red  w3-center'><p>A technical error has occured (endpoint info sizes are inconsistent).</p></div>";
+            echo "<div class='w3-panel w3-red w3-animate-left  w3-center'><p>A technical error has occured (endpoint info sizes are inconsistent).</p></div>";
             break;
         case "LevelInvalid":
-            echo "<div class='w3-panel w3-black w3-hover-red w3-center'><p>One or more of the endpoint user levels you provided is invalid.</p></div>";
+            echo "<div class='w3-panel w3-red w3-animate-left w3-center'><p>One or more of the endpoint user levels you provided is invalid.</p></div>";
             break;
         case "ParametersInvalid":
-            echo "<div class='w3-panel w3-black w3-hover-red w3-center'><p>One or more of the endpoint parameters you provided is invalid.</p></div>";
+            echo "<div class='w3-panel w3-red w3-animate-left w3-center'><p>One or more of the endpoint parameters you provided is invalid.</p></div>";
             break;
 
     }
@@ -116,7 +121,6 @@ else {
             }
         }
         x.value = x.value.substring(0, x.value.length - 1);
-        console.log(x.value);
     }
 
     function validate() {
@@ -133,8 +137,6 @@ else {
 
 </script>
 
-<h1>Step 3</h1>
-
 <h2>Generate Custom API endpoints</h2>
 
 
@@ -143,7 +145,7 @@ else {
 <h3>Custom Endpoints</h3>
 
 <table cellpadding="2" border="1">
-    <tr>
+    <tr class="w3-black">
         <th>Endpoint name</th>
         <th>Endpoint access</th>
         <th>Endpoint parameters</th>
@@ -189,7 +191,7 @@ else {
 <form name="addNewEndpointForm" action="generateAPIStep3.php" onsubmit="return validate()" method="post">
 
     <table cellpadding="5" border="1">
-        <tr>
+        <tr class="w3-black">
             <th>Endpoint name</th>
             <th>Endpoint access</th>
             <th>Endpoint parameters</th>
@@ -220,7 +222,7 @@ else {
 
     <input type="hidden" id="endpointAccess" name="endpointAccess" />
 
-    <input type="submit" name="submit" value="Add endpoint" class="w3-button green" />
+    <input type="submit" name="submit" value="Add endpoint" class="w3-button w3-green" />
 
     <script>checkForUserLevels()</script>
 </form>

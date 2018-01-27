@@ -2,13 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="w3.css">
-    <link rel="stylesheet" type="text/css"  href="styles.css">
+    <link rel="stylesheet" href="assets/css/w3.css">
+    <link rel="stylesheet" type="text/css"  href="assets/css/styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>PaNick Apps API Generator v1</title>
 </head>
 
 
 <body>
+
+<div class="w3-panel header-panel w3-indigo">
+    <h1>API Generation - Step 0</h1>
+</div>
 
 <div class="w3-container">
 
@@ -28,8 +33,6 @@ if (isset($_SESSION["pref_dbPassword"])) $pref_dbPass = $_SESSION["pref_dbPasswo
 
 ?>
 
-<h1>Step 0</h1>
-
 <h2>Provide Database credentials</h2>
 
 <form name="generateAPIStep0" action="generateAPIStep1.php">
@@ -38,10 +41,10 @@ if (isset($_SESSION["pref_dbPassword"])) $pref_dbPass = $_SESSION["pref_dbPasswo
 
     <p style="color:red"><b>Important Note:</b> Your database should be correctly formatted according to the <a href="specification.html">specification of the API generator.</a> Your database will be checked for consistency.</p>
 
-    <p>Database Name: <input type="text" name="dbName" title="Database name" placeholder="Database name" value="<?php echo $pref_dbName; ?>" /></p>
-    <p>Database Host IP: <input type="text" name="dbHostIP" title="Database host IP" placeholder="Database host IP" value="<?php echo $pref_dbHostIP; ?>" /></p>
-    <p>Database User: <input type="text" name="dbUser" title="Database user" placeholder="Database user" value="<?php echo $pref_dbUser; ?>" /></p>
-    <p>Database Password: <input type="text" name="dbPassword" title="Database password" placeholder="Database password" value="<?php echo $pref_dbPass; ?>" /></p>
+    <p>Database Name: <input class="w3-input w3-border" type="text" name="dbName" title="Database name" placeholder="Database name" value="<?php echo $pref_dbName; ?>" /></p>
+    <p>Database Host IP: <input class="w3-input w3-border" type="text" name="dbHostIP" title="Database host IP" placeholder="Database host IP" value="<?php echo $pref_dbHostIP; ?>" /></p>
+    <p>Database User: <input class="w3-input w3-border" type="text" name="dbUser" title="Database user" placeholder="Database user" value="<?php echo $pref_dbUser; ?>" /></p>
+    <p>Database Password: <input class="w3-input w3-border" type="text" name="dbPassword" title="Database password" placeholder="Database password" value="<?php echo $pref_dbPass; ?>" /></p>
 
     <a class="w3-button w3-black w3-hover-red" href="index.php">Back to menu</a>
     <input class="w3-button w3-black w3-hover-green" value="Proceed" type="submit" />

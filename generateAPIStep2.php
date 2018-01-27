@@ -2,13 +2,18 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="w3.css">
-    <link rel="stylesheet" type="text/css"  href="styles.css">
+    <link rel="stylesheet" href="assets/css/w3.css">
+    <link rel="stylesheet" type="text/css"  href="assets/css/styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>PaNick Apps API Generator v1</title>
 </head>
 
 
 <body>
+
+<div class="w3-panel header-panel w3-indigo">
+    <h1>API Generation - Step 2</h1>
+</div>
 
 <div class="w3-container">
 
@@ -33,7 +38,6 @@ $_SESSION["tempDBName"] = $dbName = $_GET["dbName"];
 $_SESSION["tempHostIP"] = $dbHostIP = $_GET["dbHostIP"];
 $_SESSION["tempDBUser"] = $dbUsername = $_GET["dbUser"];
 $_SESSION["tempDBPassword"] = $dbPassword = $_GET["dbPassword"];
-
 
 $conn = new mysqli($dbHostIP, $dbUsername, $dbPassword, $dbName);
 if ($conn->connect_error) die("Connection failed: " . $conn->connect_error);
@@ -319,24 +323,27 @@ foreach ($tableNames as $tableName) {
         }//end foreach userLevel
 
         $str = "
-
-    <hr/>
+    
+    <div class='w3-card-4 w3-sand w3-padding-large w3-margin'>
     
     <h3>" . ucfirst($tableName) . "</h3>
     
-    <div class='w3-button small' onclick='".$tableName."_adminOnly()'>Admin only</div>
-    <div class='w3-button small' onclick='".$tableName."_nonPublic()'>Non-Public</div>
-    <div class='w3-button small' onclick='".$tableName."_allEndpoints()'>All</div>
-    <div class='w3-button small' onclick='".$tableName."_noEndpoints()'>None</div>
-    <div class='w3-button small' onclick='".$tableName."_disable()'>Disable</div>
+    <div class='w3-button w3-blue-gray small' onclick='".$tableName."_adminOnly()'>Admin only</div>
+    <div class='w3-button w3-blue-gray small' onclick='".$tableName."_nonPublic()'>Non-Public</div>
+    <div class='w3-button w3-blue-gray small' onclick='".$tableName."_allEndpoints()'>All</div>
+    <div class='w3-button w3-blue-gray small' onclick='".$tableName."_noEndpoints()'>None</div>
+    <div class='w3-button w3-blue-gray small' onclick='".$tableName."_disable()'>Disable</div>
     
-     <p><b>Base URL:</b> <i>API/ </i><input style=\"font-style: italic;\" type=\"text\" maxlength=\"50\" title=\"" . $tableName . " URL\" value=\"" . $tableName . "\" name=\"url_" . $tableName . "\"/> Generate:
+     <p><b>Base URL:</b> <i>API/" . $tableName . "</i></p>
+     <p><span style='font-weight:700;'>Generate:</span>
         <input type=\"checkbox\" id=\"" . $tableName . "_generate\" name=\"" . $tableName . "_generate\" checked=\"checked\" onclick=\"" . $tableName . "_Generate()\"/></p>
+        
+        <input type='hidden' name='url_".$tableName."' value='".ucfirst($tableName)."' />
     
     <table border=\"1\" cellpadding='5'>
 
         <tr style='background-color: black; color: white;'>
-            <th>Functionality</th>
+            <th>Endpoint</th>
             <th>Generate?</th>
             " . $headerUserTypes . "
         </tr>
@@ -392,6 +399,8 @@ foreach ($tableNames as $tableName) {
         </tr>
         
     </table>
+    
+    </div>
 
         <script>
             function " . $tableName . "_Create() {
@@ -785,31 +794,31 @@ foreach ($tableNames as $tableName) {
 if (isset($_GET["status"])) {
     switch($_GET["status"]) {
         case "BaseURLError":
-            echo "<div class='w3-panel w3-black w3-hover-red w3-center'><p>The base URL for table '" . $_GET["table"] . "' is invalid. Please provide a valid base URL.</p></div>";
+            echo "<div class='w3-panel w3-red w3-animate-left w3-center'><p>The base URL for table '" . $_GET["table"] . "' is invalid. Please provide a valid base URL.</p></div>";
             break;
     }
 }
 
 ?>
 
-<h1>Step 2</h1>
-
 <h2>Generate Web API by database table</h2>
 
 
 
-<form name="next" action="scripts/GenerateAPIFromTables.php" method="post">
+<form name="next" id="generateAPIFromTablesForm" action="scripts/GenerateAPIFromTables.php" method="post">
 
-    <p>Please choosen which API endpoints to generate from the database tables and which users are allowed to access these endpoints. Administrator users have access to all functions of the generated API by default.</p>
-
-    <hr/>
+    <p>Please choose which API endpoints to generate from the database tables and which users are allowed to access these endpoints.
+        Administrator users have access to all functions of the generated API by default. The generator will create API/Login and API/Logout
+    automatically regardless of your choice. These endpoints can be used to log users in and out of your system using sessions.
+    </p>
 
     <h3>Presets for all tables</h3>
 
-    <a class="w3-button blue" onclick="adminOnly()">Admin-Only Endpoints</a>
-    <a class="w3-button blue" onclick="nonPublic()">Non-Public Endpoints</a>
-    <a class="w3-button blue" onclick="allEndpoints()">All Endpoints</a>
-    <a class="w3-button blue" onclick="noEndpoints()">No Endpoints</a>
+    <a class="w3-button w3-red" onclick="adminOnly()">Admin-Only Endpoints</a>
+    <a class="w3-button w3-red" onclick="nonPublic()">Non-Public Endpoints</a>
+    <a class="w3-button w3-red" onclick="allEndpoints()">All Endpoints</a>
+    <a class="w3-button w3-red" onclick="noEndpoints()">No Endpoints</a>
+    <a class="w3-button w3-red" onclick="disableAll()">Disable All</a>
 
     <?php echo $fullTable; ?>
 
@@ -822,6 +831,16 @@ if (isset($_GET["status"])) {
 
 
 </div>
+
+<button class="w3-green" onclick="submitForm()" id="generateButton" title="Go to top">GENERATE</button>
+
+<script>
+    function submitForm() {
+        var form = document.getElementById("generateAPIFromTablesForm");
+        form.submit();
+    }
+</script>
+
 </body>
 
 <script>
@@ -880,6 +899,17 @@ if (isset($_GET["status"])) {
                     a[i].checked = true;
                     a[i].disabled = false;
                 }
+            }
+        }
+    }
+
+    function disableAll() {
+        var a = document.getElementsByTagName("input");
+        for (i = 0; i < a.length; i++) {
+            if (a[i].type == "checkbox") {
+                var name = a[i].getAttribute("name");
+                a[i].disabled = false;
+                a[i].checked = false;
             }
         }
     }

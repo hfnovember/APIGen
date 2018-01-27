@@ -1,78 +1,225 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="w3.css">
-    <link rel="stylesheet" type="text/css"  href="styles.css">
+    <link rel="stylesheet" href="assets/css/w3.css">
+    <link rel="stylesheet" type="text/css"  href="assets/css/styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>PaNick Apps API Generator v1</title>
 </head>
 
 <body>
 
+<div class="header-panel w3-panel w3-indigo">
+    <h1>PaNick Apps API Generator Specification</h1>
+</div>
+
 <div class="w3-container">
 
-    <h1>PaNick Apps API Generator Specification</h1>
+    <button onclick="displayAccordionPage('summary')" class="w3-button w3-block w3-black w3-left-align accordionitem">Summary</button>
+    <div id="summary" class="w3-hide w3-blue accordion">
 
-    <h2>Important Rules to follow</h2>
+        <h4 class="accordionText w3-animate-top">What it is</h4>
+        <p class="accordionText w3-animate-top">
+            The PaNick Apps MySQL-PHP API Generator is a powerful tool designed to automate the construction of entity classes and APIs from MySQL databases.
+            The generator can be used to create API endpoints in PHP from database tables and their fields. There is a standard set of default endpoints for each table/entity that supports
+            basic operations such as creating and removing elements and more. In addition, custom endpoints can be created which can then be implemented accordingly by the programmer.
+            The generator supports automatic generation of Java classes which can be used to retrieve data from the API on a client application as well as automated security and authorization checks,
+            parameter checks and informational responses on issues regarding the call. Thus, the PaNickApps API generator can cut development time substantially especially for projects
+            involving a lot of data.
+        </p>
 
-    <ul>
-        <li>ALL tables should have only 1 Primary Key.</li>
-        <li>Properties which are unique and constitute other kinds of identification should be set as unique. It is also recommended to set them as indexables.</li>
-    </ul>
+    </div>
 
-    <h2>Database schema</h2>
 
-    <p>After generation of the database or prior to generation of the login script the database should consist of at
-        least the three following tables:</p>
+    <button onclick="displayAccordionPage('features')" class="w3-button w3-block w3-black w3-left-align accordionitem">Features</button>
+    <div id="features" class="w3-hide w3-purple accordion">
 
-    <ul>
-        <li><b>Users Table:</b>
-            <ul>
-                <li>UserID - Integer, Auto-Increment, Primary Key</li>
-                <li>Username - Varchar(255), Not null</li>
-                <li>Password - Varchar(255), Not null</li>
-                <li>UserLevelID - Varchar(255), Not null</li>
-            </ul>
-        </li><br>
-        <li><b>UserLevels Table:</b>
-            <ul>
-                <li>UserLevelID - Integer, Auto-Increment, Primary Key</li>
-                <li>UserLevelName - Varchar(255), Not null</li>
-            </ul>
-        </li><br>
-        <li><b>Sessions Table:</b>
-            <ul>
-                <li>SessionID - Varchar(255), Primary Key</li>
-                <li>UserID - Integer, Not null</li>
-                <li>InitiatedOn - Timestamp, Not null</li>
-                <li>FinalizedOn - Timestamp</li>
-            </ul>
-        </li>
-    </ul>
+        <h4 class="accordionText w3-animate-top">PHP class generation (server-side)</h4>
+        <p class="accordionText w3-animate-top">
+            To assist the programmer in creating their own endpoints, PHP classes can also be generated from the database tables. These entity classes convert database fields into class attributes
+            with the proper set/get methods and constructors. In addition to these, several static methods are also generated for each class. These methods can be used to automatically perform
+            actions on the database such as inserting or deleting elements of their type without having to write SQL code.
+        </p>
 
-    <p>These tables should be automatically generated into the named database if you opt to create a new database.</p>
+        <h4 class="accordionText w3-animate-top">Java class generation (client-side)</h4>
+        <p class="accordionText w3-animate-top">
+            The generator can also be used to provide the user with automatically generated Java classes. These are similar to the generated entity classes for PHP without the static methods which
+            cannot be used at a client level. These classes are generated in an identical way and are raw Java classes without any library dependencies. These Java classes can be used to develop any Java
+            application such as Android applications, Desktop applications or other services.
+        </p>
 
-    <h2>Supported Data Types</h2>
+        <h4 class="accordionText w3-animate-top">Automated security</h4>
+        <p class="accordionText w3-animate-top">
+            The PaNickApps API Generator supports automated security checks! Every API endpoint created by the generator automatically supports security checks for authentication of users. The generator uses pre-defined tables in your database to automatically
+            set up and destroy sessions for client applications. It utilizes these sessions to allow each group of users to only access endpoints which they are allowed to access. This means
+            that you do not have to worry about any authentication processes taking place in your API. Instead, you will be asked to select which users can access which endpoints of the API.
+            Using these selections, the generator will automatically create the default access rights for each user on each of these endpoints.
+        </p>
 
-    <p style="color:red"><b>Important Note:</b> Do not use data type names as column names!</p>
+        <h4 class="accordionText w3-animate-top">Automated status &amp; parameter checks</h4>
+        <p class="accordionText w3-animate-top">
+            In addition to security, the generator provides each endpoint with automated informative messages to display to users when something was done or has gone wrong. For example, each endpoint
+            can notify the caller application with appropriate messages to report the status of the call. Messages include any technical difficulties on the server or database, missing any
+            parameters to the call or trying to access an endpoint while not authorized.
+        </p>
 
-    <p>The API Generator safely supports the following data types:</p>
+    </div>
 
-    <ul>
-        <li>Integer</li>
-        <li>Float</li>
-        <li>Double</li>
-        <li>Char</li>
-        <li>Varchar</li>
-        <li>Text</li>
-        <li>Longtext</li>
-        <li>Date</li>
-        <li>Time</li>
-        <li>Boolean</li>
-    </ul>
 
-    <p>You may use other data types, but be aware that they may not work. It is also strongly suggested to use Timestamp types for date-time values.</p>
+
+    <button onclick="displayAccordionPage('dbRequirements')" class="w3-button w3-block w3-black w3-left-align accordionitem">Database requirements</button>
+    <div id="dbRequirements" class="w3-hide w3-dark-grey accordion">
+
+        <h4 class="accordionText w3-animate-top">Database consistency requirements</h4>
+        <p class="accordionText w3-animate-top">
+            The generator requires that a database contains several specified tables with pre-defined fields to automate authentication, authorization and security. There are three tables
+            required in an acceptable database with the following fields:
+        </p>
+
+        <ul class="accordionText w3-animate-top accordionList">
+            <li><b>Users Table:</b>
+                <ul>
+                    <li>UserID - Integer, Auto-Increment, Primary Key</li>
+                    <li>Username - Varchar(255), Not null</li>
+                    <li>Password - Varchar(255), Not null</li>
+                    <li>UserLevelID - Varchar(255), Not null</li>
+                </ul>
+            </li><br>
+            <li><b>UserLevels Table:</b>
+                <ul>
+                    <li>UserLevelID - Integer, Auto-Increment, Primary Key</li>
+                    <li>UserLevelName - Varchar(255), Not null</li>
+                </ul>
+            </li><br>
+            <li><b>Sessions Table:</b>
+                <ul>
+                    <li>SessionID - Varchar(255), Primary Key</li>
+                    <li>UserID - Integer, Not null</li>
+                    <li>InitiatedOn - Timestamp, Not null</li>
+                    <li>FinalizedOn - Timestamp</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h4 class="accordionText w3-animate-top">Option 1: Creating a new database</h4>
+        <p class="accordionText w3-animate-top">
+            Creating a new database using the generator is by far the easiest option. The generator can automatically create a new database for you with the above tables.
+        </p>
+
+        <h4 class="accordionText w3-animate-top">Option 2: Modifying an existing database</h4>
+        <p class="accordionText w3-animate-top">
+            In the (unlucky) case that you already do have a database you do not want to abandon, it is suggested that you make a backup first before moving on. To
+            make your database consistent with the generator you must make sure that any tables with the same names as above are either re-created with the above fields
+            or the above fields are added to these tables. If any already existing fields have the names of the pre-defined fields, you must rename them before continuing.
+            Simply put, these tables, with these specific fields, with these specific types and properties MUST exist in the database. Adding other fields in these tables will not affect the generator.
+        </p>
+
+
+    </div>
+
+
+    <button onclick="displayAccordionPage('databaseTypes')" class="w3-button w3-block w3-black w3-left-align accordionitem">Supported MySQL Types</button>
+    <div id="databaseTypes" class="w3-hide w3-blue-gray accordion">
+
+        <h4 class="accordionText w3-animate-top">Supported data types</h4>
+        <p class="accordionText w3-animate-top">
+            The API Generator safely supports the following MySQL data types:
+        </p>
+
+        <ul class="accordionText w3-animate-top accordionList">
+            <li>Integer</li>
+            <li>Float</li>
+            <li>Double</li>
+            <li>Char</li>
+            <li>Varchar</li>
+            <li>Text</li>
+            <li>Longtext</li>
+            <li>Date</li>
+            <li>Time</li>
+            <li>Boolean</li>
+        </ul>
+
+        <p class="accordionText w3-animate-top">
+            It is strongly suggested to not use any data type names as column/field names. Using other data types may or may NOT work depending on the type. Feel free to try any other MySQL type
+            but use them at your own risk!
+        </p>
+
+    </div>
+
+
+    <button onclick="displayAccordionPage('databaseRules')" class="w3-button w3-block w3-black w3-left-align accordionitem">Generator rules &amp; conventions</button>
+    <div id="databaseRules" class="w3-hide w3-green accordion">
+
+        <h4 class="accordionText w3-animate-top">Rules</h4>
+
+        <ul class="accordionText w3-animate-top accordionList">
+            <li>All tables should have exactly 1 primary key. Take special caution in joiner tables.</li>
+            <li>Table names should start with an uppercase letter because they are later converted into classes.</li>
+            <li>Do not mess with the pre-defined tables outside of the generator.</li>
+            <li>Endpoints support POST HTTP requests only.</li>
+        </ul>
+
+        <h4 class="accordionText w3-animate-top">Conventions</h4>
+
+        <ul class="accordionText w3-animate-top accordionList">
+            <li>Use the suggested data types.</li>
+            <li>In case of time or date, it is suggested to use integers or long integers to store timestamps.</li>
+        </ul>
+
+    </div>
+
+    <!--<button onclick="displayAccordionPage('requests')" class="w3-button w3-block w3-black w3-left-align accordionitem">Requests</button>
+    <div id="requests" class="w3-hide w3-teal accordion">
+
+        <h4 class="accordionText w3-animate-top"></h4>
+        <p class="accordionText w3-animate-top">
+
+        </p>
+
+    </div>-->
+
+    <button onclick="displayAccordionPage('requests')" class="w3-button w3-block w3-black w3-left-align accordionitem">Requests</button>
+    <div id="requests" class="w3-hide w3-teal accordion">
+
+        <h4 class="accordionText w3-animate-top">Make your requests!</h4>
+        <p class="accordionText w3-animate-top">
+            If you would like us to consider adding a programming language or framework to generate code for automatically, please let us know! Contact us at
+            <a href="mailto:admin@panickapps.com">admin@panickapps.com</a>
+            and we will consider your proposal. Our plans currently include adding support for C++ and C# in the near future.
+        </p>
+
+    </div>
+
+
+
+<!--
+
+        <h4 class="accordionText w3-animate-top"></h4>
+        <p class="accordionText w3-animate-top"></p>
+
+        -->
 
 
 </div>
+
+
+<script>
+    function displayAccordionPage(id) {
+
+        var y = document.getElementsByClassName("accordion");
+        for (var i = 0; i < y.length; i++) {
+            if (y[i].className.indexOf("w3-show") != -1)
+                y[i].className = y[i].className.replace(" w3-show", " w3-hide");
+        }
+
+        var x = document.getElementById(id);
+        if (x.className.indexOf("w3-show") == -1) {
+            x.className += " w3-show";
+        } else {
+            x.className = x.className.replace(" w3-show", "");
+        }
+    }
+</script>
+
 </body>
 </html>
